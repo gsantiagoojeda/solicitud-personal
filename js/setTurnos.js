@@ -12,9 +12,6 @@ export default async function SetTurnos() {
   const $selectTurno = d.getElementById("solicitud-horario");
 
   let turnos = await getTurnos();
-
-  turnos = JSON.parse(turnos);
-
   console.log(turnos);
 
   const $fragment = d.createDocumentFragment();

@@ -12,9 +12,6 @@ export default async function SetSueldos() {
   const $selectSueldo = d.getElementById("solicitud-sueldo");
 
   let sueldos = await getSueldos();
-
-  sueldos = JSON.parse(sueldos);
-
   console.log(sueldos);
 
   const $fragment = d.createDocumentFragment();
