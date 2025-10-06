@@ -1,0 +1,52 @@
+import obtenerJWT from "../helpers/obtenerJWT.js";
+import createSolicitud from "./createSolicitud.js";
+import getSolicitudesDepto from "./getSolicitudes.js";
+import goAutorizarSolicitud from "./goAutorizarSolicitud.js";
+import goBack from "./goBack.js";
+import goVerSolicitud from "./goVerSolicitud.js";
+import infoMenu from "./infoMenu.js";
+import menu from "./menu.js";
+import SetSueldos from "./setSueldos.js";
+import SetTurnos from "./setTurnos.js";
+
+const d = document;
+
+d.addEventListener("click", (e) => {
+  goBack(e);
+  menu(e);
+  goAutorizarSolicitud(e);
+  goVerSolicitud(e);
+});
+
+d.addEventListener("submit", (e) => {
+  e.preventDefault();
+  createSolicitud(e);
+});
+
+d.addEventListener("DOMContentLoaded", async (e) => {
+  // const data = await  validarJWT();
+  // infoMenu(data);
+  SetTurnos();
+  SetSueldos();
+  getSolicitudes(data);
+});
+
+async function validarJWT() {
+  const data = await obtenerJWT();
+  if (!data) {
+    alert("No se valido la sesión");
+    //location.href = "https://gpoalze.cloud/";
+  }
+
+  console.log(data);
+
+  let puesto = data.puesto.toLowerCase();
+  if (!puesto.includes("gerente") && !puesto.includes("director")) {
+    alert("No tienes los permisos para entrar a este módulo");
+    // location.href = "http://gpoalze.cloud/";
+  }
+  return data;
+}
+
+//mLh.3WN]8y
+//paswword uusario bd

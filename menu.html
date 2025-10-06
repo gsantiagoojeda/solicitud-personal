@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="shortcut icon" href="./assets/logo.jpeg" type="image/x-icon">
+  <link href="./css/style_out.css" rel="stylesheet">
+  <title>Solicitud de Personal</title>
+</head>
+
+<body class="bg-gray-100 select-none">
+  <!-- rgb:(0,66,97) rgb:(8,90,129) rgb:(13,106,151) -->
+  <main class="w-full   lg:w-10/12 mx-auto bg-gray-100">
+    <section class=" w-full px-6 py-4 bg-white ">
+      <div class="w-full flex justify-between items-center mb-6 mt-4">
+        <h3 class="text-2xl font-semibold">Solicitud de Personal</h3>
+        <figure>
+          <img src="./assets/person-circle.svg" alt="person" class="w-7">
+        </figure>
+      </div>
+      <h4 class="text-lg text-gray-500">Bienvenido,</h4>
+      <p id="menu-nombre" class="text-xl font-bold">"${Nombre}"</p>
+      <h4 id="menu-puesto" class="text-lg text-blue-700 font-semibold py-1">Puesto</h4>
+    </section>
+
+    <!-- SECCION DE OPCIONES -->
+    <article class="grid gap-4 grid-cols-2 grid-rows-2 p-4">
+      <section id="btn-go-create"
+        class="relative flex flex-col justify-center items-center bg-white rounded-lg p-4 shadow-lg cursor-pointer transition-transform duration-300 hover:scale-[1.03]">
+        <img src="./assets/plus-circle.svg" alt="" class="w-8">
+        <h4 class="text-xl font-semibold py-4 text-center">Generar Solicitud</h4>
+        <p class="text-sm text-center">Registrar nueva solicitud</p>
+        <div class=" hidden absolute inset-0 bg-gray-100 opacity-50 z-50 "></div>
+      </section>
+
+      <section id="btn-go-history"
+        class=" relative flex flex-col justify-center items-center bg-white rounded-lg p-4 shadow-lg cursor-pointer transition-transform duration-300 hover:scale-[1.03]">
+        <img src="./assets/calendar4-week.svg" alt="" class="w-8">
+        <h4 class="text-xl font-semibold py-4">Histórico</h4>
+        <p class="text-sm text-center">Ver mis solicitudes</p>
+        <div class=" hidden absolute inset-0 bg-gray-100 opacity-50 z-50 "></div>
+      </section>
+
+      <section id="btn-go-auth"
+        class="relative flex flex-col justify-center items-center bg-white rounded-lg p-4 shadow-lg cursor-pointer transition-transform duration-300 hover:scale-[1.03]">
+        <img src="./assets/check-circle.svg" alt="" class="w-8">
+        <h4 class="text-xl font-semibold py-4">Autorizar</h4>
+        <p class="text-sm text-center">Aprobar solicitudes pendientes</p>
+        <div class=" hidden absolute inset-0 bg-gray-100 opacity-50 z-50 "></div>
+      </section>
+
+      <section id="btn-go-approved"
+        class="relative flex flex-col justify-center items-center bg-white rounded-lg p-4 shadow-lg cursor-pointer transition-transform duration-300 hover:scale-[1.03]">
+        <img src="./assets/check2-all.svg" alt="credit-card" class="w-8">
+        <h4 class="text-xl font-semibold py-4">Aprobadas</h4>
+        <p class="text-sm text-center">Ver solicitudes aprobadas</p>
+        <div class=" hidden absolute inset-0 bg-gray-100 opacity-50 z-50 "></div>
+      </section>
+
+    </article>
+    <!--  FIN SECCION DE OPCIONES -->
+    <!--   SECCION RESUMEN -->
+    <h3 class="text-lg font-semibold px-4 pt-6">Resumen</h3>
+    <article class="grid gap-4 grid-cols-3 grid-rows-1 p-4">
+
+      <section id="btn-go-historyr"
+        class="relative flex flex-col justify-start items-center bg-white rounded-lg p-4 shadow-md">
+        <h4 class="flex-1 text-base  font-semibold">Mis solicitudes pendientes</h4>
+        <p class="text-2xl font-bold text-red-500  text-center px-4 pt-4">200</p>
+        <div class=" hidden absolute inset-0 bg-gray-100 opacity-50 z-50 "></div>
+      </section>
+      <section id="btn-go-authr"
+        class="relative flex flex-col justify-start items-center bg-white rounded-lg p-4 shadow-md">
+        <h4 class="flex-1 text-base  font-semibold">Solicitudes por autorizar</h4>
+        <p class="text-2xl font-bold text-orange-500  text-center px-4 pt-4">200</p>
+        <div class=" hidden absolute inset-0 bg-gray-100 opacity-50 z-50 "></div>
+      </section>
+      <section id="btn-go-payr"
+        class="relative flex flex-col justify-start items-center bg-white rounded-lg p-4 shadow-md">
+        <h4 class="flex-1 text-base  font-semibold">Solicitudes Aprobadas</h4>
+        <p class="text-2xl font-bold text-green-500  text-center px-4 pt-4">200</p>
+        <div class=" hidden absolute inset-0 bg-gray-100 opacity-50 z-50 "></div>
+      </section>
+    </article>
+    <!-- FIN  SECCION RESUMEN -->
+
+    <!--   SECCION USUARIOS-->
+    <h3 class="hidden text-lg font-semibold px-4 pt-6">Administrar Usuarios</h3>
+
+    <section
+      class=" hidden flex justify-center items-center bg-white rounded-lg mx-6 my-4 p-4 shadow-md cursor-pointer transition-transform duration-300 hover:scale-[1.03]"
+      id="btn-go-users">
+      <h4 class=" text-base  font-semibold text-blue-700">Administrar Usuarios</h4>
+    </section>
+
+
+    <!-- FIN  SECCION USUARIOS -->
+
+  </main>
+  <script type="module" src="./js/index.js"></script>
+</body>
+
+</html>

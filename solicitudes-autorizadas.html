@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="shortcut icon" href="./assets/logo.jpeg" type="image/x-icon">
+  <link href="./css/style_out.css" rel="stylesheet">
+  <title>Solicitudes Autorizadas</title>
+</head>
+
+<!-- rgb:(0,66,97) rgb:(8,90,129) rgb:(13,106,151) -->
+
+<body class="bg-gray-200 select-none">
+  <main class="w-full   lg:w-10/12 mx-auto bg-gray-200 ">
+    <section class=" w-full flex items-center  px-6 py-4  lg:py-5 lg:mt-8 bg-white ">
+      <button class="w-8 h-auto mr-2" id="go-back"><img class="w-full h-auto" src="./assets/arrow-left-circle-fill.svg"
+          alt="goBack"></button>
+      <h3 class="inline lg:block text-2xl lg:text-3xl font-semibold lg:font-bold text-blue-700 grow text-center">
+        Solicitudes Autorizadas
+      </h3>
+    </section>
+
+    <section class=" w-full  px-0 py-0 mt-2 lg:mt-4 bg-white overflow-x-auto">
+      <!-- SECCION FILTROS-->
+
+      <article class="w-11/12  bg-white p-4 pb-2 mx-auto rounded-md">
+        <span class="font-bold text-gray-600 mb-2">Filtrar por:</span>
+        <div class="md:flex gap-4 items-end">
+
+          <!-- Empresa -->
+          <section class="flex-1">
+            <label class="block font-bold text-gray-600 mb-2">Empresa:</label>
+            <select
+              class="block w-full px-4 py-2 h-[42px] text-gray-700 font-semibold bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option value="Aramluz">Aramluz</option>
+              <option value="Etiroch">Etiroch</option>
+            </select>
+          </section>
+
+          <!-- Departamento -->
+          <section class="flex-1">
+            <label class="block font-bold text-gray-600 mb-2">Departamento:</label>
+            <div class="multi-options relative" data-options="depto">
+              <div
+                class="dropdown-toggle border border-gray-300 bg-white px-2 py-1.5 rounded cursor-pointer min-h-[42px] flex flex-wrap gap-2 items-center">
+                <div class="selected-tags flex flex-wrap gap-2"></div>
+                <input type="text" placeholder="Buscar..."
+                  class="search-input flex-1 outline-none text-sm min-w-[100px] bg-transparent" autocomplete="off" />
+              </div>
+              <ul
+                class="dropdown-options absolute z-10 mt-1 max-h-40 w-full overflow-y-auto bg-white border border-gray-300 rounded shadow-md hidden no-scrollbar">
+              </ul>
+              <input type="hidden" name="deptos" class="selected-deptos" />
+            </div>
+          </section>
+
+          <!-- Empleado -->
+          <section class="flex-1">
+            <label class="block font-bold text-gray-600 mb-2">Empleado:</label>
+            <div class="multi-options relative" data-options="empleado">
+              <div
+                class="dropdown-toggle border border-gray-300 bg-white px-2 py-1.5 rounded cursor-pointer min-h-[42px] flex flex-wrap gap-2 items-center">
+                <div class="selected-tags flex flex-wrap gap-2"></div>
+                <input type="text" placeholder="Buscar..."
+                  class="search-input flex-1 outline-none text-sm min-w-[100px] bg-transparent" autocomplete="off" />
+              </div>
+              <ul
+                class="dropdown-options absolute z-10 mt-1 max-h-40 w-full overflow-y-auto bg-white border border-gray-300 rounded shadow-md hidden no-scrollbar">
+              </ul>
+              <input type="hidden" name="empleados" class="selected-empleados" />
+            </div>
+          </section>
+
+        </div>
+        </details>
+        <!--  FIN SECCION FILTROS -->
+    </section>
+
+
+    <section class=" w-full  px-0 py-0 mt-4 lg:mt-8 bg-white overflow-x-auto">
+      <table class="min-w-full bg-white rounded-lg shadow-md">
+        <thead>
+          <tr class="bg-blue-800 text-white text-left text-sm">
+            <th class="py-3 px-4">SOLICITANTE</th>
+            <th class="py-3 px-4">CARGO</th>
+            <th class="py-3 px-4">PUESTO</th>
+            <th class="py-3 px-4">STATUS</th>
+            <th class="py-3 px-4">AUTORIZADOR N1</th>
+            <th class="py-3 px-4">AUTORIZADOR N2</th>
+          </tr>
+        </thead>
+        <tbody class="text-gray-700 text-sm">
+          <tr class="border-b cursor-pointer">
+            <td class="py-3 px-4 flex  space-x-3">
+              <div>
+                <p class="font-medium">Mira Rodeo</p>
+                <p class="text-gray-500 text-xs">mirarodeo23@mail.com</p>
+              </div>
+            </td>
+            <td class="py-3 px-4">
+              <p class="font-medium">Software Developer</p>
+              <p class="text-gray-500 text-xs">Development</p>
+            </td>
+            <td class="py-3 px-4">Developer</td>
+            <td class="py-3 px-4">
+              <span class="bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full">Pendiente</span>
+            </td>
+            <td class="py-3 px-4  space-x-3">
+              <div>
+                <p class="font-medium">Juanita Perez</p>
+                <p class="text-gray-500 text-xs">Director General</p>
+              </div>
+            </td>
+            <td class="py-3 px-4  space-x-3">
+              <div>
+                <p class="font-medium">Davin Inclan</p>
+                <p class="text-gray-500 text-xs">Gerente RH</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="border-b cursor-pointer">
+            <td class="py-3 px-4  space-x-3">
+              <div>
+                <p class="font-medium">Mira Rodeo</p>
+                <p class="text-gray-500 text-xs">mirarodeo23@mail.com</p>
+              </div>
+            </td>
+            <td class="py-3 px-4">
+              <p class="font-medium">Software Developer</p>
+              <p class="text-gray-500 text-xs">Development</p>
+            </td>
+            <td class="py-3 px-4">Developer</td>
+            <td class="py-3 px-4">
+              <span class="bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full">Autorizada N1</span>
+            </td>
+            <td class="py-3 px-4  space-x-3">
+              <div>
+                <p class="font-medium">Juanita Perez</p>
+                <p class="text-gray-500 text-xs">Director general</p>
+              </div>
+            </td>
+            <td class="py-3 px-4 r space-x-3">
+              <div>
+                <p class="font-medium">Davin Inclan</p>
+                <p class="text-gray-500 text-xs">Gerente RH</p>
+              </div>
+            </td>
+          </tr>
+
+
+        </tbody>
+      </table>
+    </section>
+
+
+  </main>
+  <section class="load"><img src="./assets/puff.svg" alt="cargando"></section>
+
+  <script type="module" src="./js/index.js?v=1"></script>
+</body>
+
+</html>
