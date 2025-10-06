@@ -2,7 +2,7 @@
 require "../conexion_solicitud.php";
 
 $sqlSueldos = "select * from sp_sueldos";
-$resultSueldos = $mysqli->query($sqlSueldos);
+$resultSueldos = $mysqli_solicitud->query($sqlSueldos);
 $array = [];
 while ($rowSueldos = $resultSueldos->fetch_assoc())   $array[] = $rowSueldos;
 

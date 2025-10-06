@@ -2,7 +2,7 @@
 require "../conexion_turnos.php";
 
 $sqlTurnos = "select * from turnos";
-$resultTurnos = $mysqli->query($sqlTurnos);
+$resultTurnos = $mysqli_turnos->query($sqlTurnos);
 $array = [];
 while ($rowTurnos = $resultTurnos->fetch_assoc())   $array[] = $rowTurnos;
 
