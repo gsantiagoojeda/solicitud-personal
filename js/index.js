@@ -1,6 +1,6 @@
 import obtenerJWT from "../helpers/obtenerJWT.js";
 import createSolicitud from "./createSolicitud.js";
-import getSolicitudesDepto from "./getSolicitudes.js";
+import getSolicitudes from "./getSolicitudes.js";
 import goAutorizarSolicitud from "./goAutorizarSolicitud.js";
 import goBack from "./goBack.js";
 import goVerSolicitud from "./goVerSolicitud.js";
