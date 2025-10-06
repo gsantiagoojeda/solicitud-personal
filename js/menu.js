@@ -11,10 +11,10 @@ export default function menu(e) {
   console.log(key);
   switch (key) {
     case "btn-go-create":
-      location.href = ` ${DOMAIN}create-solicitud.html`;
+      location.href = ` ${DOMAIN}crear-solicitud.html`;
       break;
     case "btn-go-history":
-      location.href = ` ${DOMAIN}history-solicitudes.html`;
+      location.href = ` ${DOMAIN}ver-solicitudes.html`;
       break;
     // case "btn-go-historyr":
     //   location.href = "";
