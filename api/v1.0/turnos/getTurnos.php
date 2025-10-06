@@ -1,6 +1,6 @@
 <?php
 require "../conexion_turnos.php";
-
+echo "hola;";
 $sqlTurnos = "select * from turnos";
 $resultTurnos = $mysqli_turnos->query($sqlTurnos);
 $array = [];
