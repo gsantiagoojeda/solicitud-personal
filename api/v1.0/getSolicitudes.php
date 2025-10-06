@@ -95,6 +95,6 @@ foreach ($empleados as $empleado) {
             $listaPersonasAutorizadas = array_merge($listaPersonasAutorizadas, $empleadosTipo2);
         } else {
             $listaPersonasAutorizadas = array_merge($listaPersonasAutorizadas, $empleadosTodos);
-        }
+        } 
     }
 

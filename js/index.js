@@ -24,8 +24,8 @@ d.addEventListener("submit", (e) => {
 });
 
 d.addEventListener("DOMContentLoaded", async (e) => {
-  // const data = await  validarJWT();
-  // infoMenu(data);
+  const data = await validarJWT();
+  infoMenu(data);
   SetTurnos();
   SetSueldos();
   getSolicitudes(data);
