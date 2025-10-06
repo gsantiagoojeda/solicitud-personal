@@ -24,7 +24,7 @@ try {
     echo json_encode([
         "success" => true,
         "id" => $decoded->id, // 👈 este es el usuario logueado
-        "datos"=>$decoded
+        "datos"=>$decoded['data']
     ]);
 } catch (Exception $e) {
     echo json_encode([
