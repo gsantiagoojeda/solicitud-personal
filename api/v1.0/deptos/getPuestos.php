@@ -91,6 +91,16 @@ echo json_encode([
 
 } else {//"No contiene la palabra 'Director'
   echo "entre a else stripos";
+
+  $sqlPedidos .= "SELECT * FROM puestos WHERE departamento_id = $depto";
+$resultPedidos = $mysqli_vacaciones->query($sqlPedidos);
+$arrayPed = [];
+
+while ($rowPedidos = $resultPedidos->fetch_assoc()) {
+  $arrayPed[] = $rowPedidos;
+}
+ echo "obtuve puestos 1";
+ print_r($arrayPed);
   
   // Preparar la consulta de forma segura
   $stmt = $mysqli_vacaciones->prepare("SELECT * FROM puestos WHERE departamento_id = ?");
