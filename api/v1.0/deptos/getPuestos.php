@@ -113,9 +113,9 @@ echo json_encode([
     ]);
     exit;
   }
+  
+  $resultPuestos = $stmt->get_result();
   echo "entre a else stripos2";
-
-$resultPuestos = $stmt->get_result();
 
 $array = [];
 while ($rowPuestos = $resultPuestos->fetch_assoc()) {
