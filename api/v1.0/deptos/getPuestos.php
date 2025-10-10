@@ -103,17 +103,17 @@ echo json_encode([
     exit;
   }
   
-  echo "entre a else stripos2";
   $stmt->bind_param("i", $depto);
   
   if (!$stmt->execute()) {
     echo json_encode([
-        "Puestos" => [],
-        "err" => true,
-        "statusText" => "Error al ejecutar la consulta: " . $stmt->error
+      "Puestos" => [],
+      "err" => true,
+      "statusText" => "Error al ejecutar la consulta: " . $stmt->error
     ]);
     exit;
-}
+  }
+  echo "entre a else stripos2";
 
 $resultPuestos = $stmt->get_result();
 
