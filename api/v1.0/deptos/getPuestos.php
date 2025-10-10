@@ -120,7 +120,8 @@ $array = [];
 while ($rowPuestos = $resultPuestos->fetch_assoc()) {
     $array[] = $rowPuestos;
 }
-
+ echo "obtuve puestos";
+ print_r($array);
 // Respuesta exitosa
 echo json_encode([
     "Puestos" => $array,
