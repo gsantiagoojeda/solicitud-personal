@@ -21,7 +21,7 @@ $idUser = "264";
 // $puesto = $_POST['puesto'];
 // $idUser = (int)$_POST['id-user'];
 
-if (stripos($texto, 'Director') !== false) {//Contiene la palabra 'Director'
+if (stripos($puesto, 'Director') !== false) {//Contiene la palabra 'Director'
 
   echo "entre a if stripos";
   $sqlUser = "SELECT puesto, id_autoridad FROM empleados WHERE id = ?";
@@ -35,7 +35,7 @@ if (!$stmt) {
     exit;
 }
 
-$stmt->bind_param("i", $id_user);
+$stmt->bind_param("i", $idUser);
 $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
@@ -74,7 +74,7 @@ foreach ($listaGruposAutorizados as $grupo) {
 // Paso 3: Iterar sobre losdepartamentos que autorizó y obtener los puestos
 $listaPuestos = [];
      foreach ($listaDeptosAutorizados as $depto){
-       $deptoClave = $grupo['id'];
+       $deptoClave = $depto['id'];
        $sqlPuesto =  "SELECT id_archivo, nombre, descripcion, departamento_id FROM autoridad_departamental 
             WHERE departamento_id = '$deptoClave' ";
         $resultPuesto = $mysql_vacaciones->query($sqlPuesto);
