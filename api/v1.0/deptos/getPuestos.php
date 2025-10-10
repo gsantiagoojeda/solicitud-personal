@@ -4,14 +4,14 @@ require "../conexion_vacaciones.php";
 header('Content-Type: application/json');
 
 // Validar que 'depto' esté presente y sea un número
-if (!isset($_POST['depto']) || !is_numeric($_POST['depto'])) {
-    echo json_encode([
-        "Puestos" => [],
-        "err" => true,
-        "statusText" => "ID de departamento inválido o no proporcionado"
-    ]);
-    exit;
-}
+// if (!isset($_POST['depto']) || !is_numeric($_POST['depto'])) {
+//     echo json_encode([
+//         "Puestos" => [],
+//         "err" => true,
+//         "statusText" => "ID de departamento inválido o no proporcionado"
+//     ]);
+//     exit;
+// }
 
 // Convertir a entero para mayor seguridad
 $depto = "18";
