@@ -91,21 +91,22 @@ echo json_encode([
 
 } else {//"No contiene la palabra 'Director'
   echo "entre a else stripos";
-
-// Preparar la consulta de forma segura
-$stmt = $mysqli_vacaciones->prepare("SELECT * FROM puestos WHERE departamento_id = ?");
-if (!$stmt) {
+  
+  // Preparar la consulta de forma segura
+  $stmt = $mysqli_vacaciones->prepare("SELECT * FROM puestos WHERE departamento_id = ?");
+  if (!$stmt) {
     echo json_encode([
-        "Puestos" => [],
-        "err" => true,
-        "statusText" => "Error al preparar la consulta: " . $mysqli_vacaciones->error
+      "Puestos" => [],
+      "err" => true,
+      "statusText" => "Error al preparar la consulta: " . $mysqli_vacaciones->error
     ]);
     exit;
-}
-
-$stmt->bind_param("i", $depto);
-
-if (!$stmt->execute()) {
+  }
+  
+  echo "entre a else stripos2";
+  $stmt->bind_param("i", $depto);
+  
+  if (!$stmt->execute()) {
     echo json_encode([
         "Puestos" => [],
         "err" => true,
