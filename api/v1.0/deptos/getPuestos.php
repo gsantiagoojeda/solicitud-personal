@@ -22,6 +22,8 @@ $idUser = "264";
 // $idUser = (int)$_POST['id-user'];
 
 if (stripos($texto, 'Director') !== false) {//Contiene la palabra 'Director'
+
+  echo "entre a if stripos";
   $sqlUser = "SELECT puesto, id_autoridad FROM empleados WHERE id = ?";
 
 $stmt = $mysql_vacaciones->prepare($sqlUser);
@@ -88,6 +90,7 @@ echo json_encode([
 
 
 } else {//"No contiene la palabra 'Director'
+  echo "entre a else stripos";
 
 // Preparar la consulta de forma segura
 $stmt = $mysqli_vacaciones->prepare("SELECT * FROM puestos WHERE departamento_id = ?");
