@@ -82,19 +82,26 @@ echo "<br>";
 
 // Paso 3: Obtener departamentos de cada grupo autorizado
 $listaDeptosAutorizados = [];
+
 foreach ($listaGruposAutorizados as $grupo) {
     $grupoClave = $grupo['id'];
 
-    $sqlDepto = "SELECT id_departamento FROM empleados WHERE id_autoridad = ? LIMIT 1";
+    $sqlDepto = "SELECT id_departamento FROM empleados WHERE id_autoridad = ?";
     $stmtDepto = $mysqli_vacaciones->prepare($sqlDepto);
     $stmtDepto->bind_param("i", $grupoClave);
     $stmtDepto->execute();
     $stmtDepto->bind_result($idDepto);
-    if ($stmtDepto->fetch()) {
-        $listaDeptosAutorizados[] = $idDepto;
+
+    while ($stmtDepto->fetch()) {
+        // Agregar solo si no existe aún
+        if (!in_array($idDepto, $listaDeptosAutorizados)) {
+            $listaDeptosAutorizados[] = $idDepto;
+        }
     }
+
     $stmtDepto->close();
 }
+
 echo("deptos autorizados:");
 print_r($listaDeptosAutorizados);
 echo "<br>";
