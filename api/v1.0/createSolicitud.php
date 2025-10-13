@@ -41,9 +41,7 @@ if (!empty($solicitantePuesto) && stripos($solicitantePuesto, "director") !== fa
     $autorizacion1 = "Autorizada";
 }
 
-// Crear variable para la columna de autorización
-
-// Preparar query seguro
+// Preparar query
 $sql = "
 INSERT INTO sp_solicitud(
     solicitud_puesto_id,
@@ -81,12 +79,13 @@ $stmt = $mysqli_solicitud->prepare($sql);
 if (!$stmt) {
     echo json_encode([
         "err" => true,
-        "statusText" => "Error al preparar la consulta: " . $mysqli_solicitud->error
+        "statusText" => "Error al preparar la consulta: " . $mysqli_solicitud->error,
+        "postData" => $_POST
     ]);
     exit;
 }
 
-// Bind de parámetros (todas variables; NULL se pasa como null)
+// Bind de parámetros
 $stmt->bind_param(
     "ssssssssssssssssssssssssssss",
     $puesto,
@@ -123,14 +122,17 @@ $stmt->bind_param(
 if ($stmt->execute()) {
     echo json_encode([
         "err" => false,
-        "statusText" => "Datos guardados correctamente"
+        "statusText" => "Datos guardados correctamente",
+        "postData" => $_POST // 🔹 Muestra los datos que realmente llegaron por POST
     ]);
 } else {
     echo json_encode([
         "err" => true,
-        "statusText" => "Error al guardar datos: " . $stmt->error
+        "statusText" => "Error al guardar datos: " . $stmt->error,
+        "postData" => $_POST // 🔹 También lo muestra en caso de error
     ]);
 }
 
 $stmt->close();
 $mysqli_solicitud->close();
+?>
