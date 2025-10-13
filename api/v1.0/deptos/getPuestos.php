@@ -56,6 +56,8 @@ if (!$stmt->fetch()) {
 }
 $stmt->close();
 
+echo "mi clave autoridad es: $autoridad";
+
 // Paso 2: Obtener grupos autorizados
 $sqlAuth = "SELECT id, clave, clave_autorizador FROM autoridad_departamental WHERE clave_autorizador = ?";
 $stmtAuth = $mysqli_vacaciones->prepare($sqlAuth);
@@ -73,6 +75,8 @@ while ($stmtAuth->fetch()) {
 }
 $stmtAuth->close();
 
+print_r($listaGruposAutorizados);
+
 // Paso 3: Obtener departamentos de cada grupo autorizado
 $listaDeptosAutorizados = [];
 foreach ($listaGruposAutorizados as $grupo) {
@@ -89,6 +93,7 @@ foreach ($listaGruposAutorizados as $grupo) {
     $stmtDepto->close();
 }
 
+print_r($listaDeptosAutorizados);
 // Paso 4: Obtener puestos de cada departamento autorizado
 $listaPuestos = [];
 foreach ($listaDeptosAutorizados as $idDepto) {
