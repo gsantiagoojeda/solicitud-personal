@@ -1,7 +1,7 @@
 const d = document;
 
 export default function infoMenu(data) {
-  if (!location.pathname.includes("menu.html")) return;
+  // if (!location.pathname.includes("menu.html")) return;
 
   const $nombre = d.getElementById("menu-nombre"),
     $puesto = d.getElementById("menu-puesto");
