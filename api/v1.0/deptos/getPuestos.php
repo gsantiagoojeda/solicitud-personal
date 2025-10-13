@@ -94,25 +94,14 @@ echo json_encode([
 
 
 } else {//"No contiene la palabra 'Director'
-  echo "entre a else stripos $depto";
-
-  $sqlPuestos = "SELECT * FROM puestos WHERE departamento_id = $depto";
-$resultPuestos = $mysqli_intranet->query($sqlPuestos);
-$arrayPuestos = [];
-
-while ($rowPuestos = $resultPuestos->fetch_assoc()) {
-  $arrayPuestos[] = $rowPuestos;
-}
- echo "obtuve puestos 1";
- print_r($arrayPuestos);
   
   // Preparar la consulta de forma segura
-  $stmt = $mysqli_vacaciones->prepare("SELECT * FROM puestos WHERE departamento_id = ?");
+  $stmt = $mysqli_intranet->prepare("SELECT id_archivo, nombre, departamento_id FROM puestos WHERE departamento_id = ?");
   if (!$stmt) {
     echo json_encode([
       "Puestos" => [],
       "err" => true,
-      "statusText" => "Error al preparar la consulta: " . $mysqli_vacaciones->error
+      "statusText" => "Error al preparar la consulta: " . $mysqli_intranet->error
     ]);
     exit;
   }
@@ -129,14 +118,11 @@ while ($rowPuestos = $resultPuestos->fetch_assoc()) {
   }
   
   $resultPuestos = $stmt->get_result();
-  echo "entre a else stripos2";
 
 $array = [];
 while ($rowPuestos = $resultPuestos->fetch_assoc()) {
     $array[] = $rowPuestos;
 }
- echo "obtuve puestos";
- print_r($array);
 // Respuesta exitosa
 echo json_encode([
     "Puestos" => $array,
