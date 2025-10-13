@@ -19,7 +19,7 @@ export default async function setPuestos(data) {
 
   // json = JSON.parse(puestos);
   console.log(json);
-  let puestos = puestos.puestos;
+  let puestos = json.Puestos;
 
   console.log(puestos);
 
