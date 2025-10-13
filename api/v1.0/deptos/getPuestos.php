@@ -62,7 +62,7 @@ echo "<br>";
 // Paso 2: Obtener grupos autorizados
 $sqlAuth = "SELECT id, clave, clave_autorizador 
             FROM autoridad_departamental 
-            WHERE clave_autorizador = ? OR clave = ?";
+            WHERE clave_autorizador = ? OR id = ?";
 $stmtAuth = $mysqli_vacaciones->prepare($sqlAuth);
 $stmtAuth->bind_param("ii", $autoridad, $autoridad);
 $stmtAuth->execute();
