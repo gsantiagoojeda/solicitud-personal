@@ -60,9 +60,11 @@ echo "mi clave autoridad es: $autoridad";
 echo "<br>";
 
 // Paso 2: Obtener grupos autorizados
-$sqlAuth = "SELECT id, clave, clave_autorizador FROM autoridad_departamental WHERE clave_autorizador = ?";
+$sqlAuth = "SELECT id, clave, clave_autorizador 
+            FROM autoridad_departamental 
+            WHERE clave_autorizador = ? OR clave = ?";
 $stmtAuth = $mysqli_vacaciones->prepare($sqlAuth);
-$stmtAuth->bind_param("i", $autoridad);
+$stmtAuth->bind_param("ii", $autoridad, $autoridad);
 $stmtAuth->execute();
 $stmtAuth->bind_result($authId, $clave, $claveAutorizador);
 
