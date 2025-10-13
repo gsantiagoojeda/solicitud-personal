@@ -76,11 +76,11 @@ INSERT INTO ti_solicitud_personal (
 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ";
 
-$stmt = $mysql_solicitud->prepare($sql);
+$stmt = $mysqli_solicitud->prepare($sql);
 if (!$stmt) {
     echo json_encode([
         "err" => true,
-        "statusText" => "Error al preparar la consulta: " . $mysql_solicitud->error
+        "statusText" => "Error al preparar la consulta: " . $mysqli_solicitud->error
     ]);
     exit;
 }
@@ -132,4 +132,4 @@ if ($stmt->execute()) {
 }
 
 $stmt->close();
-$mysql_solicitud->close();
+$mysqli_solicitud->close();
