@@ -95,35 +95,42 @@ echo json_encode([
 
 } else {//"No contiene la palabra 'Director'
   
-  // Preparar la consulta de forma segura
-  $stmt = $mysqli_intranet->prepare("SELECT id_archivo, nombre, departamento_id FROM puestos WHERE departamento_id = ?");
-  if (!$stmt) {
+ $stmt = $mysqli_intranet->prepare("SELECT id_archivo, nombre, departamento_id FROM puestos WHERE departamento_id = ?");
+if (!$stmt) {
     echo json_encode([
-      "Puestos" => [],
-      "err" => true,
-      "statusText" => "Error al preparar la consulta: " . $mysqli_intranet->error
+        "Puestos" => [],
+        "err" => true,
+        "statusText" => "Error al preparar la consulta: " . $mysqli_intranet->error
     ]);
     exit;
-  }
-  
-  $stmt->bind_param("i", $depto);
-  
-  if (!$stmt->execute()) {
+}
+
+$stmt->bind_param("i", $depto);
+
+if (!$stmt->execute()) {
     echo json_encode([
-      "Puestos" => [],
-      "err" => true,
-      "statusText" => "Error al ejecutar la consulta: " . $stmt->error
+        "Puestos" => [],
+        "err" => true,
+        "statusText" => "Error al ejecutar la consulta: " . $stmt->error
     ]);
+    $stmt->close();
     exit;
-  }
-  
-  $resultPuestos = $stmt->get_result();
+}
+
+// En lugar de get_result
+$stmt->bind_result($id_archivo, $nombre, $departamento_id);
 
 $array = [];
-while ($rowPuestos = $resultPuestos->fetch_assoc()) {
-    $array[] = $rowPuestos;
+while ($stmt->fetch()) {
+    $array[] = [
+        "id_archivo" => $id_archivo,
+        "nombre" => $nombre,
+        "departamento_id" => $departamento_id
+    ];
 }
-// Respuesta exitosa
+
+$stmt->close();
+
 echo json_encode([
     "Puestos" => $array,
     "err" => false,
