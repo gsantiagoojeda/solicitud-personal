@@ -90,7 +90,7 @@ echo json_encode([
 
 
 } else {//"No contiene la palabra 'Director'
-  echo "entre a else stripos";
+  echo "entre a else stripos $depto";
 
   $sqlPedidos = "SELECT * FROM puestos WHERE departamento_id = $depto";
 $resultPedidos = $mysqli_vacaciones->query($sqlPedidos);
