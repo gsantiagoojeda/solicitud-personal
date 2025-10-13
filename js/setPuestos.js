@@ -25,7 +25,7 @@ export default async function setPuestos(data) {
 
   const $fragment = d.createDocumentFragment();
 
-  sueldos.forEach((el) => {
+  puestos.forEach((el) => {
     const $option = d.createElement("option");
 
     $option.textContent = `${el["nombre"]}`;
