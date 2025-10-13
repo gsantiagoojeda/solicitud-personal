@@ -72,7 +72,7 @@ export default async function createSolicitud(e) {
     body: formData,
   };
   try {
-    let res = await fetch(`${(API, DOMAIN)}createSolicitud.php`, options);
+    let res = await fetch(`${API}createSolicitud.php`, options);
     if (!res.ok) throw { status: res.status, statusText: res.statusText };
     let json = await res.json();
     console.log(json);
