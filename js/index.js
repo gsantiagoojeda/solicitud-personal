@@ -6,6 +6,7 @@ import goBack from "./goBack.js";
 import goVerSolicitud from "./goVerSolicitud.js";
 import infoMenu from "./infoMenu.js";
 import menu from "./menu.js";
+import { pushHtml } from "./pushHtml.js";
 import SetSueldos from "./setSueldos.js";
 import SetTurnos from "./setTurnos.js";
 
@@ -25,6 +26,7 @@ d.addEventListener("submit", (e) => {
 
 d.addEventListener("DOMContentLoaded", async (e) => {
   const data = await validarJWT();
+  await pushHtml();
   infoMenu(data);
   SetTurnos();
   SetSueldos();
