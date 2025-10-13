@@ -27,7 +27,9 @@ $idUser = "296";
 
 if (stripos($puesto, 'Director') !== false) {//Contiene la palabra 'Director'
 
-  echo "entre a if stripos";
+ echo "entre a if stripos";
+
+// Paso 1: Obtener puesto y autoridad del usuario
 $sqlUser = "SELECT puesto, id_autoridad FROM empleados WHERE id = ?";
 $stmt = $mysqli_vacaciones->prepare($sqlUser);
 
@@ -42,7 +44,7 @@ if (!$stmt) {
 $stmt->bind_param("i", $idUser);
 $stmt->execute();
 
-// Reemplazo de get_result()
+// bind_result en lugar de get_result
 $stmt->bind_result($puesto, $autoridad);
 if (!$stmt->fetch()) {
     echo json_encode([
@@ -54,37 +56,59 @@ if (!$stmt->fetch()) {
     exit;
 }
 $stmt->close();
-$puesto=$row['puesto'];
-$autoridad=$row['id_autoridad'];
 
-$sqlAuth =  "SELECT id, clave, clave_autorizador 
-            FROM autoridad_departamental 
-            WHERE clave_autorizador = '$autoridad' ";
+// Paso 2: Obtener grupos autorizados
+$sqlAuth = "SELECT id, clave, clave_autorizador FROM autoridad_departamental WHERE clave_autorizador = ?";
+$stmtAuth = $mysqli_vacaciones->prepare($sqlAuth);
+$stmtAuth->bind_param("i", $autoridad);
+$stmtAuth->execute();
+$stmtAuth->bind_result($authId, $clave, $claveAutorizador);
 
-    $resultAuth = $mysql_vacaciones->query($sqlAuth);
-    $listaGruposAutorizados = $resultAuth->fetch_all(MYSQLI_ASSOC);
+$listaGruposAutorizados = [];
+while ($stmtAuth->fetch()) {
+    $listaGruposAutorizados[] = [
+        "id" => $authId,
+        "clave" => $clave,
+        "clave_autorizador" => $claveAutorizador
+    ];
+}
+$stmtAuth->close();
 
-// Paso 2: Iterar sobre los grupos que autorizó y obtener los departamentos
+// Paso 3: Obtener departamentos de cada grupo autorizado
 $listaDeptosAutorizados = [];
 foreach ($listaGruposAutorizados as $grupo) {
-  $grupoClave = $grupo['id'];
-  
-  $sqlDepto = "SELECT id_departamento FROM empleados WHERE id_autoridad = '$grupoClave' LIMIT 1";
-  $resultDepto = $mysql_vacaciones->query($sqlDepto);
-  $deptoRow = $resultDepto->fetch_assoc(); // solo un registro
-  $idDepto = $deptoRow['id_departamento'];
-  $listaDeptosAutorizados[] = $idDepto;
+    $grupoClave = $grupo['id'];
+
+    $sqlDepto = "SELECT id_departamento FROM empleados WHERE id_autoridad = ? LIMIT 1";
+    $stmtDepto = $mysqli_vacaciones->prepare($sqlDepto);
+    $stmtDepto->bind_param("i", $grupoClave);
+    $stmtDepto->execute();
+    $stmtDepto->bind_result($idDepto);
+    if ($stmtDepto->fetch()) {
+        $listaDeptosAutorizados[] = $idDepto;
+    }
+    $stmtDepto->close();
 }
 
-// Paso 3: Iterar sobre losdepartamentos que autorizó y obtener los puestos
+// Paso 4: Obtener puestos de cada departamento autorizado
 $listaPuestos = [];
-     foreach ($listaDeptosAutorizados as $depto){
-       $deptoClave = $depto['id'];
-       $sqlPuesto =  "SELECT id_archivo, nombre, descripcion, departamento_id FROM puestos 
-            WHERE departamento_id = '$deptoClave' ";
-        $resultPuesto = $mysqli_intranet->query($sqlPuesto);
-      $listaPuestos = $resultPuesto->fetch_all(MYSQLI_ASSOC);    
-     }
+foreach ($listaDeptosAutorizados as $idDepto) {
+    $sqlPuesto = "SELECT id_archivo, nombre, descripcion, departamento_id FROM puestos WHERE departamento_id = ?";
+    $stmtPuesto = $mysqli_intranet->prepare($sqlPuesto);
+    $stmtPuesto->bind_param("i", $idDepto);
+    $stmtPuesto->execute();
+    $stmtPuesto->bind_result($id_archivo, $nombre, $descripcion, $departamento_id);
+
+    while ($stmtPuesto->fetch()) {
+        $listaPuestos[] = [
+            "id_archivo" => $id_archivo,
+            "nombre" => $nombre,
+            "descripcion" => $descripcion,
+            "departamento_id" => $departamento_id
+        ];
+    }
+    $stmtPuesto->close();
+}
 
 // Respuesta exitosa
 echo json_encode([
