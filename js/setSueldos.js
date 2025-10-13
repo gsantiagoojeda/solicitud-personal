@@ -2,7 +2,7 @@ import getSueldos from "../helpers/getSueldos.js";
 
 const d = document;
 
-export default async function SetSueldos() {
+export default async function setSueldos() {
   if (
     !location.pathname.includes("crear-solicitud.html") &&
     !location.pathname.includes("autorizar-solicitud.html")
@@ -12,7 +12,7 @@ export default async function SetSueldos() {
   const $selectSueldo = d.getElementById("solicitud-sueldo");
 
   let sueldos = await getSueldos();
-  console.log(sueldos);
+  //console.log(sueldos);
 
   const $fragment = d.createDocumentFragment();
 

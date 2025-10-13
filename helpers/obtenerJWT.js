@@ -10,9 +10,9 @@ export default async function obtenerJWT() {
 
     const json = await response.json();
     const data = json.datos;
-    console.log(data);
+    //console.log(data);
     if (json.success) {
-      console.log("Usuario logueado:", data.id);
+      //   console.log("Usuario logueado:", data.id);
       return data;
     } else {
       console.warn("No válido:", data.message);

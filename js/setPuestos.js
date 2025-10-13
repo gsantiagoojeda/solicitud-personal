@@ -2,7 +2,7 @@ import getPuestos from "../helpers/getPuestos.js";
 
 const d = document;
 
-export default async function SetPuestos(data) {
+export default async function setPuestos(data) {
   if (
     !location.pathname.includes("crear-solicitud.html") &&
     !location.pathname.includes("autorizar-solicitud.html")

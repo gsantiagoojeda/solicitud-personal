@@ -8,8 +8,9 @@ import goVerSolicitud from "./goVerSolicitud.js";
 import infoMenu from "./infoMenu.js";
 import menu from "./menu.js";
 import { pushHtml } from "./pushHtml.js";
-import SetSueldos from "./setSueldos.js";
-import SetTurnos from "./setTurnos.js";
+import setPuestos from "./setPuestos.js";
+import setSueldos from "./setSueldos.js";
+import setTurnos from "./setTurnos.js";
 
 const d = document;
 
@@ -30,8 +31,9 @@ d.addEventListener("DOMContentLoaded", async (e) => {
   const data = await validarJWT();
   await pushHtml();
   infoMenu(data);
-  SetTurnos();
-  SetSueldos();
+  setPuestos(data);
+  setTurnos();
+  setSueldos();
   getSolicitudes(data);
 });
 
@@ -41,8 +43,6 @@ async function validarJWT() {
     alert("No se valido la sesión");
     //location.href = "https://gpoalze.cloud/";
   }
-
-  console.log(data);
 
   let puesto = data.puesto.toLowerCase();
   if (!puesto.includes("gerente") && !puesto.includes("director")) {

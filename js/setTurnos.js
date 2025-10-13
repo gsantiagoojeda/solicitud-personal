@@ -2,7 +2,7 @@ import getTurnos from "../helpers/getTurnos.js";
 
 const d = document;
 
-export default async function SetTurnos() {
+export default async function setTurnos() {
   if (
     !location.pathname.includes("crear-solicitud.html") &&
     !location.pathname.includes("autorizar-solicitud.html")
@@ -12,7 +12,7 @@ export default async function SetTurnos() {
   const $selectTurno = d.getElementById("solicitud-horario");
 
   let turnos = await getTurnos();
-  console.log(turnos);
+  //console.log(turnos);
 
   const $fragment = d.createDocumentFragment();
 
