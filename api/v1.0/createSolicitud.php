@@ -34,13 +34,14 @@ $solicitantePuesto = $_POST['solicitante-puesto'] ?? null;
 // Determinar autorizador y fecha si el solicitante es director
 $autorizador1 = null;
 $fechaAuth = null;
+$autorizacion1 = null;
 if (!empty($solicitantePuesto) && stripos($solicitantePuesto, "director") !== false) {
     $autorizador1 = $solicitante;
     $fechaAuth = date("Y-m-d H:i:s");
+    $autorizacion1 = "Autorizada";
 }
 
 // Crear variable para la columna de autorización
-$autorizacion1 = "Autorizada";
 
 // Preparar query seguro
 $sql = "

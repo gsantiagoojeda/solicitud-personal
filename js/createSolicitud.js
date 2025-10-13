@@ -67,6 +67,10 @@ export default async function createSolicitud(e) {
   formData.append("solicitante", solicitante);
   formData.append("solicitante-puesto", solicitantePuesto);
 
+  for (const [key, value] of formData.entries()) {
+    console.log(`${key}: ${value}`);
+  }
+
   let options = {
     method: "POST",
     body: formData,
@@ -79,7 +83,7 @@ export default async function createSolicitud(e) {
     if (!json.err) {
       document.querySelector(".load").style.display = "none";
       alert(`Solicitud creada`);
-      location.reload();
+      //  location.reload();
     } else {
       throw { status: "200", statusText: json.statusText };
     }
