@@ -2,6 +2,7 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+require "../conexion_intranet.php";
 require "../conexion_vacaciones.php";
 
 header('Content-Type: application/json');
@@ -95,15 +96,15 @@ echo json_encode([
 } else {//"No contiene la palabra 'Director'
   echo "entre a else stripos $depto";
 
-  $sqlPedidos = "SELECT * FROM puestos WHERE departamento_id = $depto";
-$resultPedidos = $mysqli_vacaciones->query($sqlPedidos);
-$arrayPed = [];
+  $sqlPuestos = "SELECT * FROM puestos WHERE departamento_id = $depto";
+$resultPuestos = $mysqli_intranet->query($sqlPuestos);
+$arrayPuestos = [];
 
-while ($rowPedidos = $resultPedidos->fetch_assoc()) {
-  $arrayPed[] = $rowPedidos;
+while ($rowPuestos = $resultPuestos->fetch_assoc()) {
+  $arrayPuestos[] = $rowPuestos;
 }
  echo "obtuve puestos 1";
- print_r($arrayPed);
+ print_r($arrayPuestos);
   
   // Preparar la consulta de forma segura
   $stmt = $mysqli_vacaciones->prepare("SELECT * FROM puestos WHERE departamento_id = ?");
