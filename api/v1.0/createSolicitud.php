@@ -39,9 +39,12 @@ if (!empty($solicitantePuesto) && stripos($solicitantePuesto, "director") !== fa
     $fechaAuth = date("Y-m-d H:i:s");
 }
 
+// Crear variable para la columna de autorización
+$autorizacion1 = "Autorizada";
+
 // Preparar query seguro
 $sql = "
-INSERT INTO sp_solicitud (
+INSERT INTO ti_solicitud_personal (
     solicitud_puesto_id,
     solicitud_espacio_trabajo,
     solicitud_espacio_trabajo_com,
@@ -73,7 +76,7 @@ INSERT INTO sp_solicitud (
 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ";
 
-$stmt = $mysqli_solicitud->prepare($sql);
+$stmt = $mysql_solicitud->prepare($sql);
 if (!$stmt) {
     echo json_encode([
         "err" => true,
@@ -82,7 +85,7 @@ if (!$stmt) {
     exit;
 }
 
-// Bind de parámetros (s: string, i: integer) - NULL se pasa como null
+// Bind de parámetros (todas variables; NULL se pasa como null)
 $stmt->bind_param(
     "ssssssssssssssssssssssssssss",
     $puesto,
@@ -111,7 +114,7 @@ $stmt->bind_param(
     $rolar,
     $solicitante,
     $autorizador1,
-    "Autorizada",
+    $autorizacion1,
     $fechaAuth
 );
 
@@ -130,4 +133,3 @@ if ($stmt->execute()) {
 
 $stmt->close();
 $mysql_solicitud->close();
-
