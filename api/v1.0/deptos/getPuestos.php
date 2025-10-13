@@ -27,7 +27,6 @@ $idUser = "296";
 
 if (stripos($puesto, 'Director') !== false) {//Contiene la palabra 'Director'
 
- echo "entre a if stripos";
 
 // Paso 1: Obtener puesto y autoridad del usuario
 $sqlUser = "SELECT puesto, id_autoridad FROM empleados WHERE id = ?";
