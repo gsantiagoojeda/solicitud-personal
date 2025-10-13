@@ -18,12 +18,12 @@ header('Content-Type: application/json');
 // }
 
 // Convertir a entero para mayor seguridad
-$depto = "5";
-$puesto = "Director de Administración, Finanzas y Contabilida";
-$idUser = "296";
-// $depto = (int)$_POST['depto'];
-// $puesto = $_POST['puesto'];
-// $idUser = (int)$_POST['id-user'];
+// $depto = "5";
+// $puesto = "Director de Administración, Finanzas y Contabilida";
+// $idUser = "296";
+$depto = (int)$_POST['depto'];
+$puesto = $_POST['puesto'];
+$idUser = (int)$_POST['id-user'];
 
 if (stripos($puesto, 'Director') !== false) {//Contiene la palabra 'Director'
 
