@@ -18,9 +18,9 @@ header('Content-Type: application/json');
 // }
 
 // Convertir a entero para mayor seguridad
-$depto = "18";
-$puesto = "Gerente de Tecnologias de la Informacion y Transformacion Digital";
-$idUser = "264";
+$depto = "5";
+$puesto = "Director de Administración, Finanzas y Contabilida";
+$idUser = "296";
 // $depto = (int)$_POST['depto'];
 // $puesto = $_POST['puesto'];
 // $idUser = (int)$_POST['id-user'];
@@ -79,9 +79,9 @@ foreach ($listaGruposAutorizados as $grupo) {
 $listaPuestos = [];
      foreach ($listaDeptosAutorizados as $depto){
        $deptoClave = $depto['id'];
-       $sqlPuesto =  "SELECT id_archivo, nombre, descripcion, departamento_id FROM autoridad_departamental 
+       $sqlPuesto =  "SELECT id_archivo, nombre, descripcion, departamento_id FROM puestos 
             WHERE departamento_id = '$deptoClave' ";
-        $resultPuesto = $mysql_vacaciones->query($sqlPuesto);
+        $resultPuesto = $mysqli_intranet->query($sqlPuesto);
       $listaPuestos = $resultPuesto->fetch_all(MYSQLI_ASSOC);    
      }
 
