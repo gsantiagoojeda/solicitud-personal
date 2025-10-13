@@ -5,7 +5,11 @@ module.exports = {
     "./js/**/*.js", // si tus JS están en /js
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ["Nunito", "ui-sans-serif", "system-ui"],
+      },
+    },
   },
   plugins: [],
 };
