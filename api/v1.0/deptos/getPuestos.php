@@ -30,7 +30,7 @@ if (stripos($puesto, 'Director') !== false) {//Contiene la palabra 'Director'
   echo "entre a if stripos";
   $sqlUser = "SELECT puesto, id_autoridad FROM empleados WHERE id = ?";
 
-$stmt = $mysql_vacaciones->prepare($sqlUser);
+$stmt = $mysqli_vacaciones->prepare($sqlUser);
 if (!$stmt) {
     echo json_encode([
         "err" => true,
