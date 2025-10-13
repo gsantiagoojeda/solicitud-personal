@@ -21,7 +21,7 @@ header('Content-Type: application/json');
 // $depto = "5";
 // $puesto = "Director de Administración, Finanzas y Contabilida";
 // $idUser = "296";
-$depto = (int)$_POST['depto'];
+$depto = $_POST['depto'];
 $puesto = $_POST['puesto'];
 $idUser = (int)$_POST['id-user'];
 
