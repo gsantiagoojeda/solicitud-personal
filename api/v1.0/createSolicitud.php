@@ -73,7 +73,7 @@ INSERT INTO ti_solicitud_personal (
 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ";
 
-$stmt = $mysql_solicitud->prepare($sql);
+$stmt = $mysqli_solicitud->prepare($sql);
 if (!$stmt) {
     echo json_encode([
         "err" => true,
