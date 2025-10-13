@@ -56,8 +56,8 @@ if (!$stmt->fetch()) {
 }
 $stmt->close();
 
-echo "mi clave autoridad es: $autoridad";
-echo "<br>";
+// echo "mi clave autoridad es: $autoridad";
+// echo "<br>";
 
 // Paso 2: Obtener grupos autorizados
 $sqlAuth = "SELECT id, clave, clave_autorizador 
@@ -78,9 +78,9 @@ while ($stmtAuth->fetch()) {
 }
 $stmtAuth->close();
 
-echo("grupos autorizados:");
-print_r($listaGruposAutorizados);
-echo "<br>";
+// echo("grupos autorizados:");
+// print_r($listaGruposAutorizados);
+// echo "<br>";
 
 // Paso 3: Obtener departamentos de cada grupo autorizado
 $listaDeptosAutorizados = [];
@@ -104,9 +104,9 @@ foreach ($listaGruposAutorizados as $grupo) {
     $stmtDepto->close();
 }
 
-echo("deptos autorizados:");
-print_r($listaDeptosAutorizados);
-echo "<br>";
+// echo("deptos autorizados:");
+// print_r($listaDeptosAutorizados);
+// echo "<br>";
 // Paso 4: Obtener puestos de cada departamento autorizado
 $listaPuestos = [];
 foreach ($listaDeptosAutorizados as $idDepto) {
