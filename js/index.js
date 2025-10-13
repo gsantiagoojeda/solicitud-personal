@@ -2,6 +2,7 @@ import obtenerJWT from "../helpers/obtenerJWT.js";
 import createSolicitud from "./createSolicitud.js";
 import getSolicitudes from "./getSolicitudes.js";
 import goAutorizarSolicitud from "./goAutorizarSolicitud.js";
+import goHome from "./goBack copy.js";
 import goBack from "./goBack.js";
 import goVerSolicitud from "./goVerSolicitud.js";
 import infoMenu from "./infoMenu.js";
@@ -14,6 +15,7 @@ const d = document;
 
 d.addEventListener("click", (e) => {
   goBack(e);
+  goHome(e);
   menu(e);
   goAutorizarSolicitud(e);
   goVerSolicitud(e);
