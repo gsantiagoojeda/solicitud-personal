@@ -176,6 +176,7 @@ $stmt->close();
 echo json_encode([
     "Puestos" => $array,
     "err" => false,
+    "depto"=>$depto,
     "statusText" => "Consulta exitosa"
 ]);
 
