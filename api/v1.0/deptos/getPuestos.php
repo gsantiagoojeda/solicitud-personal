@@ -28,9 +28,9 @@ $idUser = "296";
 if (stripos($puesto, 'Director') !== false) {//Contiene la palabra 'Director'
 
   echo "entre a if stripos";
-  $sqlUser = "SELECT puesto, id_autoridad FROM empleados WHERE id = ?";
-
+ $sqlUser = "SELECT puesto, id_autoridad FROM empleados WHERE id = ?";
 $stmt = $mysqli_vacaciones->prepare($sqlUser);
+
 if (!$stmt) {
     echo json_encode([
         "err" => true,
@@ -41,15 +41,19 @@ if (!$stmt) {
 
 $stmt->bind_param("i", $idUser);
 $stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc();
 
-if (!$row) {
-  echo json_encode([
-    "err" => true,
-    "status" => "Usuario no encontrado"
-  ]);
-  $stmt->close();
+// Reemplazo de get_result()
+$stmt->bind_result($puesto, $autoridad);
+if (!$stmt->fetch()) {
+    echo json_encode([
+        "err" => true,
+        "status" => "Usuario no encontrado"
+    ]);
+    $stmt->close();
+    $mysqli_vacaciones->close();
+    exit;
+}
+$stmt->close();
   $mysql_vacaciones->close();
 } 
 
