@@ -41,7 +41,7 @@ if (!empty($solicitantePuesto) && stripos($solicitantePuesto, "director") !== fa
 
 // Preparar query seguro
 $sql = "
-INSERT INTO ti_solicitud_personal (
+INSERT INTO sp_solicitud (
     solicitud_puesto_id,
     solicitud_espacio_trabajo,
     solicitud_espacio_trabajo_com,
