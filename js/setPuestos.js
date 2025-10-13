@@ -15,6 +15,8 @@ export default async function setPuestos(data) {
   let puesto = data.puesto;
   let idUser = data.id;
 
+  console.log(depto);
+
   let json = await getPuestos(depto, puesto, idUser);
 
   // json = JSON.parse(puestos);
