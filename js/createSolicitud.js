@@ -67,9 +67,9 @@ export default async function createSolicitud(e) {
   formData.append("solicitante", solicitante);
   formData.append("solicitante-puesto", solicitantePuesto);
 
-  for (const [key, value] of formData.entries()) {
-    console.log(`${key}: ${value}`);
-  }
+  // for (const [key, value] of formData.entries()) {
+  //   console.log(`${key}: ${value}`);
+  // }
 
   let options = {
     method: "POST",
@@ -79,16 +79,16 @@ export default async function createSolicitud(e) {
     let res = await fetch(`${API}createSolicitud.php`, options);
     if (!res.ok) throw { status: res.status, statusText: res.statusText };
     let json = await res.json();
-    console.log(json);
+    // console.log(json);
     if (!json.err) {
       document.querySelector(".load").style.display = "none";
       alert(`Solicitud creada`);
-      //  location.reload();
+      location.reload();
     } else {
       throw { status: "200", statusText: json.statusText };
     }
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     let message = err.statusText || "ocurrio un error";
     console.log(` error ${err.status} : ${message}`);
     alert(` ocurrio un error: ${message}`);

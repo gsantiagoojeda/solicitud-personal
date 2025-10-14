@@ -31,7 +31,7 @@ $rolar = $_POST['rolar'] ?? null;
 $solicitante = $_POST['solicitante'] ?? null;
 $solicitantePuesto = $_POST['solicitante-puesto'] ?? null;
 
-// Determinar autorizador y fecha si el solicitante es director
+
 $autorizador1 = null;
 $fechaAuth = null;
 $autorizacion1 = null;
@@ -41,7 +41,6 @@ if (!empty($solicitantePuesto) && stripos($solicitantePuesto, "director") !== fa
     $autorizacion1 = "Autorizada";
 }
 
-// Preparar query
 $sql = "
 INSERT INTO sp_solicitud(
     solicitud_puesto_id,
@@ -128,8 +127,7 @@ if ($stmt->execute()) {
 } else {
     echo json_encode([
         "err" => true,
-        "statusText" => "Error al guardar datos: " . $stmt->error,
-        "postData" => $_POST // 🔹 También lo muestra en caso de error
+        "statusText" => "Error al guardar datos: " . $stmt->error
     ]);
 }
 
