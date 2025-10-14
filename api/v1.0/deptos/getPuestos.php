@@ -25,7 +25,7 @@ $depto = (int)$_POST['depto'];
 $puesto = $_POST['puesto'];
 $idUser = (int)$_POST['id-user'];
 
-if (stripos($puesto, 'Director') !== false) {//Contiene la palabra 'Director'
+if (stripos($puesto, 'Director') !== false || true) {//Contiene la palabra 'Director'
 
 
 // Paso 1: Obtener puesto y autoridad del usuario

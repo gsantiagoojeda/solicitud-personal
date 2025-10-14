@@ -5,7 +5,7 @@ const d = document;
 export default async function createSolicitud(e) {
   if (!e.target.matches("#form-create-solicitud")) return;
 
-  const { API, DOMAIN } = app;
+  const { SOLICITUDES } = app;
 
   const $form = d.getElementById("form-create-solicitud"),
     puesto = $form["solicitud-puesto"].value,
@@ -76,7 +76,7 @@ export default async function createSolicitud(e) {
     body: formData,
   };
   try {
-    let res = await fetch(`${API}createSolicitud.php`, options);
+    let res = await fetch(`${SOLICITUDES}createSolicitud.php`, options);
     if (!res.ok) throw { status: res.status, statusText: res.statusText };
     let json = await res.json();
     // console.log(json);
