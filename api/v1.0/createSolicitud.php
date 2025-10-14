@@ -27,7 +27,7 @@ $habilidades = $_POST['habilidades'] ?? null;
 $tools = $_POST['tools'] ?? null;
 $sueldo = $_POST['sueldo'] ?? null;
 $horario = $_POST['horario'] ?? null;
-$rolar = $_POST['rolar'] ?? null;
+$rolar = isset($_POST['rolar']) ? ($_POST['rolar'] === 'si') : null;
 $solicitante = $_POST['solicitante'] ?? null;
 $solicitantePuesto = $_POST['solicitante-puesto'] ?? null;
 
