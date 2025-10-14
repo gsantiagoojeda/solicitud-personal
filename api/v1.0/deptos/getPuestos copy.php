@@ -25,6 +25,9 @@ $depto = $_POST['depto'];
 $puesto = $_POST['puesto'];
 $idUser = $_POST['id-user'];
 
+if (stripos($puesto, 'Director') !== false || true) {//Contiene la palabra 'Director'
+
+
 // Paso 1: Obtener puesto y autoridad del usuario
 $sqlUser = "SELECT puesto, id_autoridad FROM empleados WHERE id = ?";
 $stmt = $mysqli_vacaciones->prepare($sqlUser);
@@ -131,6 +134,53 @@ echo json_encode([
     "statusText" => "Consulta exitosa"
 ]);
 
+
+} else {//"No contiene la palabra 'Director'
+  
+ $stmt = $mysqli_intranet->prepare("SELECT id_archivo, nombre, departamento_id FROM puestos WHERE departamento_id = ?");
+if (!$stmt) {
+    echo json_encode([
+        "Puestos" => [],
+        "err" => true,
+        "statusText" => "Error al preparar la consulta: " . $mysqli_intranet->error
+    ]);
+    exit;
+}
+
+$stmt->bind_param("i", $depto);
+
+if (!$stmt->execute()) {
+    echo json_encode([
+        "Puestos" => [],
+        "err" => true,
+        "statusText" => "Error al ejecutar la consulta: " . $stmt->error
+    ]);
+    $stmt->close();
+    exit;
+}
+
+// En lugar de get_result
+$stmt->bind_result($id_archivo, $nombre, $departamento_id);
+
+$array = [];
+while ($stmt->fetch()) {
+    $array[] = [
+        "id_archivo" => $id_archivo,
+        "nombre" => $nombre,
+        "departamento_id" => $departamento_id
+    ];
+}
+
+$stmt->close();
+
+echo json_encode([
+    "Puestos" => $array,
+    "err" => false,
+    "depto"=>$depto,
+    "statusText" => "Consulta exitosa"
+]);
+
+}// end if(stripos)
 ?>
 
 
