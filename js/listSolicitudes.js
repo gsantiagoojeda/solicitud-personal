@@ -35,7 +35,7 @@ export default async function listSolicitudes(data) {
 
       $fragment.appendChild($clone);
     });
-    $container.appendChild($fragment);
+    $tbody.appendChild($fragment);
   } catch (err) {
     console.log(err);
     let message = err.statusText || "ocurrio un error";
