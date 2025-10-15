@@ -1,12 +1,4 @@
 <?php
-// $sqlSolicitudes = "
-//     SELECT s.*
-//     FROM ti_solicitud_personal s
-//     JOIN empleados e ON s.solicitud_solicitante_id = e.empleado_id
-//     JOIN departamentos d ON e.departamento_id = d.departamento_id
-//     WHERE e.departamento_id = ?
-// ";
-
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -15,13 +7,11 @@ require "../conexion_intranet.php";
 require "../conexion_vacaciones.php";
 require "../conexion_solicitud.php";
 
-// $idUser = $_POST['id-user'];
-$idUser = "E216";
+$idUser = "E216"; // usuario actual
 
 // Paso 1: Obtener puesto y autoridad del usuario
 $sqlUser = "SELECT puesto, id_autoridad FROM empleados WHERE id = ?";
 $stmt = $mysqli_vacaciones->prepare($sqlUser);
-
 if (!$stmt) {
     echo json_encode([
         "err" => true,
@@ -30,10 +20,8 @@ if (!$stmt) {
     exit;
 }
 
-$stmt->bind_param("s", $idUser);
+$stmt->bind_param("s", $idUser); // "s" porque puede ser alfanumérico
 $stmt->execute();
-
-// bind_result en lugar de get_result
 $stmt->bind_result($puesto, $autoridad);
 if (!$stmt->fetch()) {
     echo json_encode([
@@ -46,15 +34,12 @@ if (!$stmt->fetch()) {
 }
 $stmt->close();
 
-// echo "mi clave autoridad es: $autoridad";
-// echo "<br>";
-
 // Paso 2: Obtener grupos autorizados
 $sqlAuth = "SELECT id, clave, clave_autorizador 
             FROM autoridad_departamental 
             WHERE clave_autorizador = ? OR id = ?";
 $stmtAuth = $mysqli_vacaciones->prepare($sqlAuth);
-$stmtAuth->bind_param("ii", $autoridad, $autoridad);
+$stmtAuth->bind_param("ss", $autoridad, $autoridad); // "s" para alfanuméricos
 $stmtAuth->execute();
 $stmtAuth->bind_result($authId, $clave, $claveAutorizador);
 
@@ -68,23 +53,14 @@ while ($stmtAuth->fetch()) {
 }
 $stmtAuth->close();
 
-// echo("grupos autorizados:");
-// print_r($listaGruposAutorizados);
-// echo "<br>";
-
 // Paso 3: Obtener usuarios de cada grupo autorizado
 $listaUserAutorizados = [];
-
 foreach ($listaGruposAutorizados as $grupo) {
-    $grupoClave = $grupo['id'];
-
-    $grupoClave = $mysqli_vacaciones->real_escape_string($grupoClave);
+    $grupoClave = $mysqli_vacaciones->real_escape_string($grupo['id']);
     $sqlUsers = "SELECT id, nombre, apellido_paterno, apellido_materno, puesto, empresa, id_departamento 
                  FROM empleados 
                  WHERE id_autoridad = '$grupoClave'";
-
     $result = $mysqli_vacaciones->query($sqlUsers);
-
     if ($result) {
         while ($row = $result->fetch_assoc()) {
             $listaUserAutorizados[] = [
@@ -100,25 +76,24 @@ foreach ($listaGruposAutorizados as $grupo) {
     }
 }
 
-
-// echo("deptos autorizados:");
-// print_r($listaDeptosAutorizados);
-// echo "<br>";
 // Paso 4: Obtener solicitudes de cada usuario autorizado
 $listaSolicitudes = [];
-print_r($listaUserAutorizados);
 foreach ($listaUserAutorizados as $user) {
-
-    $idUser = $mysqli_solicitud->real_escape_string($user);
-    $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE user_id = '$idUser'";
+    $userId = $mysqli_solicitud->real_escape_string($user['id']); // solo el ID
+    $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE user_id = '$userId'";
     $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
-    if ($resultSolcitudes) {
-        while ($row = $result->fetch_assoc()) {
-            $listaSolicitudes[] = $row;
+
+    if ($resultSolicitudes) {
+        while ($row = $resultSolicitudes->fetch_assoc()) {
+            // blindaje de campos
+            $listaSolicitudes[] = array_map(function($v){
+                return htmlspecialchars($v, ENT_QUOTES, 'UTF-8');
+            }, $row);
         }
     }
 }
 
+// Paso 5: Devolver JSON
 header('Content-Type: application/json');
 if (empty($listaSolicitudes)) {
     echo json_encode([
@@ -134,4 +109,3 @@ if (empty($listaSolicitudes)) {
     ], JSON_UNESCAPED_UNICODE);
 }
 ?>
-
