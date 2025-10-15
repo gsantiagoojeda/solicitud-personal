@@ -78,6 +78,7 @@ foreach ($listaGruposAutorizados as $grupo) {
 }
 
 // Paso 4: Obtener solicitudes de cada usuario autorizado
+$// Paso 4: Obtener solicitudes de cada usuario autorizado con datos del usuario
 $listaSolicitudes = [];
 foreach ($listaUserAutorizados as $user) {
     $userId = $mysqli_solicitud->real_escape_string($user['id']); // solo el ID
@@ -86,27 +87,25 @@ foreach ($listaUserAutorizados as $user) {
 
     if ($resultSolicitudes) {
         while ($row = $resultSolicitudes->fetch_assoc()) {
-            // blindaje de campos
-            $listaSolicitudes[] = array_map(function($v){
-    return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8');
-}, $row);
+            // Blindaje de campos de la solicitud
+            $solicitudBlindada = array_map(function($v){
+                return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8');
+            }, $row);
+
+            // Agregar los datos del usuario autorizado
+            $solicitudConUsuario = array_merge($solicitudBlindada, [
+                "usuario_id" => $user['id'],
+                "usuario_nombre" => $user['nombre'],
+                "usuario_apellido_paterno" => $user['apellido_paterno'],
+                "usuario_apellido_materno" => $user['apellido_materno'],
+                "usuario_puesto" => $user['puesto'],
+                "usuario_empresa" => $user['empresa'],
+                "usuario_id_departamento" => $user['id_departamento']
+            ]);
+
+            $listaSolicitudes[] = $solicitudConUsuario;
         }
     }
 }
 
-// Paso 5: Devolver JSON
-header('Content-Type: application/json');
-if (empty($listaSolicitudes)) {
-    echo json_encode([
-        "err" => false,
-        "statusText" => "No se encontraron solicitudes.",
-        "data" => []
-    ], JSON_UNESCAPED_UNICODE);
-} else {
-    echo json_encode([
-        "err" => false,
-        "statusText" => "Solicitudes obtenidas correctamente.",
-        "data" => $listaSolicitudes
-    ], JSON_UNESCAPED_UNICODE);
-}
 ?>

@@ -31,9 +31,11 @@ export default async function listSolicitudes(data) {
       console.log(el);
       let $clone = document.importNode($template, true);
 
-      $clone.querySelector("[data-td-id]").setAttribute("data-td-id", el.id);
-
-      $fragment.appendChild($clone);
+      $clone
+        .querySelector("[data-td-id]")
+        .setAttribute("data-td-id", el.solicitud_id);
+      $clone.querySelector("[data-namesol]").textContent =
+        el.$fragment.appendChild($clone);
     });
     $tbody.appendChild($fragment);
   } catch (err) {
