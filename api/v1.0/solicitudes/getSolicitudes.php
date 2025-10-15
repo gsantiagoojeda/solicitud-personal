@@ -81,10 +81,10 @@ foreach ($listaGruposAutorizados as $grupo) {
 // Paso 4: Obtener solicitudes de cada usuario autorizado
 // Paso previo: obtener todos los puestos en un array
 $puestos = [];
-$resultPuestos = $mysqli_intranet->query("SELECT nombre FROM puestos");
+$resultPuestos = $mysqli_intranet->query("SELECT id_archivo, nombre FROM puestos");
 if ($resultPuestos) {
     while ($row = $resultPuestos->fetch_assoc()) {
-        $puestos[] = htmlspecialchars($row['nombre'] ?? '', ENT_QUOTES, 'UTF-8');
+        $puestos[$row['id']] = htmlspecialchars($row['nombre'] ?? '', ENT_QUOTES, 'UTF-8');
     }
 }
 
