@@ -80,7 +80,7 @@ foreach ($listaGruposAutorizados as $grupo) {
 $listaSolicitudes = [];
 foreach ($listaUserAutorizados as $user) {
     $userId = $mysqli_solicitud->real_escape_string($user['id']); // solo el ID
-    $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE user_id = '$userId'";
+    $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE solicitud_solicitante_id = '$userId'";
     $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
 
     if ($resultSolicitudes) {
