@@ -5,7 +5,7 @@ const DOMAIN = "https://gpoalze.cloud/solicitud-personal/",
   TURNOS = `${API}turnos/`,
   SUELDOS = `${API}sueldos/`,
   DEPTOS = `${API}deptos/`,
-  SOLICITUDES = `${API}solcitudes/`,
+  SOLICITUDES = `${API}solicitudes/`,
   PRODUCTOS = `${API}productos/`,
   PROMOCIONES = `${API}promociones/`;
 
