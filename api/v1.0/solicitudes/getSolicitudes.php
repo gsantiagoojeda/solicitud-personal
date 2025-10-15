@@ -93,22 +93,30 @@ foreach ($listaGruposAutorizados as $grupo) {
 $listaSolicitudes = [];
 
 foreach ($listaUserAutorizados as $idUser) {
-    $sql = "SELECT * FROM sp_solicitud WHERE user_id = $idUser";
-    $result = $mysqli_intranet->query($sql);
 
-    if ($result) {
+    $idUser = $mysqli_intranet->real_escape_string($idUser);
+    $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE user_id = '$idUser'";
+    $resultSolicitudes = $mysqli_intranet->query($sqlSolicitudes);
+    if ($resultSolcitudes) {
         while ($row = $result->fetch_assoc()) {
-            $listaSolicitudes[] = $row; // ← ya contiene TODOS los campos
+            $listaSolicitudes[] = $row;
         }
     }
 }
 
-// Respuesta exitosa
-echo json_encode([
-    "Puestos" => $listaPuestos,
-    "err" => false,
-    "statusText" => "Consulta exitosa"
-]);
-
+header('Content-Type: application/json');
+if (empty($listaSolicitudes)) {
+    echo json_encode([
+        "err" => false,
+        "statusText" => "No se encontraron solicitudes.",
+        "data" => []
+    ], JSON_UNESCAPED_UNICODE);
+} else {
+    echo json_encode([
+        "err" => false,
+        "statusText" => "Solicitudes obtenidas correctamente.",
+        "data" => $listaSolicitudes
+    ], JSON_UNESCAPED_UNICODE);
+}
 ?>
 
