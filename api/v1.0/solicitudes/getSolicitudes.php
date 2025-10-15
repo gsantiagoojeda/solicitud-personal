@@ -64,14 +64,15 @@ foreach ($listaGruposAutorizados as $grupo) {
     if ($result) {
         while ($row = $result->fetch_assoc()) {
             $listaUserAutorizados[] = [
-                "id" => htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'),
-                "nombre" => htmlspecialchars($row['nombre'], ENT_QUOTES, 'UTF-8'),
-                "apellido_paterno" => htmlspecialchars($row['apellido_paterno'], ENT_QUOTES, 'UTF-8'),
-                "apellido_materno" => htmlspecialchars($row['apellido_materno'], ENT_QUOTES, 'UTF-8'),
-                "puesto" => htmlspecialchars($row['puesto'], ENT_QUOTES, 'UTF-8'),
-                "empresa" => htmlspecialchars($row['empresa'], ENT_QUOTES, 'UTF-8'),
-                "id_departamento" => htmlspecialchars($row['id_departamento'], ENT_QUOTES, 'UTF-8')
-            ];
+    "id" => htmlspecialchars($row['id'] ?? '', ENT_QUOTES, 'UTF-8'),
+    "nombre" => htmlspecialchars($row['nombre'] ?? '', ENT_QUOTES, 'UTF-8'),
+    "apellido_paterno" => htmlspecialchars($row['apellido_paterno'] ?? '', ENT_QUOTES, 'UTF-8'),
+    "apellido_materno" => htmlspecialchars($row['apellido_materno'] ?? '', ENT_QUOTES, 'UTF-8'),
+    "puesto" => htmlspecialchars($row['puesto'] ?? '', ENT_QUOTES, 'UTF-8'),
+    "empresa" => htmlspecialchars($row['empresa'] ?? '', ENT_QUOTES, 'UTF-8'),
+    "id_departamento" => htmlspecialchars($row['id_departamento'] ?? '', ENT_QUOTES, 'UTF-8')
+];
+
         }
     }
 }
@@ -87,8 +88,8 @@ foreach ($listaUserAutorizados as $user) {
         while ($row = $resultSolicitudes->fetch_assoc()) {
             // blindaje de campos
             $listaSolicitudes[] = array_map(function($v){
-                return htmlspecialchars($v, ENT_QUOTES, 'UTF-8');
-            }, $row);
+    return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8');
+}, $row);
         }
     }
 }
