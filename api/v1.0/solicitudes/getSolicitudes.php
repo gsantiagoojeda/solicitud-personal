@@ -106,7 +106,6 @@ foreach ($listaGruposAutorizados as $grupo) {
 // echo "<br>";
 // Paso 4: Obtener solicitudes de cada usuario autorizado
 $listaSolicitudes = [];
-exit;
 foreach ($listaUserAutorizados as $user) {
 
     $idUser = $mysqli_solicitud->real_escape_string($idser);
