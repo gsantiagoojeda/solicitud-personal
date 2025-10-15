@@ -30,7 +30,7 @@ if (!$stmt) {
     exit;
 }
 
-$stmt->bind_param("i", $idUser);
+$stmt->bind_param("s", $idUser);
 $stmt->execute();
 
 // bind_result en lugar de get_result
@@ -77,7 +77,7 @@ $listaUserAutorizados = [];
 
 foreach ($listaGruposAutorizados as $grupo) {
     $grupoClave = $grupo['id'];
-    
+
     $grupoClave = $mysqli_vacaciones->real_escape_string($grupoClave);
     $sqlUsers = "SELECT id, nombre, apellido_paterno, apellido_materno, puesto, empresa, id_departamento 
                  FROM empleados 
