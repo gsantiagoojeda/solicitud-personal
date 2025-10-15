@@ -13,6 +13,7 @@ error_reporting(E_ALL);
 
 require "../conexion_intranet.php";
 require "../conexion_vacaciones.php";
+require "../conexion_solicitud.php";
 
 // $idUser = $_POST['id-user'];
 $idUser = "E216";
@@ -94,9 +95,9 @@ $listaSolicitudes = [];
 
 foreach ($listaUserAutorizados as $idUser) {
 
-    $idUser = $mysqli_intranet->real_escape_string($idUser);
+    $idUser = $mysqli_solicitud->real_escape_string($idUser);
     $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE user_id = '$idUser'";
-    $resultSolicitudes = $mysqli_intranet->query($sqlSolicitudes);
+    $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
     if ($resultSolcitudes) {
         while ($row = $result->fetch_assoc()) {
             $listaSolicitudes[] = $row;
