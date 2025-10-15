@@ -2,13 +2,13 @@ import app from "../helpers/app.js";
 
 const d = document;
 
-export default async function getSolicitudes(data) {
+export default async function listSolicitudes(data) {
   if (!location.pathname.includes("autorizar-solicitudes.html")) return;
   const userId = data.id;
 
   const $tbody = d.getElementById("tbody-create"),
     $template = d.getElementById("template-create-solicitud").content;
-  const { API } = app;
+  const { SOLICITUDES } = app;
 
   try {
     const formData = new FormData();
@@ -19,7 +19,7 @@ export default async function getSolicitudes(data) {
       body: formData,
     };
 
-    let res = await fetch(`${DOMAIN}getSolicitudes.php`),
+    let res = await fetch(`${SOLICITUDES}getSolicitudes.php`),
       json = await res.json();
     console.log(json);
     if (!res.ok || json.err)

@@ -1,6 +1,5 @@
 import obtenerJWT from "../helpers/obtenerJWT.js";
 import createSolicitud from "./createSolicitud.js";
-import getSolicitudes from "./getSolicitudes.js";
 import goAutorizarSolicitud from "./goAutorizarSolicitud.js";
 import goHome from "./goHome.js";
 import goBack from "./goBack.js";
@@ -11,6 +10,7 @@ import { pushHtml } from "./pushHtml.js";
 import setPuestos from "./setPuestos.js";
 import setSueldos from "./setSueldos.js";
 import setTurnos from "./setTurnos.js";
+import listSolicitudes from "./listSolicitudes.js";
 
 const d = document;
 
@@ -34,7 +34,7 @@ d.addEventListener("DOMContentLoaded", async (e) => {
   setPuestos(data);
   setTurnos();
   setSueldos();
-  getSolicitudes(data);
+  listSolicitudes(data);
 });
 
 async function validarJWT() {
