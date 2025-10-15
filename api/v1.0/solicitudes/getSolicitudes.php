@@ -106,5 +106,21 @@ foreach ($listaUserAutorizados as $user) {
         }
     }
 }
-
+// Paso 5: Devolver JSON
+ header('Content-Type: application/json');
+  if (empty($listaSolicitudes)) {
+     echo json_encode([ 
+      "err" => false, 
+     "statusText" => "No se encontraron solicitudes.", 
+     "data" => []
+     ]
+     , JSON_UNESCAPED_UNICODE); 
+    } 
+     else {
+       echo json_encode([
+         "err" => false,
+          "statusText" => "Solicitudes obtenidas correctamente.",
+           "data" => $listaSolicitudes ],
+            JSON_UNESCAPED_UNICODE);
+       }
 ?>
