@@ -37,7 +37,7 @@ if (!$stmt) {
     exit;
 }
 
-$stmt->bind_param("i", $idUser);
+$stmt->bind_param("s", $idUser);
 $stmt->execute();
 
 // bind_result en lugar de get_result
