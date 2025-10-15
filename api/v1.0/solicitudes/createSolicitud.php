@@ -1,5 +1,5 @@
 <?php
-require "./conexion_solicitud.php";
+require "../conexion_solicitud.php";
 
 header('Content-Type: application/json');
 
@@ -122,7 +122,7 @@ if ($stmt->execute()) {
     echo json_encode([
         "err" => false,
         "statusText" => "Datos guardados correctamente",
-        "postData" => $_POST // 🔹 Muestra los datos que realmente llegaron por POST
+        "postData" => $_POST //
     ]);
 } else {
     echo json_encode([
