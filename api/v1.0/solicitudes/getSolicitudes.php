@@ -79,6 +79,16 @@ foreach ($listaGruposAutorizados as $grupo) {
 }
 
 // Paso 4: Obtener solicitudes de cada usuario autorizado
+// Paso previo: obtener todos los puestos en un array
+$puestos = [];
+$resultPuestos = $mysqli_intranet->query("SELECT id, nombre FROM puestos");
+if ($resultPuestos) {
+    while ($row = $resultPuestos->fetch_assoc()) {
+        $puestos[$row['id']] = htmlspecialchars($row['nombre'] ?? '', ENT_QUOTES, 'UTF-8');
+    }
+}
+
+// Ahora construimos las solicitudes
 $listaSolicitudes = [];
 foreach ($listaUserAutorizados as $user) {
     $userId = $mysqli_solicitud->real_escape_string($user['id']); // solo el ID
@@ -92,22 +102,31 @@ foreach ($listaUserAutorizados as $user) {
                 return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8');
             }, $row);
 
-            // Agregar los datos del usuario autorizado
+            // Obtener nombre del puesto
+            $nombrePuesto = '';
+            $puestoId = $solicitudBlindada['solicitud_puesto_id'] ?? '';
+            if ($puestoId && isset($puestos[$puestoId])) {
+                $nombrePuesto = $puestos[$puestoId];
+            }
+
+            // Agregar los datos del usuario autorizado + nombre del puesto
             $solicitudConUsuario = array_merge($solicitudBlindada, [
                 "usuario_id" => $user['id'],
                 "usuario_nombre" => $user['nombre'],
                 "usuario_apellido_paterno" => $user['apellido_paterno'],
                 "usuario_apellido_materno" => $user['apellido_materno'],
                 "usuario_puesto" => $user['puesto'],
-                "usuario_correo" => $user['correo'],
+                "usuario_correo" => $user['correo'] ?? '',
                 "usuario_empresa" => $user['empresa'],
-                "usuario_id_departamento" => $user['id_departamento']
+                "usuario_id_departamento" => $user['id_departamento'],
+                "solicitud_nombre_puesto" => $nombrePuesto
             ]);
 
             $listaSolicitudes[] = $solicitudConUsuario;
         }
     }
 }
+
 // Paso 5: Devolver JSON
  header('Content-Type: application/json');
   if (empty($listaSolicitudes)) {

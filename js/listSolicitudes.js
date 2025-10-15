@@ -37,6 +37,7 @@ export default async function listSolicitudes(data) {
       $clone.querySelector("[data-namesol]").textContent = el.usuario_nombre;
       $clone.querySelector("[data-name]").textContent = el.usuario_nombre;
       $clone.querySelector("[data-mail]").textContent = el.usuario_correo;
+      $clone.querySelector("[data-puestp]").textContent = el.usuario_puesto;
 
       el.$fragment.appendChild($clone);
     });
