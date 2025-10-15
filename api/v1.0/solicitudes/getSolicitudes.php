@@ -57,7 +57,7 @@ $stmtAuth->close();
 $listaUserAutorizados = [];
 foreach ($listaGruposAutorizados as $grupo) {
     $grupoClave = $mysqli_vacaciones->real_escape_string($grupo['id']);
-    $sqlUsers = "SELECT id, nombre, apellido_paterno, apellido_materno, puesto, empresa, id_departamento 
+    $sqlUsers = "SELECT id, nombre, apellido_paterno, apellido_materno, puesto, correo, empresa, id_departamento 
                  FROM empleados 
                  WHERE id_autoridad = '$grupoClave'";
     $result = $mysqli_vacaciones->query($sqlUsers);
@@ -69,6 +69,7 @@ foreach ($listaGruposAutorizados as $grupo) {
     "apellido_paterno" => htmlspecialchars($row['apellido_paterno'] ?? '', ENT_QUOTES, 'UTF-8'),
     "apellido_materno" => htmlspecialchars($row['apellido_materno'] ?? '', ENT_QUOTES, 'UTF-8'),
     "puesto" => htmlspecialchars($row['puesto'] ?? '', ENT_QUOTES, 'UTF-8'),
+    "correo" => htmlspecialchars($row['correo'] ?? '', ENT_QUOTES, 'UTF-8'),
     "empresa" => htmlspecialchars($row['empresa'] ?? '', ENT_QUOTES, 'UTF-8'),
     "id_departamento" => htmlspecialchars($row['id_departamento'] ?? '', ENT_QUOTES, 'UTF-8')
 ];
@@ -98,6 +99,7 @@ foreach ($listaUserAutorizados as $user) {
                 "usuario_apellido_paterno" => $user['apellido_paterno'],
                 "usuario_apellido_materno" => $user['apellido_materno'],
                 "usuario_puesto" => $user['puesto'],
+                "usuario_correo" => $user['correo'],
                 "usuario_empresa" => $user['empresa'],
                 "usuario_id_departamento" => $user['id_departamento']
             ]);
