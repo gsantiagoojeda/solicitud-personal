@@ -107,9 +107,9 @@ foreach ($listaGruposAutorizados as $grupo) {
 // Paso 4: Obtener solicitudes de cada usuario autorizado
 $listaSolicitudes = [];
 
-foreach ($listaUserAutorizados as $idUser) {
+foreach ($listaUserAutorizados as $user) {
 
-    $idUser = $mysqli_solicitud->real_escape_string($idUser);
+    $idUser = $mysqli_solicitud->real_escape_string($idser);
     $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE user_id = '$idUser'";
     $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
     if ($resultSolcitudes) {
