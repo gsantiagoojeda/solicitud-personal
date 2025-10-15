@@ -7,13 +7,16 @@
 //     WHERE e.departamento_id = ?
 // ";
 
-  require "./conexion_solicitud.php";
+require "../conexion_intranet.php";
+require "../conexion_vacaciones.php";
 
-$id_user = intval($_POST['user-id']);
+// $idUser = $_POST['id-user'];
+$idUser = "E216";
 
+// Paso 1: Obtener puesto y autoridad del usuario
 $sqlUser = "SELECT puesto, id_autoridad FROM empleados WHERE id = ?";
+$stmt = $mysqli_vacaciones->prepare($sqlUser);
 
-$stmt = $mysql_vacaciones->prepare($sqlUser);
 if (!$stmt) {
     echo json_encode([
         "err" => true,
@@ -22,79 +25,86 @@ if (!$stmt) {
     exit;
 }
 
-$stmt->bind_param("i", $id_user);
+$stmt->bind_param("i", $idUser);
 $stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_assoc();
 
-if (!$row) {
-  echo json_encode([
-    "err" => true,
-    "status" => "Usuario no encontrado"
-  ]);
-  $stmt->close();
-  $mysql_vacaciones->close();
-} 
+// bind_result en lugar de get_result
+$stmt->bind_result($puesto, $autoridad);
+if (!$stmt->fetch()) {
+    echo json_encode([
+        "err" => true,
+        "status" => "Usuario no encontrado"
+    ]);
+    $stmt->close();
+    $mysqli_vacaciones->close();
+    exit;
+}
+$stmt->close();
 
-$puesto=$row['puesto'];
-$autoridad=$row['id_autoridad'];
+// echo "mi clave autoridad es: $autoridad";
+// echo "<br>";
 
-$sqlAuth =  "SELECT id, clave, clave_autorizador 
+// Paso 2: Obtener grupos autorizados
+$sqlAuth = "SELECT id, clave, clave_autorizador 
             FROM autoridad_departamental 
-            WHERE clave_autorizador = '$autoridad' ";
+            WHERE clave_autorizador = ? OR id = ?";
+$stmtAuth = $mysqli_vacaciones->prepare($sqlAuth);
+$stmtAuth->bind_param("ii", $autoridad, $autoridad);
+$stmtAuth->execute();
+$stmtAuth->bind_result($authId, $clave, $claveAutorizador);
 
-    $resultAuth = $mysql_vacaciones->query($sqlAuth);
-    $listaGruposAutorizados = $resultAuth>fetch_all(MYSQLI_ASSOC);
+$listaGruposAutorizados = [];
+while ($stmtAuth->fetch()) {
+    $listaGruposAutorizados[] = [
+        "id" => $authId,
+        "clave" => $clave,
+        "clave_autorizador" => $claveAutorizador
+    ];
+}
+$stmtAuth->close();
 
-     // Paso 2: Iterar sobre los grupos que autorizó y verificar los empleados
-    $listaPersonasAutorizadas = [];
-    $idsAgregados = []; // Para evitar repetidos
+// echo("grupos autorizados:");
+// print_r($listaGruposAutorizados);
+// echo "<br>";
 
-    foreach ($listaGruposAutorizados as $grupo) {
-        $grupoClave = $grupo['id'];
+// Paso 3: Obtener usuarios de cada grupo autorizado
+$listaUserAutorizados = [];
 
-        // Obtener empleados del grupo autorizado
-$sqlEmpleados = "
-    SELECT e.id, e.nombre, e.apellido_paterno, e.apellido_materno, e.correo, e.puesto
-    FROM empleados e
-    INNER JOIN autoridad_departamental a ON e.id_autoridad = a.id
-    WHERE a.id = ?
-      AND e.status_empleado = 'Activo'
-      AND LOWER(e.puesto) LIKE '%gerente%'
-";
+foreach ($listaGruposAutorizados as $grupo) {
+    $grupoClave = $grupo['id'];
 
+    $sqlUsers = "SELECT id, nombre, apellido_paterno, apellido_materno, puesto, empresa, id_departamento FROM empleados WHERE id_autoridad = ?";
+    $stmtUsers = $mysqli_vacaciones->prepare($sqlUsers);
+    $stmtUsers->bind_param("i", $grupoClave);
+    $stmtUsers->execute();
+    $stmtUsers->bind_result($idUsers);
 
-        $resultadoEmpleados = $conexion->query($sqlEmpleados);
-        $empleados = $resultadoEmpleados->fetch_all(MYSQLI_ASSOC);
+    $stmtUsers->close();
+}
 
-        $empleadosTipo2 = [];
-        $empleadosTodos = [];
+// echo("deptos autorizados:");
+// print_r($listaDeptosAutorizados);
+// echo "<br>";
+// Paso 4: Obtener solicitudes de cada usuario autorizado
+$listaSolicitudes = [];
 
-       // echo "Validando grupo: $grupoClave<br/>";
-        
-foreach ($empleados as $empleado) {
-    if ($empleado['id'] == $idUser || in_array($empleado['id'], $idsAgregados)) {
-        continue; // excluirte a ti mismo y evitar repetidos
-    }
+foreach ($listaUserAutorizados as $idUser) {
+    $sql = "SELECT * FROM sp_solicitud WHERE user_id = $idUser";
+    $result = $mysqli_intranet->query($sql);
 
-    // Registrar como ya agregado
-    $idsAgregados[] = $empleado['id'];
-
-    if ($empleado['tipo_usuario'] == '2' && $grupoClave != $miGrupo) {
-        // Si es autorizador y NO es de tu grupo, lo metemos como autorizador externo
-        $empleadosTipo2[] = $empleado;
-    } else {
-        // Si no es autorizador, lo consideramos "empleado general"
-        $empleadosTodos[] = $empleado;
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $listaSolicitudes[] = $row; // ← ya contiene TODOS los campos
+        }
     }
 }
 
-        
-        // Aplicar la lógica de selección
-        if (!empty($empleadosTipo2)) {
-            $listaPersonasAutorizadas = array_merge($listaPersonasAutorizadas, $empleadosTipo2);
-        } else {
-            $listaPersonasAutorizadas = array_merge($listaPersonasAutorizadas, $empleadosTodos);
-        } 
-    }
+// Respuesta exitosa
+echo json_encode([
+    "Puestos" => $listaPuestos,
+    "err" => false,
+    "statusText" => "Consulta exitosa"
+]);
+
+?>
 
