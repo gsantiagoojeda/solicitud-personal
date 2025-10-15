@@ -77,15 +77,29 @@ $listaUserAutorizados = [];
 
 foreach ($listaGruposAutorizados as $grupo) {
     $grupoClave = $grupo['id'];
+    
+    $grupoClave = $mysqli_vacaciones->real_escape_string($grupoClave);
+    $sqlUsers = "SELECT id, nombre, apellido_paterno, apellido_materno, puesto, empresa, id_departamento 
+                 FROM empleados 
+                 WHERE id_autoridad = '$grupoClave'";
 
-    $sqlUsers = "SELECT id, nombre, apellido_paterno, apellido_materno, puesto, empresa, id_departamento FROM empleados WHERE id_autoridad = ?";
-    $stmtUsers = $mysqli_vacaciones->prepare($sqlUsers);
-    $stmtUsers->bind_param("i", $grupoClave);
-    $stmtUsers->execute();
-    $stmtUsers->bind_result($idUsers);
+    $result = $mysqli_vacaciones->query($sqlUsers);
 
-    $stmtUsers->close();
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $listaUserAutorizados[] = [
+                "id" => htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8'),
+                "nombre" => htmlspecialchars($row['nombre'], ENT_QUOTES, 'UTF-8'),
+                "apellido_paterno" => htmlspecialchars($row['apellido_paterno'], ENT_QUOTES, 'UTF-8'),
+                "apellido_materno" => htmlspecialchars($row['apellido_materno'], ENT_QUOTES, 'UTF-8'),
+                "puesto" => htmlspecialchars($row['puesto'], ENT_QUOTES, 'UTF-8'),
+                "empresa" => htmlspecialchars($row['empresa'], ENT_QUOTES, 'UTF-8'),
+                "id_departamento" => htmlspecialchars($row['id_departamento'], ENT_QUOTES, 'UTF-8')
+            ];
+        }
+    }
 }
+
 
 // echo("deptos autorizados:");
 // print_r($listaDeptosAutorizados);
