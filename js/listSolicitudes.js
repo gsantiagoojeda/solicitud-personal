@@ -44,7 +44,7 @@ export default async function listSolicitudes(data) {
         el.solicitud_nombre_puesto;
       $clone.querySelector("[data-status]").textContent = el.usuario_puesto;
 
-      el.$fragment.appendChild($clone);
+      $fragment.appendChild($clone);
     });
     $tbody.appendChild($fragment);
   } catch (err) {
