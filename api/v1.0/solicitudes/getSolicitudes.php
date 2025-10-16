@@ -79,7 +79,16 @@ foreach ($listaGruposAutorizados as $grupo) {
 }
 
 // Paso 4: Obtener solicitudes de cada usuario autorizado
-// Paso previo: obtener todos los puestos en un array
+// Paso previo: cargar departamentos
+$departamentos = [];
+$resultDeptos = $mysqli_vacaciones->query("SELECT id, nombre FROM departamentos");
+if ($resultDeptos) {
+    while ($row = $resultDeptos->fetch_assoc()) {
+        $departamentos[$row['id']] = htmlspecialchars($row['nombre'] ?? '', ENT_QUOTES, 'UTF-8');
+    }
+}
+
+// Paso previo: cargar puestos (como ya lo tienes)
 $puestos = [];
 $resultPuestos = $mysqli_intranet->query("SELECT id_archivo, nombre FROM puestos");
 if ($resultPuestos) {
@@ -88,28 +97,34 @@ if ($resultPuestos) {
     }
 }
 
-// Ahora construimos las solicitudes
+// Construir solicitudes
 $listaSolicitudes = [];
 foreach ($listaUserAutorizados as $user) {
-    $userId = $mysqli_solicitud->real_escape_string($user['id']); // solo el ID
+    $userId = $mysqli_solicitud->real_escape_string($user['id']);
     $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE solicitud_solicitante_id = '$userId'";
     $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
 
     if ($resultSolicitudes) {
         while ($row = $resultSolicitudes->fetch_assoc()) {
-            // Blindaje de campos de la solicitud
             $solicitudBlindada = array_map(function($v){
                 return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8');
             }, $row);
 
-            // Obtener nombre del puesto
+            // Obtener nombre del puesto de la solicitud
             $nombrePuesto = '';
             $puestoId = $solicitudBlindada['solicitud_puesto_id'] ?? '';
             if ($puestoId && isset($puestos[$puestoId])) {
                 $nombrePuesto = $puestos[$puestoId];
             }
 
-            // Agregar los datos del usuario autorizado + nombre del puesto
+            // Obtener nombre del departamento del usuario autorizado
+            $nombreDepartamento = '';
+            $deptoId = $user['id_departamento'] ?? '';
+            if ($deptoId && isset($departamentos[$deptoId])) {
+                $nombreDepartamento = $departamentos[$deptoId];
+            }
+
+            // Combinar datos
             $solicitudConUsuario = array_merge($solicitudBlindada, [
                 "usuario_id" => $user['id'],
                 "usuario_nombre" => $user['nombre'],
@@ -119,6 +134,7 @@ foreach ($listaUserAutorizados as $user) {
                 "usuario_correo" => $user['correo'] ?? '',
                 "usuario_empresa" => $user['empresa'],
                 "usuario_id_departamento" => $user['id_departamento'],
+                "usuario_departamento_nombre" => $nombreDepartamento, // ✅ NUEVO
                 "solicitud_nombre_puesto" => $nombrePuesto
             ]);
 
