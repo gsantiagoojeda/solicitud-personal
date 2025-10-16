@@ -34,10 +34,15 @@ export default async function listSolicitudes(data) {
       $clone
         .querySelector("[data-td-id]")
         .setAttribute("data-td-id", el.solicitud_id);
-      $clone.querySelector("[data-namesol]").textContent = el.usuario_nombre;
+      $clone.querySelector("[data-name]").textContent = el.usuario_nombre;
       $clone.querySelector("[data-name]").textContent = el.usuario_nombre;
       $clone.querySelector("[data-mail]").textContent = el.usuario_correo;
-      $clone.querySelector("[data-puestp]").textContent = el.usuario_puesto;
+      $clone.querySelector("[data-depto]").textContent =
+        el.usuario_departamento_nombre;
+      $clone.querySelector("[data-puesto]").textContent = el.usuario_puesto;
+      $clone.querySelector("[data-vacante]").textContent =
+        el.solicitud_nombre_puesto;
+      $clone.querySelector("[data-status]").textContent = el.usuario_puesto;
 
       el.$fragment.appendChild($clone);
     });
