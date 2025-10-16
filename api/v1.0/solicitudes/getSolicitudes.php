@@ -64,22 +64,20 @@ foreach ($listaGruposAutorizados as $grupo) {
     if ($result) {
         while ($row = $result->fetch_assoc()) {
             $listaUserAutorizados[] = [
-    "id" => htmlspecialchars($row['id'] ?? '', ENT_QUOTES, 'UTF-8'),
-    "nombre" => htmlspecialchars($row['nombre'] ?? '', ENT_QUOTES, 'UTF-8'),
-    "apellido_paterno" => htmlspecialchars($row['apellido_paterno'] ?? '', ENT_QUOTES, 'UTF-8'),
-    "apellido_materno" => htmlspecialchars($row['apellido_materno'] ?? '', ENT_QUOTES, 'UTF-8'),
-    "puesto" => htmlspecialchars($row['puesto'] ?? '', ENT_QUOTES, 'UTF-8'),
-    "correo" => htmlspecialchars($row['correo'] ?? '', ENT_QUOTES, 'UTF-8'),
-    "empresa" => htmlspecialchars($row['empresa'] ?? '', ENT_QUOTES, 'UTF-8'),
-    "id_departamento" => htmlspecialchars($row['id_departamento'] ?? '', ENT_QUOTES, 'UTF-8')
-];
-
+                "id" => htmlspecialchars($row['id'] ?? '', ENT_QUOTES, 'UTF-8'),
+                "nombre" => htmlspecialchars($row['nombre'] ?? '', ENT_QUOTES, 'UTF-8'),
+                "apellido_paterno" => htmlspecialchars($row['apellido_paterno'] ?? '', ENT_QUOTES, 'UTF-8'),
+                "apellido_materno" => htmlspecialchars($row['apellido_materno'] ?? '', ENT_QUOTES, 'UTF-8'),
+                "puesto" => htmlspecialchars($row['puesto'] ?? '', ENT_QUOTES, 'UTF-8'),
+                "correo" => htmlspecialchars($row['correo'] ?? '', ENT_QUOTES, 'UTF-8'),
+                "empresa" => htmlspecialchars($row['empresa'] ?? '', ENT_QUOTES, 'UTF-8'),
+                "id_departamento" => htmlspecialchars($row['id_departamento'] ?? '', ENT_QUOTES, 'UTF-8')
+            ];
         }
     }
 }
 
-// Paso 4: Obtener solicitudes de cada usuario autorizado
-// Paso previo: cargar departamentos
+// Paso previo 1: cargar departamentos
 $departamentos = [];
 $resultDeptos = $mysqli_vacaciones->query("SELECT id_departamento, nombre FROM departamentos");
 if ($resultDeptos) {
@@ -88,7 +86,7 @@ if ($resultDeptos) {
     }
 }
 
-// Paso previo: cargar puestos (como ya lo tienes)
+// Paso previo 2: cargar puestos
 $puestos = [];
 $resultPuestos = $mysqli_intranet->query("SELECT id_archivo, nombre FROM puestos");
 if ($resultPuestos) {
@@ -97,7 +95,16 @@ if ($resultPuestos) {
     }
 }
 
-// Construir solicitudes
+// ✅ Paso previo 3: cargar empleados con su puesto_id (para autorizador1)
+$empleados = [];
+$resultEmps = $mysqli_intranet->query("SELECT id, puesto_id FROM empleados");
+if ($resultEmps) {
+    while ($row = $resultEmps->fetch_assoc()) {
+        $empleados[$row['id']] = $row['puesto_id'] ?? null;
+    }
+}
+
+// Paso 4: Construir solicitudes
 $listaSolicitudes = [];
 foreach ($listaUserAutorizados as $user) {
     $userId = $mysqli_solicitud->real_escape_string($user['id']);
@@ -110,21 +117,30 @@ foreach ($listaUserAutorizados as $user) {
                 return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8');
             }, $row);
 
-            // Obtener nombre del puesto de la solicitud
+            // Puesto del solicitante
             $nombrePuesto = '';
             $puestoId = $solicitudBlindada['solicitud_puesto_id'] ?? '';
             if ($puestoId && isset($puestos[$puestoId])) {
                 $nombrePuesto = $puestos[$puestoId];
             }
 
-            // Obtener nombre del departamento del usuario autorizado
+            // Departamento del usuario autorizado
             $nombreDepartamento = '';
             $deptoId = $user['id_departamento'] ?? '';
             if ($deptoId && isset($departamentos[$deptoId])) {
                 $nombreDepartamento = $departamentos[$deptoId];
             }
 
-            // Combinar datos
+            // ✅ Puesto del autorizador1
+            $aut1PuestoNombre = '';
+            $aut1Id = $solicitudBlindada['solicitud_autorizador1_id'] ?? '';
+            if ($aut1Id && isset($empleados[$aut1Id])) {
+                $aut1PuestoId = $empleados[$aut1Id];
+                if ($aut1PuestoId && isset($puestos[$aut1PuestoId])) {
+                    $aut1PuestoNombre = $puestos[$aut1PuestoId];
+                }
+            }
+
             $solicitudConUsuario = array_merge($solicitudBlindada, [
                 "usuario_id" => $user['id'],
                 "usuario_nombre" => $user['nombre'],
@@ -134,8 +150,9 @@ foreach ($listaUserAutorizados as $user) {
                 "usuario_correo" => $user['correo'] ?? '',
                 "usuario_empresa" => $user['empresa'],
                 "usuario_id_departamento" => $user['id_departamento'],
-                "usuario_departamento_nombre" => $nombreDepartamento, // ✅ NUEVO
-                "solicitud_nombre_puesto" => $nombrePuesto
+                "usuario_departamento_nombre" => $nombreDepartamento,
+                "solicitud_nombre_puesto" => $nombrePuesto,
+                "solicitud_autorizador1_puesto" => $aut1PuestoNombre // ✅ NUEVO
             ]);
 
             $listaSolicitudes[] = $solicitudConUsuario;
@@ -144,20 +161,18 @@ foreach ($listaUserAutorizados as $user) {
 }
 
 // Paso 5: Devolver JSON
- header('Content-Type: application/json');
-  if (empty($listaSolicitudes)) {
-     echo json_encode([ 
-      "err" => false, 
-     "statusText" => "No se encontraron solicitudes.", 
-     "data" => []
-     ]
-     , JSON_UNESCAPED_UNICODE); 
-    } 
-     else {
-       echo json_encode([
-         "err" => false,
-          "statusText" => "Solicitudes obtenidas correctamente.",
-           "data" => $listaSolicitudes ],
-            JSON_UNESCAPED_UNICODE);
-       }
+header('Content-Type: application/json');
+if (empty($listaSolicitudes)) {
+    echo json_encode([
+        "err" => false,
+        "statusText" => "No se encontraron solicitudes.",
+        "data" => []
+    ], JSON_UNESCAPED_UNICODE);
+} else {
+    echo json_encode([
+        "err" => false,
+        "statusText" => "Solicitudes obtenidas correctamente.",
+        "data" => $listaSolicitudes
+    ], JSON_UNESCAPED_UNICODE);
+}
 ?>

@@ -46,6 +46,7 @@ export default async function listSolicitudes(data) {
         el.solicitud_autorizacion1 === ""
           ? "Pendiente"
           : solicitud_autorizacion1;
+      $clone.querySelector("[data-puesto]").textContent = el.usuario_puesto;
 
       $fragment.appendChild($clone);
     });
