@@ -20,7 +20,7 @@ if (!$stmt) {
     exit;
 }
 
-$stmt->bind_param("s", $idUser); // "s" porque puede ser alfanumérico
+$stmt->bind_param("s", $idUser);
 $stmt->execute();
 $stmt->bind_result($puesto, $autoridad);
 if (!$stmt->fetch()) {
@@ -39,7 +39,7 @@ $sqlAuth = "SELECT id, clave, clave_autorizador
             FROM autoridad_departamental 
             WHERE clave_autorizador = ? OR id = ?";
 $stmtAuth = $mysqli_vacaciones->prepare($sqlAuth);
-$stmtAuth->bind_param("ss", $autoridad, $autoridad); // "s" para alfanuméricos
+$stmtAuth->bind_param("ss", $autoridad, $autoridad);
 $stmtAuth->execute();
 $stmtAuth->bind_result($authId, $clave, $claveAutorizador);
 
@@ -63,11 +63,15 @@ foreach ($listaGruposAutorizados as $grupo) {
     $result = $mysqli_vacaciones->query($sqlUsers);
     if ($result) {
         while ($row = $result->fetch_assoc()) {
+            $nombreCompleto = trim(
+                ($row['nombre'] ?? '') . ' ' .
+                ($row['apellido_paterno'] ?? '') . ' ' .
+                ($row['apellido_materno'] ?? '')
+            );
+
             $listaUserAutorizados[] = [
                 "id" => htmlspecialchars($row['id'] ?? '', ENT_QUOTES, 'UTF-8'),
-                "nombre" => htmlspecialchars($row['nombre'] ?? '', ENT_QUOTES, 'UTF-8'),
-                "apellido_paterno" => htmlspecialchars($row['apellido_paterno'] ?? '', ENT_QUOTES, 'UTF-8'),
-                "apellido_materno" => htmlspecialchars($row['apellido_materno'] ?? '', ENT_QUOTES, 'UTF-8'),
+                "nombre_completo" => htmlspecialchars($nombreCompleto, ENT_QUOTES, 'UTF-8'),
                 "puesto" => htmlspecialchars($row['puesto'] ?? '', ENT_QUOTES, 'UTF-8'),
                 "correo" => htmlspecialchars($row['correo'] ?? '', ENT_QUOTES, 'UTF-8'),
                 "empresa" => htmlspecialchars($row['empresa'] ?? '', ENT_QUOTES, 'UTF-8'),
@@ -77,7 +81,7 @@ foreach ($listaGruposAutorizados as $grupo) {
     }
 }
 
-// Paso previo 1: cargar departamentos
+// Paso previo: cargar departamentos
 $departamentos = [];
 $resultDeptos = $mysqli_vacaciones->query("SELECT id_departamento, nombre FROM departamentos");
 if ($resultDeptos) {
@@ -86,7 +90,7 @@ if ($resultDeptos) {
     }
 }
 
-// Paso previo 2: cargar puestos
+// Paso previo: cargar puestos
 $puestos = [];
 $resultPuestos = $mysqli_intranet->query("SELECT id_archivo, nombre FROM puestos");
 if ($resultPuestos) {
@@ -95,15 +99,23 @@ if ($resultPuestos) {
     }
 }
 
-// Paso previo 3: cargar empleados con su puesto (para autorizador1)
+// Paso previo: cargar empleados con puesto y nombre completo para autorizador1
 $empleados = [];
-$resultEmps = $mysqli_vacaciones->query("SELECT id, puesto FROM empleados");
+$sql = "SELECT id, puesto, nombre, apellido_paterno, apellido_materno FROM empleados";
+$resultEmps = $mysqli_vacaciones->query($sql);
 if ($resultEmps) {
     while ($row = $resultEmps->fetch_assoc()) {
-        $empleados[$row['id']] = $row['puesto'] ?? null;
+        $nombreCompleto = trim(
+            ($row['nombre'] ?? '') . ' ' .
+            ($row['apellido_paterno'] ?? '') . ' ' .
+            ($row['apellido_materno'] ?? '')
+        );
+        $empleados[$row['id']] = [
+            'puesto' => $row['puesto'] ?? null,
+            'nombre_completo' => $nombreCompleto
+        ];
     }
 }
-
 
 // Paso 4: Construir solicitudes
 $listaSolicitudes = [];
@@ -132,28 +144,26 @@ foreach ($listaUserAutorizados as $user) {
                 $nombreDepartamento = $departamentos[$deptoId];
             }
 
-            // ✅ Puesto del autorizador1
-            $aut1PuestoNombre = '';
+            // Autorizador1: nombre completo y puesto
+            $aut1NombreCompleto = '';
+            $aut1Puesto = '';
             $aut1Id = $solicitudBlindada['solicitud_autorizador1_id'] ?? '';
             if ($aut1Id && isset($empleados[$aut1Id])) {
-                $aut1PuestoId = $empleados[$aut1Id];
-                if ($aut1PuestoId && isset($puestos[$aut1PuestoId])) {
-                    $aut1PuestoNombre = $puestos[$aut1PuestoId];
-                }
+                $aut1NombreCompleto = $empleados[$aut1Id]['nombre_completo'];
+                $aut1Puesto = $empleados[$aut1Id]['puesto'];
             }
 
             $solicitudConUsuario = array_merge($solicitudBlindada, [
                 "usuario_id" => $user['id'],
-                "usuario_nombre" => $user['nombre'],
-                "usuario_apellido_paterno" => $user['apellido_paterno'],
-                "usuario_apellido_materno" => $user['apellido_materno'],
+                "usuario_nombre_completo" => $user['nombre_completo'],
                 "usuario_puesto" => $user['puesto'],
                 "usuario_correo" => $user['correo'] ?? '',
                 "usuario_empresa" => $user['empresa'],
                 "usuario_id_departamento" => $user['id_departamento'],
                 "usuario_departamento_nombre" => $nombreDepartamento,
                 "solicitud_nombre_puesto" => $nombrePuesto,
-                "solicitud_autorizador1_puesto" => $aut1PuestoNombre // ✅ NUEVO
+                "autorizador1_nombre_completo" => $aut1NombreCompleto,
+                "autorizador1_puesto" => $aut1Puesto
             ]);
 
             $listaSolicitudes[] = $solicitudConUsuario;
