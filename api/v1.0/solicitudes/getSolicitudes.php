@@ -95,9 +95,9 @@ if ($resultPuestos) {
     }
 }
 
-// ✅ Paso previo 3: cargar empleados con su puesto_id (para autorizador1)
+//Paso previo 3: cargar empleados con su puesto_id (para autorizador1)
 $empleados = [];
-$resultEmps = $mysqli_intranet->query("SELECT id, puesto_id FROM empleados");
+$resultEmps = $mysqli_vacaciones->query("SELECT id, puesto_id FROM empleados");
 if ($resultEmps) {
     while ($row = $resultEmps->fetch_assoc()) {
         $empleados[$row['id']] = $row['puesto_id'] ?? null;
