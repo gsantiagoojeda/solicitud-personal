@@ -84,7 +84,7 @@ $departamentos = [];
 $resultDeptos = $mysqli_vacaciones->query("SELECT id_departamento, nombre FROM departamentos");
 if ($resultDeptos) {
     while ($row = $resultDeptos->fetch_assoc()) {
-        $departamentos[$row['id']] = htmlspecialchars($row['nombre'] ?? '', ENT_QUOTES, 'UTF-8');
+        $departamentos[$row['id_departamento']] = htmlspecialchars($row['nombre'] ?? '', ENT_QUOTES, 'UTF-8');
     }
 }
 
