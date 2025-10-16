@@ -81,7 +81,7 @@ foreach ($listaGruposAutorizados as $grupo) {
 // Paso 4: Obtener solicitudes de cada usuario autorizado
 // Paso previo: cargar departamentos
 $departamentos = [];
-$resultDeptos = $mysqli_vacaciones->query("SELECT id, nombre FROM departamentos");
+$resultDeptos = $mysqli_vacaciones->query("SELECT id_departamento, nombre FROM departamentos");
 if ($resultDeptos) {
     while ($row = $resultDeptos->fetch_assoc()) {
         $departamentos[$row['id']] = htmlspecialchars($row['nombre'] ?? '', ENT_QUOTES, 'UTF-8');
