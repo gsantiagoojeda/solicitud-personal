@@ -51,7 +51,9 @@ export default async function listSolicitudes(data) {
       $clone.querySelector("[data-authpuesto]").textContent =
         el.autorizador1_puesto;
       $clone.querySelector("[data-authdate]").textContent =
-        el.solicitud_date_autorizacion1;
+        el.solicitud_date_autorizacion1 === ""
+          ? "-"
+          : el.solicitud_date_autorizacion1;
 
       $fragment.appendChild($clone);
     });
