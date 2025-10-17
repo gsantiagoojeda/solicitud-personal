@@ -47,9 +47,11 @@ export default async function listSolicitudes(data) {
           ? "Pendiente"
           : solicitud_autorizacion1;
       $clone.querySelector("[data-auth]").textContent =
-        el.autorizador1_nombre_completo;
+        el.autorizador1_nombre_completo === ""
+          ? "-"
+          : el.autorizador1_nombre_completo;
       $clone.querySelector("[data-authpuesto]").textContent =
-        el.autorizador1_puesto;
+        el.autorizador1_puesto === "" ? "-" : el.autorizador1_puesto;
       $clone.querySelector("[data-authdate]").textContent =
         el.solicitud_date_autorizacion1 === ""
           ? "-"
