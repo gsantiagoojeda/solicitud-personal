@@ -95,7 +95,7 @@ foreach ($listaGruposAutorizados as $grupo) {
 // Paso 4: Obtener puestos de cada departamento autorizado
 $listaDeptos = [];
 foreach ($listaDeptosAutorizados as $idDepto) {
-    $sqlDepto = "SELECT *FROM departamentos WHERE departamento_id = ?";
+    $sqlDepto = "SELECT * FROM departamentos WHERE id_departamento = ?";
     $stmtDepto = $mysqli_vacaciones->prepare($sqlDepto);
     $stmtDepto->bind_param("i", $idDepto);
     $stmtDepto->execute();
