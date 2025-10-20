@@ -101,7 +101,7 @@ foreach ($listaDeptosAutorizados as $idDepto) {
     $stmtDepto->execute();
     $stmtDepto->bind_result($departamento_id,$nombre, $descripcion);
 
-    while ($stmtPuesto->fetch()) {
+    while ($stmtDepto->fetch()) {
         $listaDeptos[] = [
           "departamento_id" => $departamento_id,
             "nombre" => $nombre,
