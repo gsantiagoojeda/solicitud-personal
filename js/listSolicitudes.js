@@ -60,10 +60,18 @@ export default async function listSolicitudes(data) {
       $fragment.appendChild($clone);
     });
     $tbody.appendChild($fragment);
+    alternarFilas();
   } catch (err) {
     console.log(err);
     let message = err.statusText || "ocurrio un error";
     console.log(` error ${err.status} : ${message}`);
     alert(` ocurrio un error al obtener solicitudes`);
   }
+}
+
+function alternarFilas() {
+  const filas = document.querySelectorAll("tbody tr");
+  filas.forEach((fila, index) => {
+    fila.classList.toggle("bg-gray-100", (index + 1) % 2 === 0);
+  });
 }
