@@ -108,7 +108,7 @@ foreach ($listaDeptosAutorizados as $idDepto) {
             "descripcion" => $descripcion
         ];
     }
-    $stmtPuesto->close();
+    $stmtDepto->close();
 }
 
 // Respuesta exitosa
