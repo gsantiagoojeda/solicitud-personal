@@ -36,7 +36,7 @@ export default async function listSolicitudes(data) {
         .setAttribute("data-td-id", el.solicitud_id);
       $clone.querySelector("[data-name]").textContent =
         el.usuario_nombre_completo;
-      $clone.querySelector("[data-mail]").textContent = el.usuario_correo;
+      $clone.querySelector("[data-empresa]").textContent = el.usuario_empresa;
       $clone.querySelector("[data-depto]").textContent =
         el.usuario_departamento_nombre;
       $clone.querySelector("[data-puesto]").textContent = el.usuario_puesto;

@@ -1,17 +1,17 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 require "../conexion_intranet.php";
 require "../conexion_vacaciones.php";
 
 header('Content-Type: application/json');
-$depto = "4";
-$puesto = "Director de Almacenes, Tecnologia y Transformacion";
-$idUser = "286";
-// $depto = $_POST['depto'];
-// $puesto = $_POST['puesto'];
-// $idUser = $_POST['id-user'];
+// $depto = "4";
+// $puesto = "Director de Almacenes, Tecnologia y Transformacion";
+// $idUser = "286";
+$depto = $_POST['depto'];
+$puesto = $_POST['puesto'];
+$idUser = $_POST['id-user'];
 
 // Paso 1: Obtener puesto y autoridad del usuario
 $sqlUser = "SELECT puesto, id_autoridad FROM empleados WHERE id = ?";
