@@ -7,14 +7,14 @@ require "../conexion_turnos.php";
 header('Content-Type: application/json');
 
 // Validar que 'id' esté presente y sea un número
-if (!isset($_POST['id_solicitud']) || !is_numeric($_POST['id_solicitud'])) {
-    echo json_encode([
-        "solicitud" => null,
-        "err" => true,
-        "statusText" => "ID inválido o no proporcionado"
-    ]);
-    exit;
-}
+// if (!isset($_POST['id_solicitud']) || !is_numeric($_POST['id_solicitud'])) {
+//     echo json_encode([
+//         "solicitud" => null,
+//         "err" => true,
+//         "statusText" => "ID inválido o no proporcionado"
+//     ]);
+//     exit;
+// }
 
 // $id = $_POST['id_solicitud'];
 $id = "1";
