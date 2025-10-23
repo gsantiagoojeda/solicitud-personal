@@ -23,7 +23,7 @@ header('Content-Type: application/json');
 $id = "1";
 
 // Consulta de la solicitud
-$stmt = $mysqli_vacaciones->prepare("SELECT * FROM solicitudes WHERE id_solicitud = ?");
+$stmt = $mysqli_vacaciones->prepare("SELECT * FROM solicitudes WHERE solicitud_id = ?");
 if (!$stmt) {
     echo json_encode([
         "solicitud" => null,
