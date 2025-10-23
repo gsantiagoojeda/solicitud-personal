@@ -59,7 +59,7 @@ foreach ($row as $key => $val) {
 $puestoId = $solicitud['solicitud_puesto_id'] ?? null;
 $sueldoId = $solicitud['solicitud_sueldo_id'] ?? null;
 $horarioId = $solicitud['solicitud_horario_id'] ?? null;
-$SolicitanteId = $solicitud['solicitud_solicitante_id'] ?? null;
+$solicitanteId = $solicitud['solicitud_solicitante_id'] ?? null;
 $autorizador1Id = $solicitud['solicitud_autorizador1_id'] ?? null;
 
 if ($puestoId) {
