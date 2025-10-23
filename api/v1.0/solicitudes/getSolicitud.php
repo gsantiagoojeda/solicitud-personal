@@ -23,7 +23,7 @@ header('Content-Type: application/json');
 $id = "1";
 
 // Consulta de la solicitud
-$stmt = $mysqli_solicitud->prepare("SELECT * FROM sp_solicitudes WHERE solicitud_id = ?");
+$stmt = $mysqli_solicitud->prepare("SELECT * FROM sp_solicitud WHERE solicitud_id = ?");
 if (!$stmt) {
     echo json_encode([
         "solicitud" => null,
