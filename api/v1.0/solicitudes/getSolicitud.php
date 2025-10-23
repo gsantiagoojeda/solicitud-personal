@@ -59,7 +59,7 @@ foreach ($row as $key => $val) {
 $puestoId = $solicitud['solicitud_puesto_id'] ?? null;
 
 if ($puestoId) {
-    $stmtPuesto = $mysqli_intranet->prepare("SELECT nombre FROM puestos WHERE id = ?");
+    $stmtPuesto = $mysqli_intranet->prepare("SELECT nombre FROM puestos WHERE id_archivo = ?");
     if ($stmtPuesto) {
         $stmtPuesto->bind_param("s", $puestoId);
         $stmtPuesto->execute();
