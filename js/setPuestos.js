@@ -3,11 +3,7 @@ import getPuestos from "../helpers/getPuestos.js";
 const d = document;
 
 export default async function setPuestos(data) {
-  if (
-    !location.pathname.includes("crear-solicitud.html") &&
-    !location.pathname.includes("autorizar-solicitud.html")
-  )
-    return;
+  if (!location.pathname.includes("crear-solicitud.html")) return;
 
   const $selectPuestos = d.getElementById("solicitud-puesto");
 
