@@ -117,7 +117,7 @@ if ($horarioId) {
         if ($stmtHorario->num_rows > 0) {
             $stmtHorario->bind_result($horarioNombre, $horaInicio, $horaFinal);
             $stmtHorario->fetch();
-            $solicitud['solicitud_horario'] = $horarioNombre . ":" .$horaInicio. " a ". $horaFinal;
+            $solicitud['solicitud_horario'] = $horarioNombre . " :" .$horaInicio. " a ". $horaFinal;
             $stmtHorario->close();
         } else {
             $solicitud['solicitud_horario'] = null;
