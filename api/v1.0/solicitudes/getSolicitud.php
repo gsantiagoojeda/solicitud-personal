@@ -16,7 +16,8 @@ if (!isset($_POST['id_solicitud']) || !is_numeric($_POST['id_solicitud'])) {
     exit;
 }
 
-$id = $_POST['id_solicitud'];
+// $id = $_POST['id_solicitud'];
+$id = "1";
 
 // Consulta de la solicitud
 $stmt = $mysqli_vacaciones->prepare("SELECT * FROM solicitudes WHERE id_solicitud = ?");
