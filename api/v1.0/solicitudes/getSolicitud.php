@@ -139,7 +139,7 @@ if ($solicitanteId) {
         if ($stmtSolicitante->num_rows > 0) {
             $stmtSolicitante->bind_result($solicitanteNombre, $solicitanteAP, $solicitanteAM);
             $stmtSolicitante->fetch();
-            $solicitud['solicitud_solicitante'] = $solicitanteNombre . $solicitanteAP . $solicitanteAM;
+            $solicitud['solicitud_solicitante'] = $solicitanteNombre . " ". $solicitanteAP . " " . $solicitanteAM;
             $stmtSolicitante->close();
         } else {
             $solicitud['solicitud_solicitante'] = null;
