@@ -57,6 +57,10 @@ foreach ($row as $key => $val) {
 
 // Obtener nombre del puesto desde $mysqli_intranet
 $puestoId = $solicitud['solicitud_puesto_id'] ?? null;
+$sueldoId = $solicitud['solicitud_sueldo_id'] ?? null;
+$horarioId = $solicitud['solicitud_horario_id'] ?? null;
+$SolicitanteId = $solicitud['solicitud_solicitante_id'] ?? null;
+$autorizador1Id = $solicitud['solicitud_autorizador1_id'] ?? null;
 
 if ($puestoId) {
     $stmtPuesto = $mysqli_intranet->prepare("SELECT nombre FROM puestos WHERE id_archivo = ?");
@@ -69,6 +73,7 @@ if ($puestoId) {
             $stmtPuesto->bind_result($puestoNombre);
             $stmtPuesto->fetch();
             $solicitud['solicitud_puesto_nombre'] = $puestoNombre;
+            $stmtPuesto->close();
         } else {
             $solicitud['solicitud_puesto_nombre'] = null;
         }
@@ -77,6 +82,95 @@ if ($puestoId) {
     }
 } else {
     $solicitud['solicitud_puesto_nombre'] = null;
+}
+
+if ($sueldoId) {
+    $stmtSueldo = $mysqli_solicitud->prepare("SELECT sueldo_nombre, sueldo_cantidad FROM sp_sueldos WHERE sueldo_id = ?");
+    if ($stmtSueldo) {
+        $stmtSueldo->bind_param("s", $sueldoId);
+        $stmtSueldo->execute();
+        $stmtSueldo->store_result();
+
+        if ($stmtSueldo->num_rows > 0) {
+            $stmtSueldo->bind_result($sueldoNombre, $sueldoCantidad);
+            $stmtSueldo->fetch();
+            $solicitud['solicitud_sueldo'] = $sueldoNombre . ":" .$sueldoCantidad;
+            $stmtSueldo->close();
+        } else {
+            $solicitud['solicitud_sueldo'] = null;
+        }
+    } else {
+        $solicitud['solicitud_sueldo'] = null;
+    }
+} else {
+    $solicitud['solicitud_sueldo'] = null;
+}
+
+
+if ($horarioId) {
+    $stmtHorario = $mysqli_turnos->prepare("SELECT nombre_turno, hora_inicio, hora_termino FROM turnos WHERE id_turnos = ?");
+    if ($stmtHorario) {
+        $stmtHorario->bind_param("s", $horarioId);
+        $stmtHorario->execute();
+        $stmtHorario->store_result();
+
+        if ($stmtHorario->num_rows > 0) {
+            $stmtHorario->bind_result($horarioNombre, $horaInicio, $horaFinal);
+            $stmtHorario->fetch();
+            $solicitud['solicitud_horario'] = $horarioNombre . ":" .$horaInicio. " a ". $horaFinal;
+            $stmtHorario->close();
+        } else {
+            $solicitud['solicitud_horario'] = null;
+        }
+    } else {
+        $solicitud['solicitud_horario'] = null;
+    }
+} else {
+    $solicitud['solicitud_horario'] = null;
+}
+
+if ($solicitanteId) {
+    $stmtSolicitante = $mysqli_vacaciones->prepare("SELECT nombre, apellido_paterno, apellido_materno FROM empleados WHERE id= ?");
+    if ($stmtSolicitante) {
+        $stmtSolicitante->bind_param("s", $solicitanteId);
+        $stmtSolicitante->execute();
+        $stmtSolicitante->store_result();
+
+        if ($stmtSolicitante->num_rows > 0) {
+            $stmtSolicitante->bind_result($solicitanteNombre, $solicitanteAP, $solicitanteAM);
+            $stmtSolicitante->fetch();
+            $solicitud['solicitud_solicitante'] = $solicitanteNombre . $solicitanteAP . $solicitanteAM;
+            $stmtSolicitante->close();
+        } else {
+            $solicitud['solicitud_solicitante'] = null;
+        }
+    } else {
+        $solicitud['solicitud_solicitante'] = null;
+    }
+} else {
+    $solicitud['solicitud_solicitante'] = null;
+}
+
+if ($autorizador1Id) {
+    $stmtAuth1 = $mysqli_vacaciones->prepare("SELECT nombre, apellido_paterno, apellido_materno FROM empleados WHERE id= ?");
+    if ($stmtAuth1) {
+        $stmtAuth1->bind_param("s", $autorizador1Id);
+        $stmtAuth1->execute();
+        $stmtAuth1->store_result();
+
+        if ($stmtAuth1->num_rows > 0) {
+            $stmtAuth1->bind_result($solicitanteNombre, $solicitanteAP, $solicitanteAM);
+            $stmtAuth1->fetch();
+            $solicitud['solicitud_autorizador1'] = $solicitanteNombre . $solicitanteAP . $solicitanteAM;
+            $stmtAuth1->close();
+        } else {
+            $solicitud['solicitud_autorizador1'] = null;
+        }
+    } else {
+        $solicitud['solicitud_autorizador1'] = null;
+    }
+} else {
+    $solicitud['solicitud_autorizador1'] = null;
 }
 
 echo json_encode([
