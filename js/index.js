@@ -12,6 +12,7 @@ import setSueldos from "./setSueldos.js";
 import setTurnos from "./setTurnos.js";
 import listSolicitudes from "./listSolicitudes.js";
 import multiselect from "./multiselect.js";
+import detailAuthSolicitud from "./detailAuthSolicitud.js";
 
 const d = document;
 
@@ -37,6 +38,7 @@ d.addEventListener("DOMContentLoaded", async (e) => {
   setSueldos();
   multiselect();
   listSolicitudes(data);
+  detailAuthSolicitud(data);
 });
 
 async function validarJWT() {

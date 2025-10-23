@@ -19,7 +19,7 @@ export default async function listSolicitudes(data) {
       body: formData,
     };
 
-    let res = await fetch(`${SOLICITUDES}getSolicitudes.php`),
+    let res = await fetch(`${SOLICITUDES}getSolicitudes.php`, options),
       json = await res.json();
     console.log(json);
     if (!res.ok || json.err)
