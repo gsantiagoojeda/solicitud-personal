@@ -39,11 +39,25 @@ export default async function detailAuthSolicitud(data) {
       `${solicitud["solicitud_solicitante_id"]}`
     );
 
-    $form["solicitante"].textContent = solicitud["solicitud_solicitante"];
-    $form["solicitante"].setAttribute(
+    $form["auth1-name"].textContent = solicitud["solicitud_autorizador1"];
+    $form["auth1-name"].setAttribute(
       "data-id",
-      `${solicitud["solicitud_solicitante_id"]}`
+      `${solicitud["solicitud_autorizador1_id"]}`
     );
+    if (solicitud["solicitud_autorizador1_id"]) {
+      d.getElementById("container-auths").classList.remove("hidden");
+      d.getElementById("container-auth1").classList.remove("hidden");
+    }
+
+    $form["auth2-name"].textContent = solicitud["solicitud_autorizador2"];
+    $form["auth2-name"].setAttribute(
+      "data-id",
+      `${solicitud["solicitud_autorizador2_id"]}`
+    );
+    if (solicitud["solicitud_autorizador2_id"]) {
+      d.getElementById("container-auths").classList.remove("hidden");
+      d.getElementById("container-auth2").classList.remove("hidden");
+    }
 
     switch (solicitud["solicitud_espacio_trabajo"]) {
       case "si":
