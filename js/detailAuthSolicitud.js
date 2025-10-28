@@ -11,7 +11,7 @@ export default async function detailAuthSolicitud(data) {
 
   try {
     const formData = new FormData();
-    formData.append("id-solicitud", idSolicitud);
+    formData.append("id_solicitud", idSolicitud);
 
     let options = {
       method: "POST",
@@ -25,6 +25,8 @@ export default async function detailAuthSolicitud(data) {
       throw { status: res.status, statusText: res.statusText };
 
     const $form = d.getElementById("form-create-solicitud");
+    $form["puesto"];
+    $form["puesto"];
   } catch (err) {
     console.log(err);
     let message = err.statusText || "ocurrio un error";
