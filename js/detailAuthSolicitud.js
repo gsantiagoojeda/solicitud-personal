@@ -23,10 +23,109 @@ export default async function detailAuthSolicitud(data) {
     console.log(json);
     if (!res.ok || json.err)
       throw { status: res.status, statusText: res.statusText };
+    let solicitud = json.solicitud;
 
     const $form = d.getElementById("form-create-solicitud");
-    $form["puesto"];
-    $form["puesto"];
+
+    $form["puesto"].textContent = solicitud["solicitud_puesto_nombre"];
+    $form["puesto"].setAttribute(
+      "data-id",
+      `${solicitud["solicitud_puesto_id"]}`
+    );
+
+    $form["solicitante"].textContent = solicitud["solicitud_solicitante"];
+    $form["solicitante"].setAttribute(
+      "data-id",
+      `${solicitud["solicitud_solicitante_id"]}`
+    );
+
+    $form["solicitante"].textContent = solicitud["solicitud_solicitante"];
+    $form["solicitante"].setAttribute(
+      "data-id",
+      `${solicitud["solicitud_solicitante_id"]}`
+    );
+
+    switch (solicitud["solicitud_espacio_trabajo"]) {
+      case "si":
+        d.querySelector(
+          'input[name="solicitud-rp1"][value="si"]'
+        ).checked = true;
+        break;
+      case "no":
+        d.querySelector(
+          'input[name="solicitud-rp1"][value="no"]'
+        ).checked = true;
+        break;
+      case "n/a":
+        d.querySelector(
+          'input[name="solicitud-rp1"][value="n/a"]'
+        ).checked = true;
+        break;
+    }
+
+    $form["solicitud-txt-rp1"].value =
+      solicitud["solicitud_espacio_trabajo_com"];
+
+    switch (solicitud["solicitud_mobiliario"]) {
+      case "si":
+        d.querySelector(
+          'input[name="solicitud-rp2"][value="si"]'
+        ).checked = true;
+        break;
+      case "no":
+        d.querySelector(
+          'input[name="solicitud-rp2"][value="no"]'
+        ).checked = true;
+        break;
+      case "n/a":
+        d.querySelector(
+          'input[name="solicitud-rp2"][value="n/a"]'
+        ).checked = true;
+        break;
+    }
+
+    $form["solicitud-txt-rp2"].value = solicitud["solicitud_mobiliario_com"];
+
+    switch (solicitud["solicitud_equipo_computo"]) {
+      case "si":
+        d.querySelector(
+          'input[name="solicitud-rp3"][value="si"]'
+        ).checked = true;
+        break;
+      case "no":
+        d.querySelector(
+          'input[name="solicitud-rp3"][value="no"]'
+        ).checked = true;
+        break;
+      case "n/a":
+        d.querySelector(
+          'input[name="solicitud-rp3"][value="n/a"]'
+        ).checked = true;
+        break;
+    }
+
+    $form["solicitud-txt-rp3"].value =
+      solicitud["solicitud_equipo_computo_com"];
+
+    switch (solicitud["solicitud_herramientas"]) {
+      case "si":
+        d.querySelector(
+          'input[name="solicitud-rp4"][value="si"]'
+        ).checked = true;
+        break;
+      case "no":
+        d.querySelector(
+          'input[name="solicitud-rp4"][value="no"]'
+        ).checked = true;
+        break;
+      case "n/a":
+        d.querySelector(
+          'input[name="solicitud-rp4"][value="n/a"]'
+        ).checked = true;
+        break;
+    }
+
+    $form["solicitud-txt-rp4"].value = solicitud["solicitud_herramientas_com"];
   } catch (err) {
     console.log(err);
     let message = err.statusText || "ocurrio un error";
