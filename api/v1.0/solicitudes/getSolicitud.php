@@ -5,7 +5,7 @@ header("Content-Type: application/json; charset=utf-8");
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require_once "conexion_intranet.php"; // tu archivo con $mysqli_intranet
+require_once "../conexion_intranet.php"; // tu archivo con $mysqli_intranet
 
 // Asegurar charset UTF-8
 $mysqli_intranet->set_charset("utf8mb4");
