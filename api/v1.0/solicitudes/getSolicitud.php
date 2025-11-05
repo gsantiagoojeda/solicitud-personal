@@ -182,7 +182,7 @@ if ($autorizador1Id) {
 }
 echo "prueba0";
 echo json_encode([
-    "solicitud" => $solicitud,
+    "solicitud" =>"j",
     "err" => false,
     "statusText" => "Consulta exitosa"
 ]);
