@@ -18,12 +18,7 @@ if ($mysqli_intranet->connect_error) {
     ]));
 }
 
-if (!isset($_GET["solicitud_id"])) {
-    die(json_encode([
-        "err" => true,
-        "statusText" => "Falta el parámetro solicitud_id"
-    ]));
-}
+
 
 // $solicitud_id = $_GET["solicitud_id"];
 $solicitud_id = "1";
