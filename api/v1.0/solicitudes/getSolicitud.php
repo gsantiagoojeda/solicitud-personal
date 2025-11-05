@@ -1,106 +1,213 @@
 <?php
-header("Content-Type: application/json; charset=utf-8");
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 
-// Mostrar errores para depurar
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+require "../conexion_intranet.php";
+require "../conexion_vacaciones.php";
+require "../conexion_solicitud.php";
+require "../conexion_turnos.php";
 
-require_once "../conexion_intranet.php"; // tu archivo con $mysqli_intranet
+header('Content-Type: application/json');
 
-// Asegurar charset UTF-8
-$mysqli_intranet->set_charset("utf8mb4");
+// $id = $_POST['id_solicitud'];
+$id = "1";
 
-// Verificar conexión
-if ($mysqli_intranet->connect_error) {
-    die(json_encode([
-        "err" => true,
-        "statusText" => "Error de conexión: " . $mysqli_intranet->connect_error
-    ]));
-}
-
-
-
-// $solicitud_id = $_GET["solicitud_id"];
-$solicitud_id = "1";
-
-$query = "
-SELECT 
-    s.solicitud_id,
-    s.solicitud_puesto_id,
-    s.solicitud_espacio_trabajo,
-    s.solicitud_espacio_trabajo_com,
-    s.solicitud_mobiliario,
-    s.solicitud_mobiliario_com,
-    s.solicitud_equipo_computo,
-    s.solicitud_equipo_computo_com,
-    s.solicitud_herramientas,
-    s.solicitud_herramientas_com,
-    s.solicitud_compras_necesarias,
-    s.solicitud_fecha_tentativa,
-    s.solicitud_num_vacantes,
-    s.solicitud_sexo,
-    s.solicitud_estado_civil,
-    s.solicitud_escolaridad,
-    s.solicitud_edad_min,
-    s.solicitud_edad_max,
-    s.solicitud_experiencia,
-    s.solicitud_conocimientos,
-    s.solicitud_habilidades,
-    s.solicitud_tools,
-    s.solicitud_sueldo_id,
-    s.solicitud_horario_id,
-    s.solicitud_rolar,
-    s.solicitud_solicitante_id,
-    s.solicitud_autorizador1_id,
-    s.solicitud_autorizacion1,
-    s.solicitud_date_autorizacion1,
-    s.solicitud_autorizador2_id,
-    s.solicitud_autorizacion2,
-    s.solicitud_date_autorizacion2,
-    COALESCE(p.puesto_nombre, NULL) AS solicitud_puesto_nombre,
-    COALESCE(CONCAT(su.sueldo_nombre, ':', su.sueldo_cantidad), NULL) AS solicitud_sueldo,
-    COALESCE(CONCAT('Turno ', h.horario_id, ' :', h.horario_detalle), NULL) AS solicitud_horario,
-    COALESCE(CONCAT(u.nombre, ' ', u.apellido_paterno, ' ', u.apellido_materno), NULL) AS solicitud_solicitante,
-    COALESCE(a1.nombre, NULL) AS solicitud_autorizador1
-FROM sp_solicitudes s
-LEFT JOIN sp_puestos p ON p.puesto_id = s.solicitud_puesto_id
-LEFT JOIN sp_sueldos su ON su.sueldo_id = s.solicitud_sueldo_id
-LEFT JOIN sp_horarios h ON h.horario_id = s.solicitud_horario_id
-LEFT JOIN usuarios u ON u.usuario_id = s.solicitud_solicitante_id
-LEFT JOIN usuarios a1 ON a1.usuario_id = s.solicitud_autorizador1_id
-WHERE s.solicitud_id = ?
-";
-
-$stmt = $mysqli_intranet->prepare($query);
-$stmt->bind_param("i", $solicitud_id);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows === 0) {
+// Consulta de la solicitud
+$stmt = $mysqli_solicitud->prepare("SELECT * FROM sp_solicitud WHERE solicitud_id = ?");
+if (!$stmt) {
     echo json_encode([
+        "solicitud" => null,
         "err" => true,
-        "statusText" => "No se encontró la solicitud"
+        "statusText" => "Error al preparar la consulta: " . $mysqli_solicitud->error
     ]);
     exit;
 }
 
-$solicitud = $result->fetch_assoc();
+$stmt->bind_param("s", $id);
+$stmt->execute();
+$result = $stmt->store_result();
 
-// ✅ Convertir cadenas vacías a null (sin borrar campos)
-foreach ($solicitud as $key => $value) {
-    if ($value === "") {
-        $solicitud[$key] = null;
-    }
+if ($stmt->num_rows === 0) {
+    echo json_encode([
+        "solicitud" => null,
+        "err" => false,
+        "statusText" => "Solicitud no encontrada"
+    ]);
+    exit;
 }
 
-// ✅ Devolver JSON limpio
+// Obtener metadata para asociar columnas
+$meta = $stmt->result_metadata();
+$fields = [];
+$row = [];
+
+while ($field = $meta->fetch_field()) {
+    $fields[] = &$row[$field->name]; 
+}
+
+call_user_func_array([$stmt, 'bind_result'], $fields);
+$stmt->fetch();
+
+// Copiar valores a un array asociativo
+$solicitud = [];
+foreach ($row as $key => $val) {
+    $solicitud[$key] = $val;
+}
+
+// Obtener nombre del puesto desde $mysqli_intranet
+$puestoId = $solicitud['solicitud_puesto_id'] ?? null;
+$sueldoId = $solicitud['solicitud_sueldo_id'] ?? null;
+$horarioId = $solicitud['solicitud_horario_id'] ?? null;
+$solicitanteId = $solicitud['solicitud_solicitante_id'] ?? null;
+$autorizador1Id = $solicitud['solicitud_autorizador1_id'] ?? null;
+
+if ($puestoId) {
+    $stmtPuesto = $mysqli_intranet->prepare("SELECT nombre FROM puestos WHERE id_archivo = ?");
+    if ($stmtPuesto) {
+        $stmtPuesto->bind_param("s", $puestoId);
+        $stmtPuesto->execute();
+        $stmtPuesto->store_result();
+
+        if ($stmtPuesto->num_rows > 0) {
+            $stmtPuesto->bind_result($puestoNombre);
+            $stmtPuesto->fetch();
+            $solicitud['solicitud_puesto_nombre'] = $puestoNombre;
+            $stmtPuesto->close();
+        } else {
+            $solicitud['solicitud_puesto_nombre'] = null;
+        }
+    } else {
+        $solicitud['solicitud_puesto_nombre'] = null;
+    }
+} else {
+    $solicitud['solicitud_puesto_nombre'] = null;
+}
+
+if ($sueldoId) {
+    $stmtSueldo = $mysqli_solicitud->prepare("SELECT sueldo_nombre, sueldo_cantidad FROM sp_sueldos WHERE sueldo_id = ?");
+    if ($stmtSueldo) {
+        $stmtSueldo->bind_param("s", $sueldoId);
+        $stmtSueldo->execute();
+        $stmtSueldo->store_result();
+
+        if ($stmtSueldo->num_rows > 0) {
+            $stmtSueldo->bind_result($sueldoNombre, $sueldoCantidad);
+            $stmtSueldo->fetch();
+            $solicitud['solicitud_sueldo'] = $sueldoNombre . ":" .$sueldoCantidad;
+            $stmtSueldo->close();
+        } else {
+            $solicitud['solicitud_sueldo'] = null;
+        }
+    } else {
+        $solicitud['solicitud_sueldo'] = null;
+    }
+} else {
+    $solicitud['solicitud_sueldo'] = null;
+}
+
+
+if ($horarioId) {
+    $stmtHorario = $mysqli_turnos->prepare("SELECT nombre_turno, hora_inicio, hora_termino FROM turnos WHERE id_turnos = ?");
+    if ($stmtHorario) {
+        $stmtHorario->bind_param("s", $horarioId);
+        $stmtHorario->execute();
+        $stmtHorario->store_result();
+
+        if ($stmtHorario->num_rows > 0) {
+            $stmtHorario->bind_result($horarioNombre, $horaInicio, $horaFinal);
+            $stmtHorario->fetch();
+            $solicitud['solicitud_horario'] = $horarioNombre . " :" .$horaInicio. " a ". $horaFinal;
+            $stmtHorario->close();
+        } else {
+            $solicitud['solicitud_horario'] = null;
+        }
+    } else {
+        $solicitud['solicitud_horario'] = null;
+    }
+} else {
+    $solicitud['solicitud_horario'] = null;
+}
+
+if ($solicitanteId) {
+    $stmtSolicitante = $mysqli_vacaciones->prepare("SELECT nombre, apellido_paterno, apellido_materno FROM empleados WHERE id= ?");
+    if ($stmtSolicitante) {
+        $stmtSolicitante->bind_param("s", $solicitanteId);
+        $stmtSolicitante->execute();
+        $stmtSolicitante->store_result();
+
+        if ($stmtSolicitante->num_rows > 0) {
+            $stmtSolicitante->bind_result($solicitanteNombre, $solicitanteAP, $solicitanteAM);
+            $stmtSolicitante->fetch();
+            $solicitud['solicitud_solicitante'] = $solicitanteNombre . " ". $solicitanteAP . " " . $solicitanteAM;
+            $stmtSolicitante->close();
+        } else {
+            $solicitud['solicitud_solicitante'] = null;
+        }
+    } else {
+        $solicitud['solicitud_solicitante'] = null;
+    }
+} else {
+    $solicitud['solicitud_solicitante'] = null;
+}
+
+if ($autorizador1Id) {
+    $stmtAuth1 = $mysqli_vacaciones->prepare("SELECT nombre, apellido_paterno, apellido_materno FROM empleados WHERE id= ?");
+    if ($stmtAuth1) {
+        $stmtAuth1->bind_param("s", $autorizador1Id);
+        $stmtAuth1->execute();
+        $stmtAuth1->store_result();
+
+        if ($stmtAuth1->num_rows > 0) {
+            $stmtAuth1->bind_result($solicitanteNombre, $solicitanteAP, $solicitanteAM);
+            $stmtAuth1->fetch();
+            $solicitud['solicitud_autorizador1'] = $solicitanteNombre . $solicitanteAP . $solicitanteAM;
+            $stmtAuth1->close();
+        } else {
+            $solicitud['solicitud_autorizador1'] = null;
+        }
+    } else {
+        $solicitud['solicitud_autorizador1'] = null;
+    }
+} else {
+    $solicitud['solicitud_autorizador1'] = null;
+}
+
+
+// 🧩 Normaliza valores vacíos o nulos antes de codificar
+function normalize_values($array) {
+    foreach ($array as $key => $value) {
+        // Mostrar depuración legible
+        echo "Procesando campo: {$key} → ";
+
+        if (is_array($value)) {
+            echo "[array]\n";
+            $array[$key] = normalize_values($value); // recursivo
+        } elseif (is_null($value)) {
+            echo "NULL (convertido a \"\")\n";
+            $array[$key] = "";
+        } elseif ($value === false) {
+            echo "FALSE (convertido a \"\")\n";
+            $array[$key] = "";
+        } elseif (is_string($value)) {
+            echo "String: {$value}\n";
+            // Asegura codificación válida UTF-8
+            $array[$key] = mb_convert_encoding($value, 'UTF-8', 'auto');
+        } else {
+            echo "Otro tipo (" . gettype($value) . "): {$value}\n";
+        }
+    }
+    return $array;
+}
+
+$solicitud = normalize_values($solicitud);
+print_r($solicitud);
+
+echo "segundo printr $solicitud \n";
+print_r($solicitud);
+
 echo json_encode([
     "solicitud" => $solicitud,
     "err" => false,
     "statusText" => "Consulta exitosa"
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-
-$stmt->close();
-$mysqli_intranet->close();
-?>
-
