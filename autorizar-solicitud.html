@@ -195,9 +195,8 @@
 
         <span class="block font-medium text-blue-600 mt-6 mb-4  ">Mencione las compras y/o adecuaciones de espacio,
           bienes o equipo requeridas:</span>
-        <p id="solicitud-txt-compras" class="font-normal text-gray-800 ml-4  mb-4">Lorem ipsum dolor sit amet
-          consectetur,
-          adipisicing elit. Commodi fugit tempore eveniet, at pariatur,</p>
+        <textarea id="solicitud-txt-compras" name="solicitud-txt-compras" rows="1" cols="50"
+          class="resize-none border rounded-md p-2 w-full lg:w-8/12" required></textarea>
 
 
         <span class="block font-medium text-blue-600 mt-6 mb-4  ">Fecha tentativa para generar las condiciones adecuadas
@@ -211,7 +210,7 @@
         <span class="block font-normal text-blue-600 mt-6 mb-4  ">Número de vacantes<span class="text-red-600">
             *</span></span>
         <input type="number" name="solicitud-vacantes" id="solicitud-vacantes" min="1" step="1" value="1"
-          class="border rounded-md p-2 w-full lg:w-36" disabled>
+          class="border rounded-md p-2 w-full lg:w-36" inputmode="numeric" pattern="\d*" required>
       </article>
 
       <article class="w-11/12 mt-4 bg-white p-4 pb-6 mx-auto rounded-md">

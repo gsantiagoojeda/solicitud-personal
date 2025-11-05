@@ -44,6 +44,7 @@ export default async function detailAuthSolicitud(data) {
       "data-id",
       `${solicitud["solicitud_autorizador1_id"]}`
     );
+    $form["auth1-date"].textContent = solicitud["solicitud_date_autorizacion1"];
     if (solicitud["solicitud_autorizador1_id"]) {
       d.getElementById("container-auths").classList.remove("hidden");
       d.getElementById("container-auth1").classList.remove("hidden");
@@ -54,6 +55,7 @@ export default async function detailAuthSolicitud(data) {
       "data-id",
       `${solicitud["solicitud_autorizador2_id"]}`
     );
+    $form["auth2-date"].textContent = solicitud["solicitud_date_autorizacion2"];
     if (solicitud["solicitud_autorizador2_id"]) {
       d.getElementById("container-auths").classList.remove("hidden");
       d.getElementById("container-auth2").classList.remove("hidden");
