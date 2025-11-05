@@ -1,7 +1,7 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 
 require "../conexion_intranet.php";
 require "../conexion_vacaciones.php";
@@ -11,7 +11,7 @@ require "../conexion_turnos.php";
 header('Content-Type: application/json');
 
 // $id = $_POST['id_solicitud'];
-$id ="1";
+$id = $_POST['id_solicitud'];
 
 // Consulta de la solicitud
 $stmt = $mysqli_solicitud->prepare("SELECT * FROM sp_solicitud WHERE solicitud_id = ?");
@@ -62,8 +62,6 @@ $horarioId = $solicitud['solicitud_horario_id'] ?? null;
 $solicitanteId = $solicitud['solicitud_solicitante_id'] ?? null;
 $autorizador1Id = $solicitud['solicitud_autorizador1_id'] ?? null;
 
-echo "prueba5";
-
 if ($puestoId) {
     $stmtPuesto = $mysqli_intranet->prepare("SELECT nombre FROM puestos WHERE id_archivo = ?");
     if ($stmtPuesto) {
@@ -86,7 +84,6 @@ if ($puestoId) {
     $solicitud['solicitud_puesto_nombre'] = null;
 }
 
-echo "prueba4";
 if ($sueldoId) {
     $stmtSueldo = $mysqli_solicitud->prepare("SELECT sueldo_nombre, sueldo_cantidad FROM sp_sueldos WHERE sueldo_id = ?");
     if ($stmtSueldo) {
@@ -109,7 +106,6 @@ if ($sueldoId) {
     $solicitud['solicitud_sueldo'] = null;
 }
 
-echo "prueba3";
 
 if ($horarioId) {
     $stmtHorario = $mysqli_turnos->prepare("SELECT nombre_turno, hora_inicio, hora_termino FROM turnos WHERE id_turnos = ?");
@@ -133,8 +129,6 @@ if ($horarioId) {
     $solicitud['solicitud_horario'] = null;
 }
 
-echo "prueba2";
-
 if ($solicitanteId) {
     $stmtSolicitante = $mysqli_vacaciones->prepare("SELECT nombre, apellido_paterno, apellido_materno FROM empleados WHERE id= ?");
     if ($stmtSolicitante) {
@@ -157,8 +151,6 @@ if ($solicitanteId) {
     $solicitud['solicitud_solicitante'] = null;
 }
 
-echo "prueba1";
-
 if ($autorizador1Id) {
     $stmtAuth1 = $mysqli_vacaciones->prepare("SELECT nombre, apellido_paterno, apellido_materno FROM empleados WHERE id= ?");
     if ($stmtAuth1) {
@@ -180,9 +172,9 @@ if ($autorizador1Id) {
 } else {
     $solicitud['solicitud_autorizador1'] = null;
 }
-echo "prueba0";
+print_r($solicitud)
 echo json_encode([
-    "solicitud" =>"j",
+    "solicitud" => $solicitud,
     "err" => false,
     "statusText" => "Consulta exitosa"
-]);
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
