@@ -1,7 +1,7 @@
 <?php
 // ini_set('display_errors', 1);
 // ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL); // Mantén esto descomentado para ver cualquier otro error
+// error_reporting(E_ALL); // Mantén esto descomentado para ver errores
 
 require "../conexion_intranet.php";
 require "../conexion_vacaciones.php";
@@ -13,64 +13,36 @@ header('Content-Type: application/json');
 // $id = $_POST['id_solicitud'];
 $id = "1"; // ID de prueba
 
-/**
- * Función auxiliar para obtener un array asociativo del resultado de un prepared statement 
- * usando el método antiguo (sin mysqlnd).
- * CRÍTICO: Aplica trim() inmediatamente para convertir campos vacíos de la DB a "".
- */
-function get_assoc_result($stmt) {
-    $meta = $stmt->result_metadata();
-    if (!$meta) {
-        return null;
-    }
-    
-    $fields = [];
-    $row = [];
-    
-    // 1. Obtener los nombres de las columnas y preparar las referencias
-    while ($field = $meta->fetch_field()) {
-        $fields[] = &$row[$field->name]; 
-    }
-    
-    // 2. Vincular las referencias a los resultados
-    if (!call_user_func_array([$stmt, 'bind_result'], $fields)) {
-        return null;
-    }
-    
-    // 3. Obtener la fila (fetch)
-    if ($stmt->fetch()) {
-        $result_row = [];
-        foreach ($row as $key => $val) {
-            // APLICACIÓN CRÍTICA DEL TRIM: Fuerza cualquier valor que sea solo espacio o caracter invisible a ""
-            if (is_string($val)) {
-                $result_row[$key] = trim($val);
-            } else {
-                $result_row[$key] = $val;
-            }
-        }
-        return $result_row;
-    }
-    return null;
-}
-
 // --- 1. Consulta de la solicitud principal ---
 $stmt = $mysqli_solicitud->prepare("SELECT * FROM sp_solicitud WHERE solicitud_id = ?");
 if (!$stmt) {
-    echo json_encode(["solicitud" => null, "err" => true, "statusText" => "Error al preparar la consulta: " . $mysqli_solicitud->error]);
+    echo json_encode([
+        "solicitud" => null,
+        "err" => true,
+        "statusText" => "Error al preparar la consulta: " . $mysqli_solicitud->error
+    ]);
     exit;
 }
 
 $stmt->bind_param("s", $id);
 $stmt->execute();
-$stmt->store_result();
+// >> APROVECHAMOS mysqlnd: Usamos get_result() y fetch_assoc() <<
+$result = $stmt->get_result(); 
 
-$solicitud = get_assoc_result($stmt);
-$stmt->close();
-
-if (!$solicitud) {
-    echo json_encode(["solicitud" => null, "err" => false, "statusText" => "Solicitud no encontrada"]);
+if ($result->num_rows === 0) {
+    echo json_encode([
+        "solicitud" => null,
+        "err" => false,
+        "statusText" => "Solicitud no encontrada"
+    ]);
+    $stmt->close();
     exit;
 }
+
+// Obtener el array asociativo. Los NULL de la DB se convierten a null de PHP.
+$solicitud = $result->fetch_assoc();
+$stmt->close(); 
+
 
 // Obtener IDs para consultas relacionadas
 $puestoId = $solicitud['solicitud_puesto_id'] ?? null;
@@ -79,6 +51,7 @@ $horarioId = $solicitud['solicitud_horario_id'] ?? null;
 $solicitanteId = $solicitud['solicitud_solicitante_id'] ?? null;
 $autorizador1Id = $solicitud['solicitud_autorizador1_id'] ?? null;
 
+
 // --- 2. Obtener nombre del Puesto ---
 $solicitud['solicitud_puesto_nombre'] = null;
 if ($puestoId) {
@@ -86,12 +59,10 @@ if ($puestoId) {
     if ($stmtPuesto) {
         $stmtPuesto->bind_param("s", $puestoId);
         $stmtPuesto->execute();
-        $stmtPuesto->store_result();
-        if ($stmtPuesto->num_rows > 0) {
-            $puestoNombre = '';
-            $stmtPuesto->bind_result($puestoNombre);
-            $stmtPuesto->fetch();
-            $solicitud['solicitud_puesto_nombre'] = trim($puestoNombre);
+        $resultPuesto = $stmtPuesto->get_result(); // Usando get_result()
+        if ($resultPuesto->num_rows > 0) {
+            $rowPuesto = $resultPuesto->fetch_assoc();
+            $solicitud['solicitud_puesto_nombre'] = $rowPuesto['nombre'];
         }
         $stmtPuesto->close();
     }
@@ -104,12 +75,11 @@ if ($sueldoId) {
     if ($stmtSueldo) {
         $stmtSueldo->bind_param("s", $sueldoId);
         $stmtSueldo->execute();
-        $stmtSueldo->store_result();
-        if ($stmtSueldo->num_rows > 0) {
-            $sueldoNombre = '';
-            $sueldoCantidad = '';
-            $stmtSueldo->bind_result($sueldoNombre, $sueldoCantidad);
-            $stmtSueldo->fetch();
+        $resultSueldo = $stmtSueldo->get_result();
+        if ($resultSueldo->num_rows > 0) {
+            $rowSueldo = $resultSueldo->fetch_assoc();
+            $sueldoNombre = $rowSueldo['sueldo_nombre'] ?? '';
+            $sueldoCantidad = $rowSueldo['sueldo_cantidad'] ?? '';
             $solicitud['solicitud_sueldo'] = trim($sueldoNombre) . ":" . trim($sueldoCantidad);
         }
         $stmtSueldo->close();
@@ -123,14 +93,13 @@ if ($horarioId) {
     if ($stmtHorario) {
         $stmtHorario->bind_param("s", $horarioId);
         $stmtHorario->execute();
-        $stmtHorario->store_result();
-        if ($stmtHorario->num_rows > 0) {
-            $horarioNombre = '';
-            $horaInicio = '';
-            $horaFinal = '';
-            $stmtHorario->bind_result($horarioNombre, $horaInicio, $horaFinal);
-            $stmtHorario->fetch();
-            $solicitud['solicitud_horario'] = trim($horarioNombre) . " :" . trim($horaInicio) . " a " . trim($horaFinal);
+        $resultHorario = $stmtHorario->get_result();
+        if ($resultHorario->num_rows > 0) {
+            $rowHorario = $resultHorario->fetch_assoc();
+            $nombre = $rowHorario['nombre_turno'] ?? '';
+            $inicio = $rowHorario['hora_inicio'] ?? '';
+            $final = $rowHorario['hora_termino'] ?? '';
+            $solicitud['solicitud_horario'] = trim($nombre) . " :" . trim($inicio) . " a " . trim($final);
         }
         $stmtHorario->close();
     }
@@ -143,14 +112,13 @@ if ($solicitanteId) {
     if ($stmtSolicitante) {
         $stmtSolicitante->bind_param("s", $solicitanteId);
         $stmtSolicitante->execute();
-        $stmtSolicitante->store_result();
-        if ($stmtSolicitante->num_rows > 0) {
-            $solicitanteNombre = '';
-            $solicitanteAP = '';
-            $solicitanteAM = '';
-            $stmtSolicitante->bind_result($solicitanteNombre, $solicitanteAP, $solicitanteAM);
-            $stmtSolicitante->fetch();
-            $solicitud['solicitud_solicitante'] = trim($solicitanteNombre) . " ". trim($solicitanteAP) . " " . trim($solicitanteAM);
+        $resultSolicitante = $stmtSolicitante->get_result();
+        if ($resultSolicitante->num_rows > 0) {
+            $row = $resultSolicitante->fetch_assoc();
+            $nombre = $row['nombre'] ?? '';
+            $ap = $row['apellido_paterno'] ?? '';
+            $am = $row['apellido_materno'] ?? '';
+            $solicitud['solicitud_solicitante'] = trim($nombre) . " ". trim($ap) . " " . trim($am);
         }
         $stmtSolicitante->close();
     }
@@ -163,28 +131,26 @@ if ($autorizador1Id) {
     if ($stmtAuth1) {
         $stmtAuth1->bind_param("s", $autorizador1Id);
         $stmtAuth1->execute();
-        $stmtAuth1->store_result();
-        if ($stmtAuth1->num_rows > 0) {
-            $auth1Nombre = '';
-            $auth1AP = '';
-            $auth1AM = '';
-            $stmtAuth1->bind_result($auth1Nombre, $auth1AP, $auth1AM);
-            $stmtAuth1->fetch();
-            $solicitud['solicitud_autorizador1'] = trim($auth1Nombre) . " " . trim($auth1AP) . " " . trim($auth1AM);
+        $resultAuth1 = $stmtAuth1->get_result();
+        if ($resultAuth1->num_rows > 0) {
+            $row = $resultAuth1->fetch_assoc();
+            $nombre = $row['nombre'] ?? '';
+            $ap = $row['apellido_paterno'] ?? '';
+            $am = $row['apellido_materno'] ?? '';
+            $solicitud['solicitud_autorizador1'] = trim($nombre) . " " . trim($ap) . " " . trim($am);
         }
         $stmtAuth1->close();
     }
 }
 
-// --- 7. Normalización Mínima y Segura ---
-
+// --- 7. Normalización Mínima y Segura (SÓLO para asegurar el formato JSON) ---
 /**
- * Normaliza solo valores nulos, falsos o cadenas vacías (ya limpiadas por trim) a una cadena vacía ("").
+ * Normaliza cualquier valor que sea null, false o una cadena vacía (luego del trim en la concatenación) a "".
  */
 function normalize_values_minimal($array) {
     foreach ($array as $key => $value) {
-        // Chequeamos si es NULL, FALSE, o una cadena vacía "" (resultado del trim)
-        if (is_null($value) || $value === false || $value === '') { 
+        // **OPCIONAL:** Se puede quitar si sabes que todos los campos vienen limpios
+        if (is_null($value) || $value === false || (is_string($value) && trim($value) === '')) { 
             $array[$key] = "";
         }
     }
@@ -195,7 +161,7 @@ function normalize_values_minimal($array) {
 echo "Primer printr del array antes de normalizar:\n";
 print_r($solicitud);
 
-$solicitud = normalize_values_minimal($solicitud); // <<< NO PUEDE FALLAR AQUÍ
+$solicitud = normalize_values_minimal($solicitud);
 
 echo "\nSegundo printr del array DESPUÉS de normalizar:\n";
 print_r($solicitud);
