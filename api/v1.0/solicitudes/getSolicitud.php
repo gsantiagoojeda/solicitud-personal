@@ -185,6 +185,7 @@ function utf8ize($mixed) {
     return $mixed;
 }
 
+print_r($solicitud);
 $solicitud = utf8ize($solicitud);
 
 print_r($solicitud);
