@@ -177,14 +177,24 @@ if ($autorizador1Id) {
 // 🧩 Normaliza valores vacíos o nulos antes de codificar
 function normalize_values($array) {
     foreach ($array as $key => $value) {
-      echo ("entro" . $value . $key);
+        // Mostrar depuración legible
+        echo "Procesando campo: {$key} → ";
+
         if (is_array($value)) {
-            $array[$key] = normalize_values($value);
-        } elseif (is_null($value) || $value === false) {
-            $array[$key] = ""; // o usa null si prefieres
+            echo "[array]\n";
+            $array[$key] = normalize_values($value); // recursivo
+        } elseif (is_null($value)) {
+            echo "NULL (convertido a \"\")\n";
+            $array[$key] = "";
+        } elseif ($value === false) {
+            echo "FALSE (convertido a \"\")\n";
+            $array[$key] = "";
         } elseif (is_string($value)) {
+            echo "String: {$value}\n";
             // Asegura codificación válida UTF-8
             $array[$key] = mb_convert_encoding($value, 'UTF-8', 'auto');
+        } else {
+            echo "Otro tipo (" . gettype($value) . "): {$value}\n";
         }
     }
     return $array;
