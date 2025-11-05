@@ -177,7 +177,7 @@ if ($autorizador1Id) {
 // 🧩 Normaliza valores vacíos o nulos antes de codificar
 function normalize_values($array) {
     foreach ($array as $key => $value) {
-      echo ("entro" $value);
+      echo ("entro" . $value);
         if (is_array($value)) {
             $array[$key] = normalize_values($value);
         } elseif (is_null($value) || $value === false) {
