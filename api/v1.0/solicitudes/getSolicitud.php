@@ -185,4 +185,4 @@ echo json_encode([
     "solicitud" => $solicitud,
     "err" => false,
     "statusText" => "Consulta exitosa"
-], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+]);
