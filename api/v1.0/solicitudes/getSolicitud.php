@@ -200,9 +200,10 @@ function normalize_values($array) {
     return $array;
 }
 
+print_r($solicitud);
 $solicitud = normalize_values($solicitud);
 
-
+echo "segundo printr $solicitud \n";
 print_r($solicitud);
 
 echo json_encode([
