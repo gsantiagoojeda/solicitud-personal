@@ -1,7 +1,7 @@
 <?php
 // ini_set('display_errors', 1);
 // ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL); // Descomentar estas líneas para depuración
+// error_reporting(E_ALL); // Descomentar para depuración
 
 require "../conexion_intranet.php";
 require "../conexion_vacaciones.php";
@@ -10,11 +10,10 @@ require "../conexion_turnos.php";
 
 header('Content-Type: application/json');
 
-// Usar $_POST['id_solicitud'] en un entorno real.
 // $id = $_POST['id_solicitud'];
 $id = "1"; // Valor de prueba
 
-// --- 1. Consulta de la solicitud principal ---
+// --- 1. Consulta de la solicitud principal (Método PHP 8.2 con get_result) ---
 $stmt = $mysqli_solicitud->prepare("SELECT * FROM sp_solicitud WHERE solicitud_id = ?");
 if (!$stmt) {
     echo json_encode([
@@ -25,37 +24,30 @@ if (!$stmt) {
     exit;
 }
 
-$stmt->bind_param("s", $id);
+// En el caso de MySQLi, se recomienda 'i' (integer) para IDs numéricos, 
+// pero 's' (string) funciona si el campo es tratado como texto en la DB. 
+// Usaremos 's' como en tu original.
+$stmt->bind_param("s", $id); 
 $stmt->execute();
-$result = $stmt->store_result();
+$result = $stmt->get_result(); // Usar get_result() para obtener el objeto de resultado
 
-if ($stmt->num_rows === 0) {
+if ($result->num_rows === 0) {
     echo json_encode([
         "solicitud" => null,
         "err" => false,
         "statusText" => "Solicitud no encontrada"
     ]);
+    $stmt->close();
     exit;
 }
 
-// Obtener metadata para asociar columnas
-$meta = $stmt->result_metadata();
-$fields = [];
-$row = [];
-
-while ($field = $meta->fetch_field()) {
-    $fields[] = &$row[$field->name]; 
-}
-
-call_user_func_array([$stmt, 'bind_result'], $fields);
-$stmt->fetch();
-
-// Copiar valores a un array asociativo
-$solicitud = [];
-foreach ($row as $key => $val) {
-    $solicitud[$key] = $val;
-}
+// Obtener el array asociativo directamente, maneja mejor los NULLs
+$solicitud = $result->fetch_assoc();
 $stmt->close();
+
+if (!$solicitud) {
+     $solicitud = []; // Asegurar que es un array si fetch_assoc falla extrañamente
+}
 
 // Obtener IDs para consultas relacionadas
 $puestoId = $solicitud['solicitud_puesto_id'] ?? null;
@@ -70,12 +62,11 @@ if ($puestoId) {
     if ($stmtPuesto) {
         $stmtPuesto->bind_param("s", $puestoId);
         $stmtPuesto->execute();
-        $stmtPuesto->store_result();
+        $resultPuesto = $stmtPuesto->get_result(); // Usar get_result()
 
-        if ($stmtPuesto->num_rows > 0) {
-            $stmtPuesto->bind_result($puestoNombre);
-            $stmtPuesto->fetch();
-            $solicitud['solicitud_puesto_nombre'] = $puestoNombre;
+        if ($resultPuesto->num_rows > 0) {
+            $rowPuesto = $resultPuesto->fetch_assoc();
+            $solicitud['solicitud_puesto_nombre'] = $rowPuesto['nombre'];
         } else {
             $solicitud['solicitud_puesto_nombre'] = null;
         }
@@ -93,12 +84,11 @@ if ($sueldoId) {
     if ($stmtSueldo) {
         $stmtSueldo->bind_param("s", $sueldoId);
         $stmtSueldo->execute();
-        $stmtSueldo->store_result();
+        $resultSueldo = $stmtSueldo->get_result();
 
-        if ($stmtSueldo->num_rows > 0) {
-            $stmtSueldo->bind_result($sueldoNombre, $sueldoCantidad);
-            $stmtSueldo->fetch();
-            $solicitud['solicitud_sueldo'] = $sueldoNombre . ":" .$sueldoCantidad;
+        if ($resultSueldo->num_rows > 0) {
+            $rowSueldo = $resultSueldo->fetch_assoc();
+            $solicitud['solicitud_sueldo'] = $rowSueldo['sueldo_nombre'] . ":" .$rowSueldo['sueldo_cantidad'];
         } else {
             $solicitud['solicitud_sueldo'] = null;
         }
@@ -116,12 +106,11 @@ if ($horarioId) {
     if ($stmtHorario) {
         $stmtHorario->bind_param("s", $horarioId);
         $stmtHorario->execute();
-        $stmtHorario->store_result();
+        $resultHorario = $stmtHorario->get_result();
 
-        if ($stmtHorario->num_rows > 0) {
-            $stmtHorario->bind_result($horarioNombre, $horaInicio, $horaFinal);
-            $stmtHorario->fetch();
-            $solicitud['solicitud_horario'] = $horarioNombre . " :" .$horaInicio. " a ". $horaFinal;
+        if ($resultHorario->num_rows > 0) {
+            $rowHorario = $resultHorario->fetch_assoc();
+            $solicitud['solicitud_horario'] = $rowHorario['nombre_turno'] . " :" .$rowHorario['hora_inicio']. " a ". $rowHorario['hora_termino'];
         } else {
             $solicitud['solicitud_horario'] = null;
         }
@@ -139,12 +128,11 @@ if ($solicitanteId) {
     if ($stmtSolicitante) {
         $stmtSolicitante->bind_param("s", $solicitanteId);
         $stmtSolicitante->execute();
-        $stmtSolicitante->store_result();
+        $resultSolicitante = $stmtSolicitante->get_result();
 
-        if ($stmtSolicitante->num_rows > 0) {
-            $stmtSolicitante->bind_result($solicitanteNombre, $solicitanteAP, $solicitanteAM);
-            $stmtSolicitante->fetch();
-            $solicitud['solicitud_solicitante'] = $solicitanteNombre . " ". $solicitanteAP . " " . $solicitanteAM;
+        if ($resultSolicitante->num_rows > 0) {
+            $rowSolicitante = $resultSolicitante->fetch_assoc();
+            $solicitud['solicitud_solicitante'] = $rowSolicitante['nombre'] . " ". $rowSolicitante['apellido_paterno'] . " " . $rowSolicitante['apellido_materno'];
         } else {
             $solicitud['solicitud_solicitante'] = null;
         }
@@ -162,12 +150,11 @@ if ($autorizador1Id) {
     if ($stmtAuth1) {
         $stmtAuth1->bind_param("s", $autorizador1Id);
         $stmtAuth1->execute();
-        $stmtAuth1->store_result();
+        $resultAuth1 = $stmtAuth1->get_result();
 
-        if ($stmtAuth1->num_rows > 0) {
-            $stmtAuth1->bind_result($auth1Nombre, $auth1AP, $auth1AM); // Usar variables diferentes para evitar conflicto
-            $stmtAuth1->fetch();
-            $solicitud['solicitud_autorizador1'] = $auth1Nombre . " " . $auth1AP . " " . $auth1AM;
+        if ($resultAuth1->num_rows > 0) {
+            $rowAuth1 = $resultAuth1->fetch_assoc();
+            $solicitud['solicitud_autorizador1'] = $rowAuth1['nombre'] . " " . $rowAuth1['apellido_paterno'] . " " . $rowAuth1['apellido_materno'];
         } else {
             $solicitud['solicitud_autorizador1'] = null;
         }
@@ -179,10 +166,11 @@ if ($autorizador1Id) {
     $solicitud['solicitud_autorizador1'] = null;
 }
 
-// --- 7. Función de Normalización Mejorada ---
+
+// --- 7. Función de Normalización ULTRA-ROBUSTA para PHP 8.2 ---
 /**
  * Normaliza valores nulos, falsos o cadenas vacías/solo espacios a una cadena vacía ("").
- * También asegura codificación UTF-8.
+ * Usa regex para limpiar caracteres no visibles que pueden venir de la DB.
  */
 function normalize_values($array) {
     foreach ($array as $key => $value) {
@@ -196,14 +184,14 @@ function normalize_values($array) {
             echo "NULL/FALSE (convertido a \"\")\n";
             $array[$key] = "";
         } elseif (is_string($value)) {
-            // Eliminar espacios en blanco y verificar si queda vacío
-            $trimmed_value = trim($value);
-            
-            if ($trimmed_value === "") {
-                echo "Cadena vacía o solo espacios (convertido a \"\")\n";
+            // Limpieza más agresiva: elimina espacios y caracteres de control (como \n, \t)
+            $cleaned_value = preg_replace('/[\p{C}\p{Z}]/u', '', $value);
+
+            if ($cleaned_value === "") {
+                echo "Cadena vacía o solo caracteres de control (convertido a \"\")\n";
                 $array[$key] = "";
             } else {
-                echo "String (limpio): {$trimmed_value}\n";
+                echo "String (limpio): {$cleaned_value}\n";
                 // Asegura codificación válida UTF-8
                 $array[$key] = mb_convert_encoding($value, 'UTF-8', 'auto');
             }
@@ -218,7 +206,6 @@ function normalize_values($array) {
 print_r($solicitud);
 $solicitud = normalize_values($solicitud);
 
-// CORRECCIÓN: Evitar hacer echo de un array directamente
 echo "segundo printr \n";
 print_r($solicitud);
 
@@ -229,6 +216,6 @@ echo json_encode([
     "statusText" => "Consulta exitosa"
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
-// Nota: Eliminé el '}' final que parecía sobrar en tu código original.
+// Nota: He usado `get_result()` y `fetch_assoc()` en las consultas secundarias también.
 
 ?>
