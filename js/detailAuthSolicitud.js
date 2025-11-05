@@ -27,36 +27,41 @@ export default async function detailAuthSolicitud(data) {
 
     const $form = d.getElementById("form-create-solicitud");
 
-    d.getElementById("form-create-solicitud").textContent =
+    d.getElementById("puesto").textContent =
       solicitud["solicitud_puesto_nombre"];
-    $form["puesto"].setAttribute(
+    d.getElementById("puesto").setAttribute(
       "data-id",
       `${solicitud["solicitud_puesto_id"]}`
     );
 
-    $form["solicitante"].textContent = solicitud["solicitud_solicitante"];
-    $form["solicitante"].setAttribute(
+    d.getElementById("solicitante").textContent =
+      solicitud["solicitud_solicitante"];
+    d.getElementById("solicitante").setAttribute(
       "data-id",
       `${solicitud["solicitud_solicitante_id"]}`
     );
 
-    $form["auth1-name"].textContent = solicitud["solicitud_autorizador1"];
-    $form["auth1-name"].setAttribute(
+    d.getElementById("auth1-name").textContent =
+      solicitud["solicitud_autorizador1"];
+    d.getElementById("auth1-name").setAttribute(
       "data-id",
       `${solicitud["solicitud_autorizador1_id"]}`
     );
-    $form["auth1-date"].textContent = solicitud["solicitud_date_autorizacion1"];
+    d.getElementById("auth1-date").textContent =
+      solicitud["solicitud_date_autorizacion1"];
     if (solicitud["solicitud_autorizador1_id"]) {
       d.getElementById("container-auths").classList.remove("hidden");
       d.getElementById("container-auth1").classList.remove("hidden");
     }
 
-    $form["auth2-name"].textContent = solicitud["solicitud_autorizador2"];
-    $form["auth2-name"].setAttribute(
+    d.getElementById("auth2-name").textContent =
+      solicitud["solicitud_autorizador2"];
+    d.getElementById("auth2-name").setAttribute(
       "data-id",
       `${solicitud["solicitud_autorizador2_id"]}`
     );
-    $form["auth2-date"].textContent = solicitud["solicitud_date_autorizacion2"];
+    d.getElementById("auth2-date").textContent =
+      solicitud["solicitud_date_autorizacion2"];
     if (solicitud["solicitud_autorizador2_id"]) {
       d.getElementById("container-auths").classList.remove("hidden");
       d.getElementById("container-auth2").classList.remove("hidden");
