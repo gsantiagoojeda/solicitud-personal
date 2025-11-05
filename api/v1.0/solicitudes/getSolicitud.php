@@ -25,7 +25,8 @@ if (!isset($_GET["solicitud_id"])) {
     ]));
 }
 
-$solicitud_id = $_GET["solicitud_id"];
+// $solicitud_id = $_GET["solicitud_id"];
+$solicitud_id = "1";
 
 $query = "
 SELECT 
