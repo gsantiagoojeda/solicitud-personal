@@ -52,6 +52,7 @@ function sanitizeArray($data) {
     return $data;
 }
 
+print_r($solicitud);
 $solicitud = sanitizeArray($solicitud);
 
 // --- Respuesta final ---
