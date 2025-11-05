@@ -157,14 +157,10 @@ function normalize_values_minimal($array) {
     return $array;
 }
 
-// --- Salida (Depuración) ---
-echo "Primer printr del array antes de normalizar:\n";
-print_r($solicitud);
+
 
 $solicitud = normalize_values_minimal($solicitud);
 
-echo "\nSegundo printr del array DESPUÉS de normalizar:\n";
-print_r($solicitud);
 
 // --- Salida Final JSON ---
 echo json_encode([
