@@ -13,7 +13,7 @@ header('Content-Type: application/json');
 // $id = $_POST['id_solicitud'];
 $id = "1"; // Valor de prueba
 
-// --- 1. Consulta de la solicitud principal (Método PHP 8.2 con get_result) ---
+// --- 1. Consulta de la solicitud principal ---
 $stmt = $mysqli_solicitud->prepare("SELECT * FROM sp_solicitud WHERE solicitud_id = ?");
 if (!$stmt) {
     echo json_encode([
@@ -24,12 +24,9 @@ if (!$stmt) {
     exit;
 }
 
-// En el caso de MySQLi, se recomienda 'i' (integer) para IDs numéricos, 
-// pero 's' (string) funciona si el campo es tratado como texto en la DB. 
-// Usaremos 's' como en tu original.
 $stmt->bind_param("s", $id); 
 $stmt->execute();
-$result = $stmt->get_result(); // Usar get_result() para obtener el objeto de resultado
+$result = $stmt->get_result();
 
 if ($result->num_rows === 0) {
     echo json_encode([
@@ -41,12 +38,11 @@ if ($result->num_rows === 0) {
     exit;
 }
 
-// Obtener el array asociativo directamente, maneja mejor los NULLs
 $solicitud = $result->fetch_assoc();
 $stmt->close();
 
 if (!$solicitud) {
-     $solicitud = []; // Asegurar que es un array si fetch_assoc falla extrañamente
+     $solicitud = [];
 }
 
 // Obtener IDs para consultas relacionadas
@@ -62,7 +58,7 @@ if ($puestoId) {
     if ($stmtPuesto) {
         $stmtPuesto->bind_param("s", $puestoId);
         $stmtPuesto->execute();
-        $resultPuesto = $stmtPuesto->get_result(); // Usar get_result()
+        $resultPuesto = $stmtPuesto->get_result();
 
         if ($resultPuesto->num_rows > 0) {
             $rowPuesto = $resultPuesto->fetch_assoc();
@@ -166,33 +162,40 @@ if ($autorizador1Id) {
     $solicitud['solicitud_autorizador1'] = null;
 }
 
+// --- 7. PARCHE FUERTE: Limpieza y Conversión Inicial ANTES de normalize_values ---
+foreach ($solicitud as $key => $value) {
+    if (is_string($value)) {
+        // Limpiamos espacios en cadenas
+        $solicitud[$key] = trim($value); 
+    } elseif (empty($value) && !is_numeric($value)) { 
+        // Si es empty (que incluye NULL, false, '') y NO es el número 0
+        $solicitud[$key] = null; // Lo forzamos a NULL
+    } 
+    // Los números 0, int, float y cadenas con contenido pasan sin cambios
+}
+// -----------------------------------------------------------------------------
 
-// --- 7. Función de Normalización ULTRA-ROBUSTA para PHP 8.2 ---
-/**
- * Normaliza valores nulos, falsos o cadenas vacías/solo espacios a una cadena vacía ("").
- * Usa regex para limpiar caracteres no visibles que pueden venir de la DB.
- */
+// --- 8. Función de Normalización ULTRA-ROBUSTA ---
 function normalize_values($array) {
     foreach ($array as $key => $value) {
-        // Muestra depuración legible
         echo "Procesando campo: {$key} → ";
 
         if (is_array($value)) {
             echo "[array]\n";
-            $array[$key] = normalize_values($value); // Recursivo
-        } elseif (is_null($value) || $value === false) {
-            echo "NULL/FALSE (convertido a \"\")\n";
+            $array[$key] = normalize_values($value); 
+        } elseif (is_null($value) || $value === false || $value === '') {
+            // Atrapa NULL, FALSE, y la cadena vacía ("") resultante del trim() en el parche.
+            echo "NULL/FALSE/VACIO (convertido a \"\")\n";
             $array[$key] = "";
         } elseif (is_string($value)) {
-            // Limpieza más agresiva: elimina espacios y caracteres de control (como \n, \t)
+            // Limpieza más agresiva de caracteres invisibles
             $cleaned_value = preg_replace('/[\p{C}\p{Z}]/u', '', $value);
 
             if ($cleaned_value === "") {
-                echo "Cadena vacía o solo caracteres de control (convertido a \"\")\n";
+                echo "Cadena limpia vacía (convertido a \"\")\n";
                 $array[$key] = "";
             } else {
                 echo "String (limpio): {$cleaned_value}\n";
-                // Asegura codificación válida UTF-8
                 $array[$key] = mb_convert_encoding($value, 'UTF-8', 'auto');
             }
         } else {
@@ -202,20 +205,18 @@ function normalize_values($array) {
     return $array;
 }
 
-// --- 8. Aplicar y Mostrar Resultados (Depuración) ---
+// --- 9. Aplicar y Mostrar Resultados (Depuración) ---
 print_r($solicitud);
 $solicitud = normalize_values($solicitud);
 
 echo "segundo printr \n";
 print_r($solicitud);
 
-// --- 9. Salida Final JSON ---
+// --- 10. Salida Final JSON ---
 echo json_encode([
     "solicitud" => $solicitud,
     "err" => false,
     "statusText" => "Consulta exitosa"
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-
-// Nota: He usado `get_result()` y `fetch_assoc()` en las consultas secundarias también.
 
 ?>
