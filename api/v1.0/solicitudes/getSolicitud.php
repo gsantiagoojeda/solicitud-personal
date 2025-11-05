@@ -200,8 +200,8 @@ function normalize_values($array) {
     return $array;
 }
 
-$solicitud = normalize_values($solicitud);
 print_r($solicitud);
+$solicitud = normalize_values($solicitud);
 
 echo "segundo printr $solicitud \n";
 print_r($solicitud);
