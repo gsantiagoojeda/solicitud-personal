@@ -62,6 +62,8 @@ $horarioId = $solicitud['solicitud_horario_id'] ?? null;
 $solicitanteId = $solicitud['solicitud_solicitante_id'] ?? null;
 $autorizador1Id = $solicitud['solicitud_autorizador1_id'] ?? null;
 
+echo "prueba5";
+
 if ($puestoId) {
     $stmtPuesto = $mysqli_intranet->prepare("SELECT nombre FROM puestos WHERE id_archivo = ?");
     if ($stmtPuesto) {
@@ -84,6 +86,7 @@ if ($puestoId) {
     $solicitud['solicitud_puesto_nombre'] = null;
 }
 
+echo "prueba4";
 if ($sueldoId) {
     $stmtSueldo = $mysqli_solicitud->prepare("SELECT sueldo_nombre, sueldo_cantidad FROM sp_sueldos WHERE sueldo_id = ?");
     if ($stmtSueldo) {
@@ -106,6 +109,7 @@ if ($sueldoId) {
     $solicitud['solicitud_sueldo'] = null;
 }
 
+echo "prueba3";
 
 if ($horarioId) {
     $stmtHorario = $mysqli_turnos->prepare("SELECT nombre_turno, hora_inicio, hora_termino FROM turnos WHERE id_turnos = ?");
@@ -129,6 +133,8 @@ if ($horarioId) {
     $solicitud['solicitud_horario'] = null;
 }
 
+echo "prueba2";
+
 if ($solicitanteId) {
     $stmtSolicitante = $mysqli_vacaciones->prepare("SELECT nombre, apellido_paterno, apellido_materno FROM empleados WHERE id= ?");
     if ($stmtSolicitante) {
@@ -150,6 +156,8 @@ if ($solicitanteId) {
 } else {
     $solicitud['solicitud_solicitante'] = null;
 }
+
+echo "prueba1";
 
 if ($autorizador1Id) {
     $stmtAuth1 = $mysqli_vacaciones->prepare("SELECT nombre, apellido_paterno, apellido_materno FROM empleados WHERE id= ?");
