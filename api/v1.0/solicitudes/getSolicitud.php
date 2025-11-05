@@ -1,7 +1,7 @@
 <?php
 // ini_set('display_errors', 1);
 // ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL); // Descomentar para depuración
+// error_reporting(E_ALL); // Mantén esto descomentado para ver cualquier otro error
 
 require "../conexion_intranet.php";
 require "../conexion_vacaciones.php";
@@ -16,8 +16,7 @@ $id = "1"; // ID de prueba
 /**
  * Función auxiliar para obtener un array asociativo del resultado de un prepared statement 
  * usando el método antiguo (sin mysqlnd).
- * @param mysqli_stmt $stmt El statement ejecutado.
- * @return array|null Un array asociativo de la fila, o null si no hay filas.
+ * CRÍTICO: Aplica trim() inmediatamente para convertir campos vacíos de la DB a "".
  */
 function get_assoc_result($stmt) {
     $meta = $stmt->result_metadata();
@@ -40,11 +39,9 @@ function get_assoc_result($stmt) {
     
     // 3. Obtener la fila (fetch)
     if ($stmt->fetch()) {
-        // 4. Copiar los valores a un nuevo array para romper la referencia
         $result_row = [];
         foreach ($row as $key => $val) {
-            // Aplicar trim inmediatamente para limpiar cualquier espacio/caracter invisible que
-            // el fetch haya devuelto. Esto es CRÍTICO sin mysqlnd.
+            // APLICACIÓN CRÍTICA DEL TRIM: Fuerza cualquier valor que sea solo espacio o caracter invisible a ""
             if (is_string($val)) {
                 $result_row[$key] = trim($val);
             } else {
@@ -59,7 +56,6 @@ function get_assoc_result($stmt) {
 // --- 1. Consulta de la solicitud principal ---
 $stmt = $mysqli_solicitud->prepare("SELECT * FROM sp_solicitud WHERE solicitud_id = ?");
 if (!$stmt) {
-    // Manejo de error de preparación
     echo json_encode(["solicitud" => null, "err" => true, "statusText" => "Error al preparar la consulta: " . $mysqli_solicitud->error]);
     exit;
 }
@@ -69,7 +65,7 @@ $stmt->execute();
 $stmt->store_result();
 
 $solicitud = get_assoc_result($stmt);
-$stmt->close(); // Cerramos el statement principal
+$stmt->close();
 
 if (!$solicitud) {
     echo json_encode(["solicitud" => null, "err" => false, "statusText" => "Solicitud no encontrada"]);
@@ -82,9 +78,6 @@ $sueldoId = $solicitud['solicitud_sueldo_id'] ?? null;
 $horarioId = $solicitud['solicitud_horario_id'] ?? null;
 $solicitanteId = $solicitud['solicitud_solicitante_id'] ?? null;
 $autorizador1Id = $solicitud['solicitud_autorizador1_id'] ?? null;
-
-// Las consultas secundarias usan el mismo patrón simple de bind/fetch
-// -------------------------------------------------------------------
 
 // --- 2. Obtener nombre del Puesto ---
 $solicitud['solicitud_puesto_nombre'] = null;
@@ -117,7 +110,6 @@ if ($sueldoId) {
             $sueldoCantidad = '';
             $stmtSueldo->bind_result($sueldoNombre, $sueldoCantidad);
             $stmtSueldo->fetch();
-            // Aplicamos trim y concatenamos
             $solicitud['solicitud_sueldo'] = trim($sueldoNombre) . ":" . trim($sueldoCantidad);
         }
         $stmtSueldo->close();
@@ -138,7 +130,6 @@ if ($horarioId) {
             $horaFinal = '';
             $stmtHorario->bind_result($horarioNombre, $horaInicio, $horaFinal);
             $stmtHorario->fetch();
-            // Aplicamos trim y concatenamos
             $solicitud['solicitud_horario'] = trim($horarioNombre) . " :" . trim($horaInicio) . " a " . trim($horaFinal);
         }
         $stmtHorario->close();
@@ -159,7 +150,6 @@ if ($solicitanteId) {
             $solicitanteAM = '';
             $stmtSolicitante->bind_result($solicitanteNombre, $solicitanteAP, $solicitanteAM);
             $stmtSolicitante->fetch();
-            // Aplicamos trim a cada parte del nombre
             $solicitud['solicitud_solicitante'] = trim($solicitanteNombre) . " ". trim($solicitanteAP) . " " . trim($solicitanteAM);
         }
         $stmtSolicitante->close();
@@ -180,28 +170,23 @@ if ($autorizador1Id) {
             $auth1AM = '';
             $stmtAuth1->bind_result($auth1Nombre, $auth1AP, $auth1AM);
             $stmtAuth1->fetch();
-            // Aplicamos trim a cada parte del nombre
             $solicitud['solicitud_autorizador1'] = trim($auth1Nombre) . " " . trim($auth1AP) . " " . trim($auth1AM);
         }
         $stmtAuth1->close();
     }
 }
 
-// -------------------------------------------------------------------
-// Normalización Final
-// La limpieza crítica (trim) ya se hizo en el momento del fetch.
-// Esta función ahora solo se centra en asegurar "" y UTF-8.
+// --- 7. Normalización Mínima y Segura ---
 
-function normalize_values_simple($array) {
+/**
+ * Normaliza solo valores nulos, falsos o cadenas vacías (ya limpiadas por trim) a una cadena vacía ("").
+ */
+function normalize_values_minimal($array) {
     foreach ($array as $key => $value) {
-        // La depuración se omite para la versión final, pero la lógica es:
-        // Si el valor es NULL, false, o una cadena vacía (después de trim), lo hacemos ""
+        // Chequeamos si es NULL, FALSE, o una cadena vacía "" (resultado del trim)
         if (is_null($value) || $value === false || $value === '') { 
             $array[$key] = "";
-        } elseif (is_string($value)) {
-            // Aseguramos codificación válida UTF-8
-            $array[$key] = mb_convert_encoding($value, 'UTF-8', 'auto');
-        } 
+        }
     }
     return $array;
 }
@@ -210,7 +195,7 @@ function normalize_values_simple($array) {
 echo "Primer printr del array antes de normalizar:\n";
 print_r($solicitud);
 
-$solicitud = normalize_values_simple($solicitud);
+$solicitud = normalize_values_minimal($solicitud); // <<< NO PUEDE FALLAR AQUÍ
 
 echo "\nSegundo printr del array DESPUÉS de normalizar:\n";
 print_r($solicitud);
