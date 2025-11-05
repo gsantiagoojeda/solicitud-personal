@@ -180,7 +180,7 @@ if ($autorizador1Id) {
 } else {
     $solicitud['solicitud_autorizador1'] = null;
 }
-
+echo "prueba0";
 echo json_encode([
     "solicitud" => $solicitud,
     "err" => false,
