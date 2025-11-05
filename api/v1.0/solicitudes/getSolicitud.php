@@ -172,7 +172,21 @@ if ($autorizador1Id) {
 } else {
     $solicitud['solicitud_autorizador1'] = null;
 }
-print_r($solicitud);
+
+// Convierte recursivamente todos los valores del array a UTF-8
+function utf8ize($mixed) {
+    if (is_array($mixed)) {
+        foreach ($mixed as $key => $value) {
+            $mixed[$key] = utf8ize($value);
+        }
+    } elseif (is_string($mixed)) {
+        return mb_convert_encoding($mixed, 'UTF-8', 'auto');
+    }
+    return $mixed;
+}
+
+$solicitud = utf8ize($solicitud);
+
 echo json_encode([
     "solicitud" => $solicitud,
     "err" => false,
