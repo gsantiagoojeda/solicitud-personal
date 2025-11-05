@@ -11,38 +11,69 @@ require "../conexion_turnos.php";
 header('Content-Type: application/json');
 
 // $id = $_POST['id_solicitud'];
-$id = "1"; // Valor de prueba
+$id = "1"; // ID de prueba
+
+/**
+ * Función auxiliar para obtener un array asociativo del resultado de un prepared statement 
+ * usando el método antiguo (sin mysqlnd).
+ * @param mysqli_stmt $stmt El statement ejecutado.
+ * @return array|null Un array asociativo de la fila, o null si no hay filas.
+ */
+function get_assoc_result($stmt) {
+    $meta = $stmt->result_metadata();
+    if (!$meta) {
+        return null;
+    }
+    
+    $fields = [];
+    $row = [];
+    
+    // 1. Obtener los nombres de las columnas y preparar las referencias
+    while ($field = $meta->fetch_field()) {
+        $fields[] = &$row[$field->name]; 
+    }
+    
+    // 2. Vincular las referencias a los resultados
+    if (!call_user_func_array([$stmt, 'bind_result'], $fields)) {
+        return null;
+    }
+    
+    // 3. Obtener la fila (fetch)
+    if ($stmt->fetch()) {
+        // 4. Copiar los valores a un nuevo array para romper la referencia
+        $result_row = [];
+        foreach ($row as $key => $val) {
+            // Aplicar trim inmediatamente para limpiar cualquier espacio/caracter invisible que
+            // el fetch haya devuelto. Esto es CRÍTICO sin mysqlnd.
+            if (is_string($val)) {
+                $result_row[$key] = trim($val);
+            } else {
+                $result_row[$key] = $val;
+            }
+        }
+        return $result_row;
+    }
+    return null;
+}
 
 // --- 1. Consulta de la solicitud principal ---
 $stmt = $mysqli_solicitud->prepare("SELECT * FROM sp_solicitud WHERE solicitud_id = ?");
 if (!$stmt) {
-    echo json_encode([
-        "solicitud" => null,
-        "err" => true,
-        "statusText" => "Error al preparar la consulta: " . $mysqli_solicitud->error
-    ]);
+    // Manejo de error de preparación
+    echo json_encode(["solicitud" => null, "err" => true, "statusText" => "Error al preparar la consulta: " . $mysqli_solicitud->error]);
     exit;
 }
 
-$stmt->bind_param("s", $id); 
+$stmt->bind_param("s", $id);
 $stmt->execute();
-$result = $stmt->get_result();
+$stmt->store_result();
 
-if ($result->num_rows === 0) {
-    echo json_encode([
-        "solicitud" => null,
-        "err" => false,
-        "statusText" => "Solicitud no encontrada"
-    ]);
-    $stmt->close();
-    exit;
-}
-
-$solicitud = $result->fetch_assoc();
-$stmt->close();
+$solicitud = get_assoc_result($stmt);
+$stmt->close(); // Cerramos el statement principal
 
 if (!$solicitud) {
-     $solicitud = [];
+    echo json_encode(["solicitud" => null, "err" => false, "statusText" => "Solicitud no encontrada"]);
+    exit;
 }
 
 // Obtener IDs para consultas relacionadas
@@ -52,167 +83,139 @@ $horarioId = $solicitud['solicitud_horario_id'] ?? null;
 $solicitanteId = $solicitud['solicitud_solicitante_id'] ?? null;
 $autorizador1Id = $solicitud['solicitud_autorizador1_id'] ?? null;
 
+// Las consultas secundarias usan el mismo patrón simple de bind/fetch
+// -------------------------------------------------------------------
+
 // --- 2. Obtener nombre del Puesto ---
+$solicitud['solicitud_puesto_nombre'] = null;
 if ($puestoId) {
     $stmtPuesto = $mysqli_intranet->prepare("SELECT nombre FROM puestos WHERE id_archivo = ?");
     if ($stmtPuesto) {
         $stmtPuesto->bind_param("s", $puestoId);
         $stmtPuesto->execute();
-        $resultPuesto = $stmtPuesto->get_result();
-
-        if ($resultPuesto->num_rows > 0) {
-            $rowPuesto = $resultPuesto->fetch_assoc();
-            $solicitud['solicitud_puesto_nombre'] = $rowPuesto['nombre'];
-        } else {
-            $solicitud['solicitud_puesto_nombre'] = null;
+        $stmtPuesto->store_result();
+        if ($stmtPuesto->num_rows > 0) {
+            $puestoNombre = '';
+            $stmtPuesto->bind_result($puestoNombre);
+            $stmtPuesto->fetch();
+            $solicitud['solicitud_puesto_nombre'] = trim($puestoNombre);
         }
         $stmtPuesto->close();
-    } else {
-        $solicitud['solicitud_puesto_nombre'] = null;
     }
-} else {
-    $solicitud['solicitud_puesto_nombre'] = null;
 }
 
 // --- 3. Obtener Sueldo ---
+$solicitud['solicitud_sueldo'] = null;
 if ($sueldoId) {
     $stmtSueldo = $mysqli_solicitud->prepare("SELECT sueldo_nombre, sueldo_cantidad FROM sp_sueldos WHERE sueldo_id = ?");
     if ($stmtSueldo) {
         $stmtSueldo->bind_param("s", $sueldoId);
         $stmtSueldo->execute();
-        $resultSueldo = $stmtSueldo->get_result();
-
-        if ($resultSueldo->num_rows > 0) {
-            $rowSueldo = $resultSueldo->fetch_assoc();
-            $solicitud['solicitud_sueldo'] = $rowSueldo['sueldo_nombre'] . ":" .$rowSueldo['sueldo_cantidad'];
-        } else {
-            $solicitud['solicitud_sueldo'] = null;
+        $stmtSueldo->store_result();
+        if ($stmtSueldo->num_rows > 0) {
+            $sueldoNombre = '';
+            $sueldoCantidad = '';
+            $stmtSueldo->bind_result($sueldoNombre, $sueldoCantidad);
+            $stmtSueldo->fetch();
+            // Aplicamos trim y concatenamos
+            $solicitud['solicitud_sueldo'] = trim($sueldoNombre) . ":" . trim($sueldoCantidad);
         }
         $stmtSueldo->close();
-    } else {
-        $solicitud['solicitud_sueldo'] = null;
     }
-} else {
-    $solicitud['solicitud_sueldo'] = null;
 }
 
 // --- 4. Obtener Horario ---
+$solicitud['solicitud_horario'] = null;
 if ($horarioId) {
     $stmtHorario = $mysqli_turnos->prepare("SELECT nombre_turno, hora_inicio, hora_termino FROM turnos WHERE id_turnos = ?");
     if ($stmtHorario) {
         $stmtHorario->bind_param("s", $horarioId);
         $stmtHorario->execute();
-        $resultHorario = $stmtHorario->get_result();
-
-        if ($resultHorario->num_rows > 0) {
-            $rowHorario = $resultHorario->fetch_assoc();
-            $solicitud['solicitud_horario'] = $rowHorario['nombre_turno'] . " :" .$rowHorario['hora_inicio']. " a ". $rowHorario['hora_termino'];
-        } else {
-            $solicitud['solicitud_horario'] = null;
+        $stmtHorario->store_result();
+        if ($stmtHorario->num_rows > 0) {
+            $horarioNombre = '';
+            $horaInicio = '';
+            $horaFinal = '';
+            $stmtHorario->bind_result($horarioNombre, $horaInicio, $horaFinal);
+            $stmtHorario->fetch();
+            // Aplicamos trim y concatenamos
+            $solicitud['solicitud_horario'] = trim($horarioNombre) . " :" . trim($horaInicio) . " a " . trim($horaFinal);
         }
         $stmtHorario->close();
-    } else {
-        $solicitud['solicitud_horario'] = null;
     }
-} else {
-    $solicitud['solicitud_horario'] = null;
 }
 
 // --- 5. Obtener Solicitante ---
+$solicitud['solicitud_solicitante'] = null;
 if ($solicitanteId) {
     $stmtSolicitante = $mysqli_vacaciones->prepare("SELECT nombre, apellido_paterno, apellido_materno FROM empleados WHERE id= ?");
     if ($stmtSolicitante) {
         $stmtSolicitante->bind_param("s", $solicitanteId);
         $stmtSolicitante->execute();
-        $resultSolicitante = $stmtSolicitante->get_result();
-
-        if ($resultSolicitante->num_rows > 0) {
-            $rowSolicitante = $resultSolicitante->fetch_assoc();
-            $solicitud['solicitud_solicitante'] = $rowSolicitante['nombre'] . " ". $rowSolicitante['apellido_paterno'] . " " . $rowSolicitante['apellido_materno'];
-        } else {
-            $solicitud['solicitud_solicitante'] = null;
+        $stmtSolicitante->store_result();
+        if ($stmtSolicitante->num_rows > 0) {
+            $solicitanteNombre = '';
+            $solicitanteAP = '';
+            $solicitanteAM = '';
+            $stmtSolicitante->bind_result($solicitanteNombre, $solicitanteAP, $solicitanteAM);
+            $stmtSolicitante->fetch();
+            // Aplicamos trim a cada parte del nombre
+            $solicitud['solicitud_solicitante'] = trim($solicitanteNombre) . " ". trim($solicitanteAP) . " " . trim($solicitanteAM);
         }
         $stmtSolicitante->close();
-    } else {
-        $solicitud['solicitud_solicitante'] = null;
     }
-} else {
-    $solicitud['solicitud_solicitante'] = null;
 }
 
 // --- 6. Obtener Autorizador 1 ---
+$solicitud['solicitud_autorizador1'] = null;
 if ($autorizador1Id) {
     $stmtAuth1 = $mysqli_vacaciones->prepare("SELECT nombre, apellido_paterno, apellido_materno FROM empleados WHERE id= ?");
     if ($stmtAuth1) {
         $stmtAuth1->bind_param("s", $autorizador1Id);
         $stmtAuth1->execute();
-        $resultAuth1 = $stmtAuth1->get_result();
-
-        if ($resultAuth1->num_rows > 0) {
-            $rowAuth1 = $resultAuth1->fetch_assoc();
-            $solicitud['solicitud_autorizador1'] = $rowAuth1['nombre'] . " " . $rowAuth1['apellido_paterno'] . " " . $rowAuth1['apellido_materno'];
-        } else {
-            $solicitud['solicitud_autorizador1'] = null;
+        $stmtAuth1->store_result();
+        if ($stmtAuth1->num_rows > 0) {
+            $auth1Nombre = '';
+            $auth1AP = '';
+            $auth1AM = '';
+            $stmtAuth1->bind_result($auth1Nombre, $auth1AP, $auth1AM);
+            $stmtAuth1->fetch();
+            // Aplicamos trim a cada parte del nombre
+            $solicitud['solicitud_autorizador1'] = trim($auth1Nombre) . " " . trim($auth1AP) . " " . trim($auth1AM);
         }
         $stmtAuth1->close();
-    } else {
-        $solicitud['solicitud_autorizador1'] = null;
     }
-} else {
-    $solicitud['solicitud_autorizador1'] = null;
 }
 
-// --- 7. PARCHE FUERTE: Limpieza y Conversión Inicial ANTES de normalize_values ---
-foreach ($solicitud as $key => $value) {
-    if (is_string($value)) {
-        // Limpiamos espacios en cadenas
-        $solicitud[$key] = trim($value); 
-    } elseif (empty($value) && !is_numeric($value)) { 
-        // Si es empty (que incluye NULL, false, '') y NO es el número 0
-        $solicitud[$key] = null; // Lo forzamos a NULL
-    } 
-    // Los números 0, int, float y cadenas con contenido pasan sin cambios
-}
-// -----------------------------------------------------------------------------
+// -------------------------------------------------------------------
+// Normalización Final
+// La limpieza crítica (trim) ya se hizo en el momento del fetch.
+// Esta función ahora solo se centra en asegurar "" y UTF-8.
 
-// --- 8. Función de Normalización ULTRA-ROBUSTA ---
-function normalize_values($array) {
+function normalize_values_simple($array) {
     foreach ($array as $key => $value) {
-        echo "Procesando campo: {$key} → ";
-
-        if (is_array($value)) {
-            echo "[array]\n";
-            $array[$key] = normalize_values($value); 
-        } elseif (is_null($value) || $value === false || $value === '') {
-            // Atrapa NULL, FALSE, y la cadena vacía ("") resultante del trim() en el parche.
-            echo "NULL/FALSE/VACIO (convertido a \"\")\n";
+        // La depuración se omite para la versión final, pero la lógica es:
+        // Si el valor es NULL, false, o una cadena vacía (después de trim), lo hacemos ""
+        if (is_null($value) || $value === false || $value === '') { 
             $array[$key] = "";
         } elseif (is_string($value)) {
-            // Limpieza más agresiva de caracteres invisibles
-            $cleaned_value = preg_replace('/[\p{C}\p{Z}]/u', '', $value);
-
-            if ($cleaned_value === "") {
-                echo "Cadena limpia vacía (convertido a \"\")\n";
-                $array[$key] = "";
-            } else {
-                echo "String (limpio): {$cleaned_value}\n";
-                $array[$key] = mb_convert_encoding($value, 'UTF-8', 'auto');
-            }
-        } else {
-            echo "Otro tipo (" . gettype($value) . "): {$value}\n";
-        }
+            // Aseguramos codificación válida UTF-8
+            $array[$key] = mb_convert_encoding($value, 'UTF-8', 'auto');
+        } 
     }
     return $array;
 }
 
-// --- 9. Aplicar y Mostrar Resultados (Depuración) ---
-print_r($solicitud);
-$solicitud = normalize_values($solicitud);
-
-echo "segundo printr \n";
+// --- Salida (Depuración) ---
+echo "Primer printr del array antes de normalizar:\n";
 print_r($solicitud);
 
-// --- 10. Salida Final JSON ---
+$solicitud = normalize_values_simple($solicitud);
+
+echo "\nSegundo printr del array DESPUÉS de normalizar:\n";
+print_r($solicitud);
+
+// --- Salida Final JSON ---
 echo json_encode([
     "solicitud" => $solicitud,
     "err" => false,
