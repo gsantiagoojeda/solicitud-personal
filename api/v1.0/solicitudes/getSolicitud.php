@@ -172,7 +172,7 @@ if ($autorizador1Id) {
 } else {
     $solicitud['solicitud_autorizador1'] = null;
 }
-print_r($solicitud)
+print_r($solicitud);
 echo json_encode([
     "solicitud" => $solicitud,
     "err" => false,
