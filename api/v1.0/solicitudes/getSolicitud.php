@@ -187,7 +187,7 @@ function utf8ize($mixed) {
 
 $solicitud = utf8ize($solicitud);
 
-print_r($solicitud)
+print_r($solicitud);
 
 echo json_encode([
     "solicitud" => $solicitud,
