@@ -173,20 +173,24 @@ if ($autorizador1Id) {
     $solicitud['solicitud_autorizador1'] = null;
 }
 
-// Convierte recursivamente todos los valores del array a UTF-8
-function utf8ize($mixed) {
-    if (is_array($mixed)) {
-        foreach ($mixed as $key => $value) {
-            $mixed[$key] = utf8ize($value);
+
+// 🧩 Normaliza valores vacíos o nulos antes de codificar
+function normalize_values($array) {
+    foreach ($array as $key => $value) {
+        if (is_array($value)) {
+            $array[$key] = normalize_values($value);
+        } elseif (is_null($value) || $value === false) {
+            $array[$key] = ""; // o usa null si prefieres
+        } elseif (is_string($value)) {
+            // Asegura codificación válida UTF-8
+            $array[$key] = mb_convert_encoding($value, 'UTF-8', 'auto');
         }
-    } elseif (is_string($mixed)) {
-        return mb_convert_encoding($mixed, 'UTF-8', 'auto');
     }
-    return $mixed;
+    return $array;
 }
 
-print_r($solicitud);
-$solicitud = utf8ize($solicitud);
+$solicitud = normalize_values($solicitud);
+
 
 print_r($solicitud);
 
