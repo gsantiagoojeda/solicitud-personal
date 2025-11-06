@@ -71,8 +71,6 @@ export default async function createSolicitud(e) {
     console.log(`${key}: ${value}`);
   }
 
-  return;
-
   let options = {
     method: "POST",
     body: formData,
