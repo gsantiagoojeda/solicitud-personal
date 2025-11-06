@@ -156,7 +156,11 @@ export default async function detailAuthSolicitud(data) {
       solicitud["solicitud_fecha_tentativa"];
 
     $form["solicitud-txt-respgestion"].value =
-      solicitud["solicitud_fecha_tentativa"];
+      solicitud["solicitud_responsable"];
+
+    $form["solicitud-vacantes"].value = solicitud["solicitud_num_vacantes"];
+
+    $form["solicitud-vacantes"].value = solicitud["solicitud_sexo"];
   } catch (err) {
     console.log(err);
     let message = err.statusText || "ocurrio un error";

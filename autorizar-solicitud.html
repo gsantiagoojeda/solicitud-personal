@@ -213,25 +213,61 @@
       </article>
 
       <article class="w-11/12 mt-4 bg-white p-4 pb-6 mx-auto rounded-md">
-        <section class="md:grid md:grid-cols-3 lg:grid-cols-[auto_auto_auto_auto_auto] md:justify-items-center">
+        <section class="md:grid md:grid-cols-3 md:justify-items-center">
           <div class="w-full lg:w-8/12">
-            <span class="block font-bold text-blue-600 mt-2 leading-normal">Sexo:</span>
-            <p id="solicitud-sexo">Hombre</p>
+            <span class="block font-bold text-gray-600 mt-2 leading-normal">Sexo:<span class="text-red-600">
+                *</span></span>
+            <select id="solicitud-sexo" name="solicitud-sexo"
+              class="block w-full  px-4 py-2 my-2  text-gray-700 font-semibold bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              required>
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option value="hombre">Hombre</option>
+              <option value="mujer">Mujer</option>
+              <option value="indistinto">Indistinto</option>
+            </select>
           </div>
           <div class="w-full lg:w-8/12">
-            <span class="block font-bold text-blue-600 mt-2 leading-normal">Estado civil:</span>
-            <p id="solicitud-estado-civil">Soltero</p>
+            <span class="block font-bold text-gray-600 mt-2 leading-normal">Estado cilvil:<span class="text-red-600">
+                *</span></span>
+            <select id="solicitud-estado-civil" name="solicitud-estado-civil"
+              class="block w-full  px-4 py-2 my-2  text-gray-700 font-semibold bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              required>
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option value="casado">Casado</option>
+              <option value="soltero">Soltero</option>
+              <option value="indistinto">Indistinto</option>
+            </select>
           </div>
           <div class="w-full lg:w-8/12">
-            <span class="block font-bold text-blue-600 mt-2 leading-normal">Escolaridad:</span>
-            <p id="solicitud-escolaridad">Secundaria</p>
+            <span class="block font-bold text-gray-600 mt-2 leading-normal">Escolaridad:<span class="text-red-600">
+                *</span></span>
+            <select id="solicitud-escolaridad" name="solicitud-escolaridad"
+              class="block w-full  px-4 py-2 my-2  text-gray-700 font-semibold bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              required>
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option value="secundaria">Secundaria</option>
+              <option value="media superior">Media superior</option>
+              <option value="superior">Superior</option>
+            </select>
           </div>
+        </section>
+        <section class="lg:flex lg:justify-around mt-4">
           <article>
-            <span class="block font-bold text-blue-600 mt-2 leading-normal">Rango de edad:</span>
-            <p id="age">De 45 a 55 años</p>
+            <span class="block font-bold text-gray-600 mt-2 leading-normal">Selecciona rango de edad:<span
+                class="text-red-600">
+                *</span></span>
+            <div class="px-6 mt-4">
+              <span class=" font-normal text-gray-600 mt-6 mb-4  ">De</span>
+              <input type="number" name="solicitud-age-min" id="solicitud-age-min" min="1" step="1"
+                class="inline-block border rounded-md p-2 mb-4  w-16 text-center" required>
+              <span class=" font-normal text-gray-600 mt-6 mb-4  ">a</span>
+              <input type="number" name="solicitud-age-max" id="solicitud-age-max" min="1" step="1"
+                class="inline-block border rounded-md p-2 mx-4  w-16 text-center" required>
+              <span class=" font-normal text-gray-600 mt-6 mb-4  ">años</span>
+            </div>
           </article>
           <article>
-            <span class="block font-bold text-blue-600 mt-2 leading-normal">Años de experiencia:<span
+            <span class="block font-bold text-gray-600 mt-2 leading-normal">Selecciona años de experiencia:<span
                 class="text-red-600">
                 *</span></span>
             <div class="px-6 mt-4">
