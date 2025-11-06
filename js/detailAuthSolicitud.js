@@ -160,7 +160,33 @@ export default async function detailAuthSolicitud(data) {
 
     $form["solicitud-vacantes"].value = solicitud["solicitud_num_vacantes"];
 
-    $form["solicitud-vacantes"].value = solicitud["solicitud_sexo"];
+    $form["solicitud-sexo"].value = solicitud["solicitud_sexo"];
+
+    $form["solicitud-estado-civil"].value = solicitud["solicitud_estado_civil"];
+
+    $form["solicitud-escolaridad"].value = solicitud["solicitud_escolaridad"];
+
+    $form["solicitud-solicitud-age-min"].value =
+      solicitud["solicitud_edad_min"];
+
+    $form["solicitud-solicitud-age-max"].value =
+      solicitud["solicitud_edad_max"];
+
+    $form["solicitud-experiencia"].value = solicitud["solicitud_experiencia"];
+
+    $form["solicitud-txt-conocimientos"].value =
+      solicitud["solicitud_conocimientos"];
+
+    $form["solicitud-txt-habilidades"].value =
+      solicitud["solicitud_habilidades"];
+
+    $form["solicitud-txt-tools"].value = solicitud["solicitud_tools"];
+
+    $form["solicitud-sueldo"].value = solicitud["solicitud_sueldo_id"];
+
+    $form["solicitud-horario"].value = solicitud["solicitud_horario_id"];
+
+    $form["solicitud-rolar"].value = solicitud["solicitud_rolar"];
   } catch (err) {
     console.log(err);
     let message = err.statusText || "ocurrio un error";
