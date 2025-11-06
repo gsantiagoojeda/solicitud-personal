@@ -67,9 +67,11 @@ export default async function createSolicitud(e) {
   formData.append("solicitante", solicitante);
   formData.append("solicitante-puesto", solicitantePuesto);
 
-  // for (const [key, value] of formData.entries()) {
-  //   console.log(`${key}: ${value}`);
-  // }
+  for (const [key, value] of formData.entries()) {
+    console.log(`${key}: ${value}`);
+  }
+
+  return;
 
   let options = {
     method: "POST",
