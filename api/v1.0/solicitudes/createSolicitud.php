@@ -15,6 +15,7 @@ $trp3 = $_POST['trp3'] ?? null;
 $trp4 = $_POST['trp4'] ?? null;
 $compras = $_POST['compras'] ?? null;
 $fechaTentativa = $_POST['fechaTentativa'] ?? null;
+$responsable = $_POST['responsable'] ?? null;
 $numVacantes = $_POST['numVacantes'] ?? null;
 $sexo = $_POST['sexo'] ?? null;
 $estadoCivil = $_POST['estadoCivil'] ?? null;
@@ -31,6 +32,7 @@ $rolar = isset($_POST['rolar']) ? ($_POST['rolar'] === 'si') : null;
 $solicitante = $_POST['solicitante'] ?? null;
 $solicitantePuesto = $_POST['solicitante-puesto'] ?? null;
 
+$dateCreate = date("Y-m-d H:i:s");
 
 $autorizador1 = null;
 $fechaAuth = null;
@@ -54,6 +56,7 @@ INSERT INTO sp_solicitud(
     solicitud_herramientas_com,
     solicitud_compras_necesarias,
     solicitud_fecha_tentativa,
+    solicitud_responsable,
     solicitud_num_vacantes,
     solicitud_sexo,
     solicitud_estado_civil,
@@ -71,6 +74,7 @@ INSERT INTO sp_solicitud(
     solicitud_autorizador1_id,
     solicitud_autorizacion1,
     solicitud_date_autorizacion1
+    solicitud_date_create
 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ";
 
@@ -98,6 +102,7 @@ $stmt->bind_param(
     $trp4,
     $compras,
     $fechaTentativa,
+    $responsable,
     $numVacantes,
     $sexo,
     $estadoCivil,
@@ -114,7 +119,8 @@ $stmt->bind_param(
     $solicitante,
     $autorizador1,
     $autorizacion1,
-    $fechaAuth
+    $fechaAuth,
+    $dateCreate
 );
 
 // Ejecutar query

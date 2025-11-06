@@ -148,6 +148,15 @@ export default async function detailAuthSolicitud(data) {
     }
 
     $form["solicitud-txt-rp4"].value = solicitud["solicitud_herramientas_com"];
+
+    $form["solicitud-txt-compras"].value =
+      solicitud["solicitud_compras_necesarias"];
+
+    $form["solicitud-fecha-tentativa"].value =
+      solicitud["solicitud_fecha_tentativa"];
+
+    $form["solicitud-txt-respgestion"].value =
+      solicitud["solicitud_fecha_tentativa"];
   } catch (err) {
     console.log(err);
     let message = err.statusText || "ocurrio un error";

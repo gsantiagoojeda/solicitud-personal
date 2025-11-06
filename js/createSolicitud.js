@@ -19,6 +19,7 @@ export default async function createSolicitud(e) {
     trp4 = $form["solicitud-txt-rp4"].value,
     compras = $form["solicitud-txt-compras"].value,
     fechaTentativa = $form["solicitud-fecha-tentativa"].value,
+    responsable = $form["solicitud-txt-respgestion"].value,
     numVacantes = $form["solicitud-vacantes"].value,
     sexo = $form["solicitud-sexo"].value,
     estadoCivil = $form["solicitud-estado-civil"].value,
@@ -51,6 +52,7 @@ export default async function createSolicitud(e) {
   formData.append("trp4", trp4);
   formData.append("compras", compras);
   formData.append("fechaTentativa", fechaTentativa);
+  formData.append("responsable", responsable);
   formData.append("numVacantes", numVacantes);
   formData.append("sexo", sexo);
   formData.append("estadoCivil", estadoCivil);
