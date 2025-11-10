@@ -10,8 +10,8 @@ require "../conexion_turnos.php";
 
 header('Content-Type: application/json');
 
-// $id = $_POST['id_solicitud'];
-$id = "1"; // ID de prueba
+ $id = $_POST['id_solicitud'];
+// $id = "1"; // ID de prueba
 
 // --- 1. Consulta de la solicitud principal ---
 $stmt = $mysqli_solicitud->prepare("SELECT * FROM sp_solicitud WHERE solicitud_id = ?");

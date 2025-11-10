@@ -73,7 +73,7 @@ INSERT INTO sp_solicitud(
     solicitud_solicitante_id,
     solicitud_autorizador1_id,
     solicitud_autorizacion1,
-    solicitud_date_autorizacion1
+    solicitud_date_autorizacion1,
     solicitud_date_create
 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ";
