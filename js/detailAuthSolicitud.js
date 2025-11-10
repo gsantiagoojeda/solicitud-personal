@@ -166,11 +166,9 @@ export default async function detailAuthSolicitud(data) {
 
     $form["solicitud-escolaridad"].value = solicitud["solicitud_escolaridad"];
 
-    $form["solicitud-solicitud-age-min"].value =
-      solicitud["solicitud_edad_min"];
+    $form["solicitud-age-min"].value = solicitud["solicitud_edad_min"];
 
-    $form["solicitud-solicitud-age-max"].value =
-      solicitud["solicitud_edad_max"];
+    $form["solicitud-age-max"].value = solicitud["solicitud_edad_max"];
 
     $form["solicitud-experiencia"].value = solicitud["solicitud_experiencia"];
 
