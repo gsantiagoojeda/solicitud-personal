@@ -12,6 +12,7 @@ export default async function autorizarSolicitud(e) {
   const { SOLICITUDES } = app;
 
   const $form = d.getElementById("form-auth-solicitud"),
+    id = $form["solicitud-id"].value,
     rp1 = $form["solicitud-rp1"].value,
     rp2 = $form["solicitud-rp2"].value,
     rp3 = $form["solicitud-rp3"].value,
@@ -44,6 +45,7 @@ export default async function autorizarSolicitud(e) {
   d.querySelector(".load").style.display = "flex";
 
   const formData = new FormData();
+  formData.append("id", id);
   formData.append("rp1", rp1);
   formData.append("rp2", rp2);
   formData.append("rp3", rp3);
