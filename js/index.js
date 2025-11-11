@@ -13,6 +13,7 @@ import setTurnos from "./setTurnos.js";
 import listSolicitudes from "./listSolicitudes.js";
 import multiselect from "./multiselect.js";
 import detailAuthSolicitud from "./detailAuthSolicitud.js";
+import autorizarSolicitud from "./autorizarSolicitud.js";
 
 const d = document;
 
@@ -22,6 +23,7 @@ d.addEventListener("click", (e) => {
   menu(e);
   goAutorizarSolicitud(e);
   goVerSolicitud(e);
+  autorizarSolicitud(e);
 });
 
 d.addEventListener("submit", (e) => {
