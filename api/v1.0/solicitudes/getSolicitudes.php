@@ -172,6 +172,21 @@ foreach ($listaUserAutorizados as $user) {
     }
 }
 
+// Ordenar el array $listaSolicitudes por 'solicitud_id' (Descendente por defecto)
+usort($listaSolicitudes, function($a, $b) {
+    // Convierte a entero para asegurar la comparación numérica
+    $idA = (int)$a['solicitud_id'];
+    $idB = (int)$b['solicitud_id'];
+    
+    // Para orden descendente (mayor ID primero):
+    if ($idA == $idB) {
+        return 0;
+    }
+    return ($idA > $idB) ? -1 : 1;
+    // Si quisieras orden ascendente (menor ID primero), sería:
+    // return $idA - $idB;
+});
+
 // Paso 5: Devolver JSON
 header('Content-Type: application/json');
 if (empty($listaSolicitudes)) {
