@@ -191,8 +191,24 @@ export default async function detailAuthSolicitud(data) {
 
     if (levelAuth1 === "") {
       d.getElementById("auth-level").textContent = " 1";
+      d.getElementById("btn-autorizar-solicitud").setAttribute(
+        "data-level",
+        "1"
+      );
+      d.getElementById("btn-rechazar-solicitud").setAttribute(
+        "data-level",
+        "1"
+      );
     } else {
       d.getElementById("auth-level").textContent = " 2";
+      d.getElementById("btn-autorizar-solicitud").setAttribute(
+        "data-level",
+        "2"
+      );
+      d.getElementById("btn-rechazar-solicitud").setAttribute(
+        "data-level",
+        "2"
+      );
     }
   } catch (err) {
     console.log(err);
