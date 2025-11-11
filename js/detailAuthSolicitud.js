@@ -25,7 +25,7 @@ export default async function detailAuthSolicitud(data) {
       throw { status: res.status, statusText: res.statusText };
     let solicitud = json.solicitud;
 
-    const $form = d.getElementById("form-create-solicitud");
+    const $form = d.getElementById("form-auth-solicitud");
 
     d.getElementById("puesto").textContent =
       solicitud["solicitud_puesto_nombre"];
