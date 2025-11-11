@@ -27,7 +27,7 @@ export default async function detailAuthSolicitud(data) {
 
     const $form = d.getElementById("form-auth-solicitud");
 
-    $form["solicitud-id"].value = solicitud["solcitud_id"];
+    $form["solicitud-id"].value = solicitud["solicitud_id"];
 
     d.getElementById("puesto").textContent =
       solicitud["solicitud_puesto_nombre"];
