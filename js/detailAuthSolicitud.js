@@ -184,7 +184,8 @@ export default async function detailAuthSolicitud(data) {
 
     $form["solicitud-horario"].value = solicitud["solicitud_horario_id"];
 
-    $form["solicitud-rolar"].value = solicitud["solicitud_rolar"];
+    $form["solicitud-rolar"].value =
+      solicitud["solicitud_rolar"] === "1" ? "si" : "no";
   } catch (err) {
     console.log(err);
     let message = err.statusText || "ocurrio un error";
