@@ -90,7 +90,7 @@ if (!$stmt) {
 
 // Bind de parámetros
 $stmt->bind_param(
-    "sssssssssssssssssssssssssssss",
+    "ssssssssssssssssssssssssssssss",
     $puesto,
     $rp1,
     $trp1,
