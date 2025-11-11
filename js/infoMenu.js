@@ -9,4 +9,5 @@ export default function infoMenu(data) {
   $nombre.textContent = `${data.nombre} ${data["apellido_paterno"]}`;
   $puesto.textContent = data.puesto;
   sessionStorage.setItem("id_user", data.id);
+  sessionStorage.setItem("puesto_user", data.puesto);
 }
