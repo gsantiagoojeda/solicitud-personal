@@ -190,9 +190,9 @@ export default async function detailAuthSolicitud(data) {
     let levelAuth1 = solicitud["solicitud_autorizacion1"];
 
     if (levelAuth1 === "") {
-      d.getElementById("auth-level").textContent = "1";
+      d.getElementById("auth-level").textContent = " 1";
     } else {
-      d.getElementById("auth-level").textContent = "2";
+      d.getElementById("auth-level").textContent = " 2";
     }
   } catch (err) {
     console.log(err);
