@@ -11,7 +11,7 @@ export default async function autorizarSolicitud(e) {
 
   const { SOLICITUDES } = app;
 
-  const $form = d.getElementById("form-create-solicitud"),
+  const $form = d.getElementById("form-auth-solicitud"),
     rp1 = $form["solicitud-rp1"].value,
     rp2 = $form["solicitud-rp2"].value,
     rp3 = $form["solicitud-rp3"].value,
