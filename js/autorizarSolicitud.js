@@ -39,7 +39,8 @@ export default async function autorizarSolicitud(e) {
     rolar = $form["solicitud-rolar"].value,
     idAutorizador = sessionStorage.getItem("id_user"),
     status =
-      e.target.id === "btn-autorizar-solicitud" ? "Autorizada" : "Rechazada";
+      e.target.id === "btn-autorizar-solicitud" ? "Autorizada" : "Rechazada",
+    level = e.target.getAttribute("data-level");
 
   d.querySelector(".load").classList.remove("hidden");
   d.querySelector(".load").style.display = "flex";
@@ -71,12 +72,13 @@ export default async function autorizarSolicitud(e) {
   formData.append("horario", horario);
   formData.append("rolar", rolar);
   formData.append("autorizador", idAutorizador);
-  formData.append("atatus", status);
+  formData.append("status", status);
+  formData.append("level", status);
 
   for (const [key, value] of formData.entries()) {
     console.log(`${key}: ${value}`);
   }
-  return;
+
   let options = {
     method: "POST",
     body: formData,
@@ -88,7 +90,7 @@ export default async function autorizarSolicitud(e) {
     // console.log(json);
     if (!json.err) {
       document.querySelector(".load").style.display = "none";
-      alert(`Solicitud creada`);
+      alert(`Solicitud${status}`);
       location.reload();
     } else {
       throw { status: "200", statusText: json.statusText };
