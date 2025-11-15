@@ -113,7 +113,7 @@ if (!$stmt) {
 // He asumido 's' para la mayoría y 'i' para los campos que parecen ser IDs/números.
 
 $stmt->bind_param(
-    "ssssssssssssissisissisiiissisisis", 
+    "ssssssssssssssssssssssssssssssss", 
     $rp1,
     $trp1, // 2. solicitud_espacio_trabajo_com
     $rp2, // 3. solicitud_mobiliario
