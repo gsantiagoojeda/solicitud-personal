@@ -59,15 +59,6 @@ if ($level == 1) {
     $status2 = $status;
     $date2 = $dateAuth;
 }
-// NOTA: Para una actualización correcta, DEBERÍAS usar un SELECT previo para obtener
-// los valores de los campos NO actualizados (si solo estás actualizando un nivel de autorización),
-// o pasar TODOS los 32 campos si el objetivo es actualizar la SOLICITUD COMPLETA.
-
-// Para simplificar, asumiremos que estás ACTUALIZANDO TODA la solicitud.
-
-// --- 3. Construcción del Query SQL Corregido ---
-// ⚠️ NO se utiliza el ID de la solicitud en la lista de SET a menos que se quiera cambiar,
-// pero se usa OBLIGATORIAMENTE en el WHERE.
 
 $sql = "
 UPDATE sp_solicitud SET
@@ -122,8 +113,8 @@ if (!$stmt) {
 // He asumido 's' para la mayoría y 'i' para los campos que parecen ser IDs/números.
 
 $stmt->bind_param(
-    "ssssssssssssissisissisiiissisisis", // 31 tipos para SET + 1 tipo para WHERE = 32
-    $rp1, // 1. solicitud_espacio_trabajo
+    "ssssssssssssissisissisiiissisisis", 
+    $rp1,
     $trp1, // 2. solicitud_espacio_trabajo_com
     $rp2, // 3. solicitud_mobiliario
     $trp2, // 4. solicitud_mobiliario_com
