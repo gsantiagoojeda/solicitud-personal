@@ -54,6 +54,8 @@ export default async function detailAuthSolicitud(data) {
     if (solicitud["solicitud_autorizador1_id"] !== "") {
       d.getElementById("container-auths").classList.remove("hidden");
       d.getElementById("container-auth1").classList.remove("hidden");
+      d.getElementById("container-auth1").classList.remove("lg:hidden");
+      d.getElementById("container-auth1").classList.add("lg:flex");
     }
 
     d.getElementById("auth2-name").textContent =
@@ -67,6 +69,8 @@ export default async function detailAuthSolicitud(data) {
     if (solicitud["solicitud_autorizador2_id"] !== "") {
       d.getElementById("container-auths").classList.remove("hidden");
       d.getElementById("container-auth2").classList.remove("hidden");
+      d.getElementById("container-auth2").classList.remove("lg:hidden");
+      d.getElementById("container-auth2").classList.add("lg:flex");
     }
 
     switch (solicitud["solicitud_espacio_trabajo"]) {
