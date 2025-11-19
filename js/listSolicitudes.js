@@ -40,8 +40,8 @@ export default async function listSolicitudes(data) {
       $clone.querySelector("[data-depto]").textContent =
         el.usuario_departamento_nombre;
       $clone.querySelector("[data-puesto]").textContent =
-        el.usuario_puesto.length > LIMITE
-          ? el.usuario_puesto.substring(0, LIMITE) + "..."
+        el.usuario_puesto.length > 27
+          ? el.usuario_puesto.substring(0, 27) + "..."
           : el.usuario_puesto;
       $clone.querySelector("[data-vacante]").textContent =
         el.solicitud_nombre_puesto;
@@ -62,8 +62,8 @@ export default async function listSolicitudes(data) {
       $clone.querySelector("[data-authpuesto]").textContent =
         el.autorizador1_puesto === ""
           ? "-"
-          : el.autorizador1_puesto.length > LIMITE
-          ? el.autorizador1_puesto.substring(0, LIMITE) + "..." // Trunca y añade "..."
+          : el.autorizador1_puesto.length > 27
+          ? el.autorizador1_puesto.substring(0, 27) + "..." // Trunca y añade "..."
           : el.autorizador1_puesto;
       $clone.querySelector("[data-authdate]").textContent =
         el.solicitud_date_autorizacion1 === ""
