@@ -41,25 +41,8 @@ $level = $_POST['level'] ?? null;
 $dateAuth = date("Y-m-d H:i:s");
 
 // --- 2. Lógica de Asignación de Autorización ---
-$autorizador1 = null;
-$status1 = null;
-$date1 = null;
-$autorizador2 = null;
-$status2 = null;
-$date2 = null;
-
+$sql;
 if ($level == 1) {
-    // Si level es 1, actualiza la autorización 1
-    $autorizador1 = $autorizador;
-    $status1 = $status;
-    $date1 = $dateAuth;
-} else if ($level == 2) {
-    // Si level es 2, actualiza la autorización 2
-    $autorizador2 = $autorizador;
-    $status2 = $status;
-    $date2 = $dateAuth;
-}
-
 $sql = "
 UPDATE sp_solicitud SET
     solicitud_espacio_trabajo = ?,
@@ -88,12 +71,44 @@ UPDATE sp_solicitud SET
     solicitud_rolar = ?,
     solicitud_autorizador1_id = ?,
     solicitud_autorizacion1 = ?,
-    solicitud_date_autorizacion1 = ?,
+    solicitud_date_autorizacion1 = ?
+WHERE solicitud_id = ?
+";
+} else if ($level == 2) {
+ $sql = "
+UPDATE sp_solicitud SET
+    solicitud_espacio_trabajo = ?,
+    solicitud_espacio_trabajo_com = ?,
+    solicitud_mobiliario = ?,
+    solicitud_mobiliario_com = ?,
+    solicitud_equipo_computo = ?,
+    solicitud_equipo_computo_com = ?,
+    solicitud_herramientas = ?,
+    solicitud_herramientas_com = ?,
+    solicitud_compras_necesarias = ?,
+    solicitud_fecha_tentativa = ?,
+    solicitud_responsable = ?,
+    solicitud_num_vacantes = ?,
+    solicitud_sexo = ?,
+    solicitud_estado_civil = ?,
+    solicitud_escolaridad = ?,
+    solicitud_edad_min = ?,
+    solicitud_edad_max = ?,
+    solicitud_experiencia = ?,
+    solicitud_conocimientos = ?,
+    solicitud_habilidades = ?,
+    solicitud_tools = ?,
+    solicitud_sueldo_id = ?,
+    solicitud_horario_id = ?,
+    solicitud_rolar = ?,
     solicitud_autorizador2_id = ?,
     solicitud_autorizacion2 = ?,
     solicitud_date_autorizacion2 = ?
 WHERE solicitud_id = ?
 ";
+}
+
+
 
 $stmt = $mysqli_solicitud->prepare($sql);
 if (!$stmt) {
@@ -132,12 +147,9 @@ $stmt->bind_param(
     $sueldo,
     $horario,
     $rolar,
-    $autorizador1,
-    $status1,
-    $date1,
-    $autorizador2,
-    $status2,
-    $date2,
+    $autorizador,
+    $status,
+    $dateAuth,
     $id 
 );
 

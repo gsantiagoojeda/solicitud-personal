@@ -91,7 +91,7 @@ export default async function autorizarSolicitud(e) {
     if (!json.err) {
       document.querySelector(".load").style.display = "none";
       alert(`Solicitud${status}`);
-      // location.reload();
+      //location.reload();
     } else {
       throw { status: "200", statusText: json.statusText };
     }
