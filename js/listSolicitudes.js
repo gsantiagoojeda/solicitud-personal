@@ -42,10 +42,16 @@ export default async function listSolicitudes(data) {
       $clone.querySelector("[data-puesto]").textContent = el.usuario_puesto;
       $clone.querySelector("[data-vacante]").textContent =
         el.solicitud_nombre_puesto;
-      $clone.querySelector("[data-status]").textContent =
-        el.solicitud_autorizacion1 === ""
-          ? "Pendiente"
-          : el.solicitud_autorizacion1;
+      const statusElement = $clone.querySelector("[data-status]");
+
+      if (el.solicitud_autorizacion1 === "") {
+        statusElement.textContent = "Pendiente";
+        statusElement.classList.add("bg-green-600");
+      } else {
+        statusElement.textContent = el.solicitud_autorizacion1;
+        statusElement.classList.add("bg-red-600");
+      }
+
       $clone.querySelector("[data-auth]").textContent =
         el.autorizador1_nombre_completo === ""
           ? "-"
