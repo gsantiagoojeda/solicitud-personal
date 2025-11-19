@@ -73,7 +73,7 @@ export default async function autorizarSolicitud(e) {
   formData.append("rolar", rolar);
   formData.append("autorizador", idAutorizador);
   formData.append("status", status);
-  formData.append("level", status);
+  formData.append("level", level);
 
   for (const [key, value] of formData.entries()) {
     console.log(`${key}: ${value}`);
