@@ -25,8 +25,6 @@ export default async function detailAuthSolicitud(data) {
       throw { status: res.status, statusText: res.statusText };
     let solicitud = json.solicitud;
 
-    console.log(solicitud);
-
     const $form = d.getElementById("form-auth-solicitud");
 
     $form["solicitud-id"].value = solicitud["solicitud_id"];
@@ -193,7 +191,7 @@ export default async function detailAuthSolicitud(data) {
 
     let levelAuth1 = solicitud["solicitud_autorizacion1"];
     console.log("kevel:", levelAuth1);
-    if (levelAuth1 === 1) {
+    if (levelAuth1 === "") {
       d.getElementById("auth-level").textContent = " 1";
       d.getElementById("btn-autorizar-solicitud").setAttribute(
         "data-level",
