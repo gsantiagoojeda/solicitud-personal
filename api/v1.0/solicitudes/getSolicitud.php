@@ -50,6 +50,7 @@ $sueldoId = $solicitud['solicitud_sueldo_id'] ?? null;
 $horarioId = $solicitud['solicitud_horario_id'] ?? null;
 $solicitanteId = $solicitud['solicitud_solicitante_id'] ?? null;
 $autorizador1Id = $solicitud['solicitud_autorizador1_id'] ?? null;
+$autorizador2Id = $solicitud['solicitud_autorizador1_id'] ?? null;
 
 
 // --- 2. Obtener nombre del Puesto ---
@@ -140,6 +141,24 @@ if ($autorizador1Id) {
             $solicitud['solicitud_autorizador1'] = trim($nombre) . " " . trim($ap) . " " . trim($am);
         }
         $stmtAuth1->close();
+    }
+}
+// --- 6.5. Obtener Autorizador 2 ---
+$solicitud['solicitud_autorizador2'] = null;
+if ($autorizador2Id) {
+    $stmtAuth2 = $mysqli_vacaciones->prepare("SELECT nombre, apellido_paterno, apellido_materno FROM empleados WHERE id= ?");
+    if ($stmtAuth2) {
+        $stmtAuth2->bind_param("s", $autorizador2Id);
+        $stmtAuth2->execute();
+        $resultAuth2 = $stmtAuth2->get_result();
+        if ($resultAuth2->num_rows > 0) {
+            $row = $resultAuth2->fetch_assoc();
+            $nombre = $row['nombre'] ?? '';
+            $ap = $row['apellido_paterno'] ?? '';
+            $am = $row['apellido_materno'] ?? '';
+            $solicitud['solicitud_autorizador2'] = trim($nombre) . " " . trim($ap) . " " . trim($am);
+        }
+        $stmtAuth2->close();
     }
 }
 
