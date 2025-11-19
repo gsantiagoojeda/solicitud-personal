@@ -50,7 +50,7 @@ $sueldoId = $solicitud['solicitud_sueldo_id'] ?? null;
 $horarioId = $solicitud['solicitud_horario_id'] ?? null;
 $solicitanteId = $solicitud['solicitud_solicitante_id'] ?? null;
 $autorizador1Id = $solicitud['solicitud_autorizador1_id'] ?? null;
-$autorizador2Id = $solicitud['solicitud_autorizador1_id'] ?? null;
+$autorizador2Id = $solicitud['solicitud_autorizador2_id'] ?? null;
 
 
 // --- 2. Obtener nombre del Puesto ---
