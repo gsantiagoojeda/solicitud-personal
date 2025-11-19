@@ -87,7 +87,7 @@ export default async function autorizarSolicitud(e) {
     let res = await fetch(`${SOLICITUDES}autorizarSolicitud.php`, options);
     if (!res.ok) throw { status: res.status, statusText: res.statusText };
     let json = await res.json();
-    // console.log(json);
+    console.log(json);
     if (!json.err) {
       document.querySelector(".load").style.display = "none";
       alert(`Solicitud${status}`);
