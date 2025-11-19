@@ -45,7 +45,7 @@ export default async function listSolicitudes(data) {
       $clone.querySelector("[data-status]").textContent =
         el.solicitud_autorizacion1 === ""
           ? "Pendiente"
-          : solicitud_autorizacion1;
+          : el.solicitud_autorizacion1;
       $clone.querySelector("[data-auth]").textContent =
         el.autorizador1_nombre_completo === ""
           ? "-"
