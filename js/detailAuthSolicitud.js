@@ -190,7 +190,7 @@ export default async function detailAuthSolicitud(data) {
       solicitud["solicitud_rolar"] === 1 ? "si" : "no";
 
     let levelAuth1 = solicitud["solicitud_autorizacion1"];
-
+    console.log("kevel:", levelAuth1);
     if (levelAuth1 === 1) {
       d.getElementById("auth-level").textContent = " 1";
       d.getElementById("btn-autorizar-solicitud").setAttribute(
