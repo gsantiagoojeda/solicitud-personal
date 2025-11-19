@@ -122,7 +122,7 @@ if (!$stmt) {
 
 
 $stmt->bind_param(
-    "sssssssssssssssssssssssssssssss", 
+    "ssssssssssssssssssssssssssss", 
     $rp1,
     $trp1,
     $rp2,
