@@ -7,6 +7,7 @@ export default async function detailAuthSolicitud(data) {
   const { DOMAIN, SOLICITUDES } = app;
 
   let idSolicitud = sessionStorage.getItem("id_solicitud");
+  let puestoAuth = sessionStorage.getItem("puesto_user");
   if (!idSolicitud) location.href(`${DOMAIN}autorizar-solicitudes.html`);
 
   try {
@@ -205,7 +206,7 @@ export default async function detailAuthSolicitud(data) {
         "data-level",
         "1"
       );
-    } else {
+    } else if (puestoAuth.includes("Gerente de Recursos Humanos")) {
       d.getElementById("auth-level").textContent = " 2";
       d.getElementById("btn-autorizar-solicitud").setAttribute(
         "data-level",
@@ -215,6 +216,8 @@ export default async function detailAuthSolicitud(data) {
         "data-level",
         "2"
       );
+    } else {
+      d.getElementById("auth-contain").style.display = "none";
     }
   } catch (err) {
     console.log(err);
