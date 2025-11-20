@@ -132,6 +132,7 @@ if (strpos($puesto, 'Director') !== false) {
     // Si $puesto es exactamente 'Gerente de Recursos Humanos', busca NULL o 'Rechazada' en solicitud_autorizacion2
     $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE (solicitud_autorizacion2 IS NULL OR solicitud_autorizacion2 = 'Rechazada')";
 }
+echo "$sqlSolcitudes";
     $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
 
     if ($resultSolicitudes) {
