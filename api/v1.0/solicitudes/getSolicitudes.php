@@ -127,7 +127,7 @@ foreach ($listaUserAutorizados as $user) {
 // Lógica condicional para modificar la cláusula WHERE
 if (strpos($puesto, 'Director') !== false) {
     // Si $puesto incluye 'Director', busca NULL o 'Rechazada' en solicitud_autorizacion1
-    $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE (solicitud_autorizacion1 IS NULL OR solicitud_autorizacion1 = 'Rechazada')";
+    $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE solicitud_solicitante_id = '$userId' AND (solicitud_autorizacion1 IS NULL OR solicitud_autorizacion1 = 'Rechazada')";
 } elseif ($puesto === 'Gerente de Recursos Humanos') {
     // Si $puesto es exactamente 'Gerente de Recursos Humanos', busca NULL o 'Rechazada' en solicitud_autorizacion2
     $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE (solicitud_autorizacion2 IS NULL OR solicitud_autorizacion2 = 'Rechazada')";
