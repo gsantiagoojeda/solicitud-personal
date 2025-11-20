@@ -141,7 +141,7 @@ if ($resultSolicitudes) {
       return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8');
     }, $row);
     
-    echo "entre2";
+    
             // Puesto del solicitante
             $nombrePuesto = '';
             $puestoId = $solicitudBlindada['solicitud_puesto_id'] ?? '';
@@ -180,6 +180,7 @@ if ($resultSolicitudes) {
 
             $listaSolicitudes[] = $solicitudConUsuario;
         }
+        echo "entre2";
     }
 }
 
