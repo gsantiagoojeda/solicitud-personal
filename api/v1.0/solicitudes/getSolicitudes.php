@@ -184,6 +184,8 @@ if ($resultSolicitudes) {
     }
 }
 
+print_r($listaSolicitudes);
+
 // Ordenar el array $listaSolicitudes por 'solicitud_id' (Descendente por defecto)
 usort($listaSolicitudes, function($a, $b) {
     // Convierte a entero para asegurar la comparación numérica
