@@ -132,15 +132,16 @@ if (strpos($puesto, 'Director') !== false) {
     // Si $puesto es exactamente 'Gerente de Recursos Humanos', busca NULL o 'Rechazada' en solicitud_autorizacion2
     $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE (solicitud_autorizacion2 IS NULL OR solicitud_autorizacion2 = 'Rechazada')";
 }
-echo "$sqlSolicitudes";
-    $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
+$resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
+echo "entre1";
 
-    if ($resultSolicitudes) {
-        while ($row = $resultSolicitudes->fetch_assoc()) {
-            $solicitudBlindada = array_map(function($v){
-                return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8');
-            }, $row);
-
+if ($resultSolicitudes) {
+  while ($row = $resultSolicitudes->fetch_assoc()) {
+    $solicitudBlindada = array_map(function($v){
+      return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8');
+    }, $row);
+    
+    echo "entre2";
             // Puesto del solicitante
             $nombrePuesto = '';
             $puestoId = $solicitudBlindada['solicitud_puesto_id'] ?? '';
