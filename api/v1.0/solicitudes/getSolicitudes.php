@@ -118,7 +118,7 @@ if ($resultEmps) {
     }
 }
 
-print_r($listaUserAutorizados);
+// print_r($listaUserAutorizados);
 // Paso 4: Construir solicitudes
 $listaSolicitudes = [];
 foreach ($listaUserAutorizados as $user) {
@@ -131,7 +131,7 @@ if (strpos($puesto, 'Director') !== false) {
     $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE solicitud_solicitante_id = '$userId' AND (solicitud_autorizacion1 IS NULL OR solicitud_autorizacion1 = 'Rechazada')";
 } elseif ($puesto === 'Gerente de Recursos Humanos') {
     // Si $puesto es exactamente 'Gerente de Recursos Humanos', busca NULL o 'Rechazada' en solicitud_autorizacion2
-    $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE (solicitud_autorizacion2 IS NULL OR solicitud_autorizacion2 = 'Rechazada')";
+    $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE solicitud_solicitante_id = '$userId' AND (solicitud_autorizacion2 IS NULL OR solicitud_autorizacion2 = 'Rechazada')";
 }
 $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
 
