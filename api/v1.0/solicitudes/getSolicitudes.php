@@ -118,6 +118,7 @@ if ($resultEmps) {
     }
 }
 
+print_r($listaUserAutorizados);
 // Paso 4: Construir solicitudes
 $listaSolicitudes = [];
 foreach ($listaUserAutorizados as $user) {
