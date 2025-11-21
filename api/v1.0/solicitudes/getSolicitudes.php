@@ -121,18 +121,67 @@ if ($resultEmps) {
 // print_r($listaUserAutorizados);
 // Paso 4: Construir solicitudes
 $listaSolicitudes = [];
-foreach ($listaUserAutorizados as $user) {
-    $userId = $mysqli_solicitud->real_escape_string($user['id']);
-    $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE solicitud_solicitante_id = '$userId'";
+$sqlSolicitudes;
 
-// Lógica condicional para modificar la cláusula WHERE
-if (strpos($puesto, 'Director') !== false) {
-    // Si $puesto incluye 'Director', busca NULL o 'Rechazada' en solicitud_autorizacion1
-    $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE solicitud_solicitante_id = '$userId' AND (solicitud_autorizacion1 IS NULL OR solicitud_autorizacion1 = 'Rechazada')";
-} elseif ($puesto === 'Gerente de Recursos Humanos') {
+if ($puesto === 'Gerente de Recursos Humanos') {
     // Si $puesto es exactamente 'Gerente de Recursos Humanos', busca NULL o 'Rechazada' en solicitud_autorizacion2
     $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE solicitud_solicitante_id = '$userId' AND (solicitud_autorizacion2 IS NULL OR solicitud_autorizacion2 = 'Rechazada')";
-}
+
+    $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
+
+if ($resultSolicitudes) {
+  while ($row = $resultSolicitudes->fetch_assoc()) {
+    $solicitudBlindada = array_map(function($v){
+      return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8');
+    }, $row);
+    
+    
+            // Puesto del solicitante
+            $nombrePuesto = '';
+            $puestoId = $solicitudBlindada['solicitud_puesto_id'] ?? '';
+            if ($puestoId && isset($puestos[$puestoId])) {
+                $nombrePuesto = $puestos[$puestoId];
+            }
+
+            // Departamento del usuario autorizado
+            $nombreDepartamento = '';
+            $deptoId = $user['id_departamento'] ?? '';
+            if ($deptoId && isset($departamentos[$deptoId])) {
+                $nombreDepartamento = $departamentos[$deptoId];
+            }
+
+            // Autorizador1: nombre completo y puesto
+            $aut1NombreCompleto = '';
+            $aut1Puesto = '';
+            $aut1Id = $solicitudBlindada['solicitud_autorizador1_id'] ?? '';
+            if ($aut1Id && isset($empleados[$aut1Id])) {
+                $aut1NombreCompleto = $empleados[$aut1Id]['nombre_completo'];
+                $aut1Puesto = $empleados[$aut1Id]['puesto'];
+            }
+
+            $solicitudConUsuario = array_merge($solicitudBlindada, [
+                "usuario_id" => $user['id'],
+                "usuario_nombre_completo" => $user['nombre_completo'],
+                "usuario_puesto" => $user['puesto'],
+                "usuario_correo" => $user['correo'] ?? '',
+                "usuario_empresa" => $user['empresa'],
+                "usuario_id_departamento" => $user['id_departamento'],
+                "usuario_departamento_nombre" => $nombreDepartamento,
+                "solicitud_nombre_puesto" => $nombrePuesto,
+                "autorizador1_nombre_completo" => $aut1NombreCompleto,
+                "autorizador1_puesto" => $aut1Puesto
+            ]);
+
+            $listaSolicitudes[] = $solicitudConUsuario;
+        }
+    }
+}else{
+foreach ($listaUserAutorizados as $user) {
+    $userId = $mysqli_solicitud->real_escape_string($user['id']);
+ 
+    // Si $puesto incluye 'Director', busca NULL o 'Rechazada' en solicitud_autorizacion1
+    $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE solicitud_solicitante_id = '$userId' AND (solicitud_autorizacion1 IS NULL OR solicitud_autorizacion1 = 'Rechazada')";
+
 $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
 
 if ($resultSolicitudes) {
@@ -182,6 +231,9 @@ if ($resultSolicitudes) {
         }
     }
 }
+}
+
+
 
 
 // Ordenar el array $listaSolicitudes por 'solicitud_id' (Descendente por defecto)
