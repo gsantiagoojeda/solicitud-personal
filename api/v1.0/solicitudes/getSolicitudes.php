@@ -133,7 +133,6 @@ if (strpos($puesto, 'Director') !== false) {
     $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE (solicitud_autorizacion2 IS NULL OR solicitud_autorizacion2 = 'Rechazada')";
 }
 $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
-echo "entre1";
 
 if ($resultSolicitudes) {
   while ($row = $resultSolicitudes->fetch_assoc()) {
@@ -180,7 +179,6 @@ if ($resultSolicitudes) {
 
             $listaSolicitudes[] = $solicitudConUsuario;
         }
-        echo "entre2";
     }
 }
 

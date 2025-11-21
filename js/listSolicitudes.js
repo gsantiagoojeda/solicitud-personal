@@ -50,7 +50,7 @@ export default async function listSolicitudes(data) {
       if (el.solicitud_autorizacion1 === "") {
         statusElement.textContent = "Pendiente";
         statusElement.classList.add("bg-green-600");
-      } else {
+      } else if (el.solicitud_autorizacion1 === "Rechazada") {
         statusElement.textContent = el.solicitud_autorizacion1;
         statusElement.classList.add("bg-red-600");
       }
