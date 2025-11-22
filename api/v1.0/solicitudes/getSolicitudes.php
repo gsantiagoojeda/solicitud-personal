@@ -10,7 +10,30 @@ require "../conexion_solicitud.php";
 $idUser = "3009"; // usuario actual
 // $idUser = $_POST['user-id']; // usuario actual
 
+// Paso 1: Obtener puesto y autoridad del usuario
+$sqlUser = "SELECT puesto, id_autoridad FROM empleados WHERE id = ?";
+$stmt = $mysqli_vacaciones->prepare($sqlUser);
+if (!$stmt) {
+    echo json_encode([
+        "err" => true,
+        "status" => "Error al preparar la consulta SQL"
+    ]);
+    exit;
+}
 
+$stmt->bind_param("s", $idUser);
+$stmt->execute();
+$stmt->bind_result($puesto, $autoridad);
+if (!$stmt->fetch()) {
+    echo json_encode([
+        "err" => true,
+        "status" => "Usuario no encontrado"
+    ]);
+    $stmt->close();
+    $mysqli_vacaciones->close();
+    exit;
+}
+$stmt->close();
 
 // Paso previo: cargar departamentos
 $departamentos = [];
@@ -131,30 +154,7 @@ if ($resultSolicitudes) {
     }
     }
 }else{
-  // Paso 1: Obtener puesto y autoridad del usuario
-$sqlUser = "SELECT puesto, id_autoridad FROM empleados WHERE id = ?";
-$stmt = $mysqli_vacaciones->prepare($sqlUser);
-if (!$stmt) {
-    echo json_encode([
-        "err" => true,
-        "status" => "Error al preparar la consulta SQL"
-    ]);
-    exit;
-}
-
-$stmt->bind_param("s", $idUser);
-$stmt->execute();
-$stmt->bind_result($puesto, $autoridad);
-if (!$stmt->fetch()) {
-    echo json_encode([
-        "err" => true,
-        "status" => "Usuario no encontrado"
-    ]);
-    $stmt->close();
-    $mysqli_vacaciones->close();
-    exit;
-}
-$stmt->close();
+  
 
 // Paso 2: Obtener grupos autorizados
 $sqlAuth = "SELECT id, clave, clave_autorizador 
