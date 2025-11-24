@@ -9,7 +9,7 @@ export default async function autorizarSolicitud(e) {
   )
     return;
 
-  const { SOLICITUDES } = app;
+  const { SOLICITUDES, DOMAIN } = app;
 
   const $form = d.getElementById("form-auth-solicitud"),
     id = $form["solicitud-id"].value,
@@ -91,7 +91,7 @@ export default async function autorizarSolicitud(e) {
     if (!json.err) {
       document.querySelector(".load").style.display = "none";
       alert(`Solicitud${status}`);
-      //location.reload();
+      location.href = `${DOMAIN}autorizar-solicitudes.html`;
     } else {
       throw { status: "200", statusText: json.statusText };
     }
