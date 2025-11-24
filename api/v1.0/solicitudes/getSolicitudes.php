@@ -102,7 +102,7 @@ if ($puesto === 'Gerente de Recursos Humanos') {
     // Si $puesto es exactamente 'Gerente de Recursos Humanos', busca NULL o 'Rechazada' en solicitud_autorizacion2
     foreach ($listaUserAutorizados as $user) {
     $userId = $mysqli_solicitud->real_escape_string($user['id']);
-    $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE solicitud_solicitante_id= $userId AND  (solicitud_autorizacion2 IS NULL OR solicitud_autorizacion2 = 'Rechazada')";
+    $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE solicitud_solicitante_id= '$userId' AND  (solicitud_autorizacion2 IS NULL OR solicitud_autorizacion2 = 'Rechazada')";
 
     $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
 
