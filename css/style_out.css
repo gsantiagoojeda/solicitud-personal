@@ -1265,6 +1265,14 @@ video {
   accent-color: #dc2626;
 }
 
+.accent-green-600{
+  accent-color: #16a34a;
+}
+
+.accent-yellow-500{
+  accent-color: #eab308;
+}
+
 .opacity-50{
   opacity: 0.5;
 }
