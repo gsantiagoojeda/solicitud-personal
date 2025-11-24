@@ -34,43 +34,46 @@
         <thead>
           <tr class="bg-[#085a80] text-white text-left text-sm">
             <th class="py-3 px-4">PUESTO</th>
-            <th class="py-3 px-4">STATUS</th>
+            <th class="py-3 px-4">STATUS A1</th>
             <th class="py-3 px-4">AUTORIZADOR 1</th>
             <th class="py-3 px-4">FECHA</th>
+            <th class="py-3 px-4">STATUS A2</th>
             <th class="py-3 px-4">AUTORIZADOR 2</th>
             <th class="py-3 px-4">FECHA</th>
-            <th class="py-3 px-4">EDITAR</th>
           </tr>
         </thead>
-        <tbody class="text-gray-700 text-sm">
-          <tr class="border-b cursor-pointer" data-td-id>
-            <td class="py-3 px-4">
-              <p>Developer</p>
-            </td>
-            <td class="py-3 px-4">
-              <span class="bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full">Active</span>
-            </td>
-            <td class="py-3 px-4 flex items-center space-x-3">
-              <div>
-                <p class="font-medium">Mira Rodeo</p>
-                <p class="text-gray-500 text-xs">mirarodeo23@mail.com</p>
-              </div>
-            </td>
-            <td class="py-3 px-4">
-              <p class="font-medium">15/09/2025</p>
-            </td>
-            <td class="py-3 px-4 flex items-center space-x-3">
-              <div>
-                <p class="font-medium">Mira Rodeo</p>
-                <p class="text-gray-500 text-xs">mirarodeo23@mail.com</p>
-              </div>
-            </td>
-            <td class="py-3 px-4">
-              <p class="font-medium">16/09/2025</p>
-            </td>
-            <td class="py-3 px-4 text-blue-600 cursor-pointer"><button class="w-6 h-6"><img
-                  src="./assets/pencil-square.svg" alt="edit" class="w-full h-auto"></button></td>
-          </tr>
+        <tbody class="text-gray-700 text-sm" id="tbody-edit">
+          <template id="template-edit-solicitud">
+            <tr class="border-b cursor-pointer" data-td-id>
+              <td class="py-3 px-4">
+                <p class="font-bold" data-vacante></p>
+              </td>
+              <td class="py-3 px-4">
+                <span class=" text-white text-sm font-semibold px-3 py-1 rounded-full" data-status1></span>
+              </td>
+              <td class="py-3 px-4 flex items-center space-x-3">
+                <div>
+                  <p class="font-medium text-center " data-auth1></p>
+                  <p class="text-gray-500 text-xs text-center" data-auth1puesto></p>
+                </div>
+              </td>
+              <td class="py-3 px-4">
+                <span class="font-semibold text-center" data-auth1date></span>
+              </td>
+              <td class="py-3 px-4">
+                <span class=" text-white text-sm font-semibold px-3 py-1 rounded-full" data-status2></span>
+              </td>
+              <td class="py-3 px-4 flex items-center space-x-3">
+                <div>
+                  <p class="font-medium text-center " data-auth2></p>
+                  <p class="text-gray-500 text-xs text-center" data-auth2puesto></p>
+                </div>
+              </td>
+              <td class="py-3 px-4">
+                <span class="font-semibold text-center" data-auth2date></span>
+              </td>
+
+            </tr>
 
 
         </tbody>
