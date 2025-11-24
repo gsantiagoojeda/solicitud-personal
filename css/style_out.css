@@ -742,6 +742,14 @@ video {
   height: auto;
 }
 
+.h-16{
+  height: 4rem;
+}
+
+.h-12{
+  height: 3rem;
+}
+
 .max-h-40{
   max-height: 10rem;
 }
@@ -792,6 +800,14 @@ video {
 
 .w-full{
   width: 100%;
+}
+
+.w-32{
+  width: 8rem;
+}
+
+.w-24{
+  width: 6rem;
 }
 
 .min-w-\[100px\]{
