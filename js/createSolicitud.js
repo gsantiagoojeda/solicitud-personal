@@ -85,7 +85,7 @@ export default async function createSolicitud(e) {
     if (!json.err) {
       document.querySelector(".load").style.display = "none";
       alert(`Solicitud creada`);
-      location.reload();
+      location.href = `${DOMAIN}ver-solicitudes.html`;
     } else {
       throw { status: "200", statusText: json.statusText };
     }
