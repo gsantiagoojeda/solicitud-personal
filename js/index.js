@@ -15,6 +15,7 @@ import multiselect from "./multiselect.js";
 import detailAuthSolicitud from "./detailAuthSolicitud.js";
 import autorizarSolicitud from "./autorizarSolicitud.js";
 import goMiSolicitud from "./goMiSolicitud.js";
+import listMisSolicitudes from "./listMisSolicitudes.js";
 
 const d = document;
 
@@ -42,6 +43,7 @@ d.addEventListener("DOMContentLoaded", async (e) => {
   setSueldos();
   multiselect();
   listSolicitudes(data);
+  listMisSolicitudes(data);
   detailAuthSolicitud(data);
 });
 
