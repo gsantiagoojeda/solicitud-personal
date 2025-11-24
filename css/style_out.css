@@ -1261,6 +1261,10 @@ video {
   color: rgb(234 179 8 / var(--tw-text-opacity, 1));
 }
 
+.accent-red-600{
+  accent-color: #dc2626;
+}
+
 .opacity-50{
   opacity: 0.5;
 }
