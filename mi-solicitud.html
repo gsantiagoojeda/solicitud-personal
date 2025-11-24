@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="shortcut icon" href="./assets/logo.jpeg" type="image/x-icon">
+  <link href="./css/style_out.css" rel="stylesheet">
+  <title>Ver Solicitud de Personal</title>
+</head>
+
+<!-- rgb:(0,66,97) rgb:(8,90,129) rgb:(13,106,151) -->
+
+<body class="bg-white select-none">
+  <header data-include="./header.html"></header>
+  <main class="w-full   lg:w-10/12 mx-auto bg-white ">
+    <section class=" w-full lg:flex items-center  px-6 py-4 lg:py-5 lg:mt-8 bg-white shadow-md rounded-md">
+      <button class="hidden w-8 h-auto mr-2" id="go-back"><img class="w-full h-auto"
+          src="./assets/arrow-left-circle-fill.svg" alt="goBack"></button>
+      <h3 class="inline lg:block text-2xl lg:text-3xl font-semibold lg:font-bold text-blue-700 grow text-center">
+        Ver solicitud de
+        personal
+      </h3>
+      <div class="flex flex-col items-end font-bold text-xs lg:text-sm"><span class="block">Código:
+          F01-PR-01-RH</span><span class="block">Rev:
+          01</span></div>
+    </section>
+
+    <form id="form-auth-solicitud">
+      <input type="hidden" id="solicitud-id" name="solicitud-id">
+      <article class="w-11/12 mt-4 bg-white p-4 pb-6 mx-auto rounded-md">
+        <section class="lg:flex justify-around">
+          <div class="flex gap-4">
+            <span class="flex items-center font-medium text-gray-600 mt-2 leading-normal">Puesto que desea
+              solicitar:</span> <span class="block font-bold text-blue-800 mt-2 leading-normal" id="puesto"></span>
+          </div>
+          <div class="flex gap-4">
+            <span class="block font-medium text-gray-600 mt-2 leading-normal">Persona solicitante:</span> <span
+              class="block font-bold text-blue-800 mt-2 leading-normal" id="solicitante" name="solicitante">Lucio
+              Zempoalteca</span>
+          </div>
+          <div class="flex gap-4">
+            <span class="block font-medium text-gray-600 mt-2 leading-normal">Fecha de creación:</span> <span
+              class="block font-bold text-blue-800 mt-2 leading-normal">19/09/2025 13:40:00</span>
+          </div>
+        </section>
+      </article>
+      <article class="hidden w-11/12 mt-4 bg-white p-4 pb-6 mx-auto shadow-md rounded-md" id="container-auths">
+        <section class="hidden lg:hidden justify-start" id="container-auth1">
+          <div class="flex gap-2 mr-8">
+            <span class="block font-medium text-gray-600 mt-2 leading-normal">Autorizador N1:</span> <span
+              class="block font-bold text-blue-800 mt-2 leading-normal" id="auth1-name">David Inclan</span>
+          </div>
+          <div class="flex gap-4">
+            <span class="block font-medium text-gray-600 mt-2 leading-normal">Fecha Autorización:</span> <span
+              class="block font-bold text-blue-800 mt-2 leading-normal" id="auth1-date">19/09/2025 13:40:00</span>
+          </div>
+        </section>
+        <section class=" hidden lg:hidden justify-start" id="container-auth2">
+          <div class="flex gap-2 mr-8">
+            <span class="block font-medium text-gray-600 mt-2 leading-normal">Autorizador N2:</span> <span
+              class="block font-bold text-blue-800 mt-2 leading-normal" id="auth2-name">David Inclan</span>
+          </div>
+          <div class="flex gap-4">
+            <span class="block font-medium text-gray-600 mt-2 leading-normal">Fecha Autorización:</span> <span
+              class="block font-bold text-blue-800 mt-2 leading-normal" id="auth2-date">19/09/2025 13:40:00</span>
+          </div>
+        </section>
+      </article>
+
+      <article class="w-11/12 mt-4 bg-white p-4 pb-6 mx-auto rounded-md">
+        <span class="block font-bold text-gray-600 mt-2 leading-normal">Considerando las necesidades y requerimientos
+          para el correcto desempeño de las funciones del personal solicitado,
+          responder lo siguiente:</span>
+        <span class="block font-semibold text-gray-600 mt-6 ">Condiciones físicas y ambientales
+          laborales:</span>
+        <span class="block font-normal text-gray-600 mt-6 mb-4  ">¿Existe un espacio de trabajo definido para
+          el próximo colaborador?<span class="text-red-600"> *</span></span>
+        <div class="flex items-center justify-evenly flex-wrap lg:flex-nowrap ">
+          <label class=" flex items-center space-x-2 cursor-pointer">
+            <input type="radio" name="solicitud-rp1" value="si"
+              class="w-5 h-5 text-blue-500 focus:ring-blue-400 border-gray-300" required>
+            <span class="text-gray-700">SI</span>
+          </label>
+
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <input type="radio" name="solicitud-rp1" value="no"
+              class="w-5 h-5 text-blue-500 focus:ring-blue-400 border-gray-300">
+            <span class="text-gray-700">NO</span>
+          </label>
+
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <input type="radio" name="solicitud-rp1" value="n/a"
+              class="w-5 h-5 text-blue-500 focus:ring-blue-400 border-gray-300">
+            <span class="text-gray-700">N/A</span>
+          </label>
+          <div class="flex flex-col mt-4 lg:mt-0">
+            <label for="solicitud-txt-rp1" class="block font-normal text-gray-600 mt-0">Mencione cuáles:</label>
+            <textarea id="solicitud-txt-rp1" name="solicitud-txt-rp1" rows="2" cols="50"
+              class="resize-none border rounded-md p-2 w-full" required></textarea>
+          </div>
+        </div>
+        <!--  -->
+        <span class="block font-normal text-gray-600 mt-6 mb-4  ">¿Existe el mobiliario de oficina requerido?<span
+            class="text-red-600"> *</span></span>
+        <div class="flex items-center justify-evenly flex-wrap lg:flex-nowrap ">
+          <label class=" flex items-center space-x-2 cursor-pointer">
+            <input type="radio" name="solicitud-rp2" value="si"
+              class="w-5 h-5 text-blue-500 focus:ring-blue-400 border-gray-300" required>
+            <span class="text-gray-700">SI</span>
+          </label>
+
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <input type="radio" name="solicitud-rp2" value="no"
+              class="w-5 h-5 text-blue-500 focus:ring-blue-400 border-gray-300">
+            <span class="text-gray-700">NO</span>
+          </label>
+
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <input type="radio" name="solicitud-rp2" value="n/a"
+              class="w-5 h-5 text-blue-500 focus:ring-blue-400 border-gray-300">
+            <span class="text-gray-700">N/A</span>
+          </label>
+          <div class="flex flex-col mt-4 lg:mt-0">
+            <label for="solicitud-txt-rp2" class="block font-normal text-gray-600 mt-0">Mencione cuáles:</label>
+            <textarea id="solicitud-txt-rp2" name="solicitud-txt-rp2" rows="2" cols="50"
+              class="resize-none border rounded-md p-2 w-full" required></textarea>
+          </div>
+        </div>
+        <!--  -->
+        <span class="block font-normal text-gray-600 mt-6 mb-4  ">¿Existe el equipo de cómputo necesario para
+          desarrollar sus actividades?<span class="text-red-600"> *</span></span>
+        <div class="flex items-center justify-evenly flex-wrap lg:flex-nowrap ">
+          <label class=" flex items-center space-x-2 cursor-pointer">
+            <input type="radio" name="solicitud-rp3" value="si"
+              class="w-5 h-5 text-blue-500 focus:ring-blue-400 border-gray-300" required>
+            <span class="text-gray-700">SI</span>
+          </label>
+
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <input type="radio" name="solicitud-rp3" value="no"
+              class="w-5 h-5 text-blue-500 focus:ring-blue-400 border-gray-300">
+            <span class="text-gray-700">NO</span>
+          </label>
+
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <input type="radio" name="solicitud-rp3" value="n/a"
+              class="w-5 h-5 text-blue-500 focus:ring-blue-400 border-gray-300">
+            <span class="text-gray-700">N/A</span>
+          </label>
+          <div class="flex flex-col mt-4 lg:mt-0">
+            <label for="solicitud-txt-rp3" class="block font-normal text-gray-600 mt-0">Mencione cuáles:</label>
+            <textarea id="solicitud-txt-rp3" name="solicitud-txt-rp3" rows="2" cols="50"
+              class="resize-none border rounded-md p-2 w-full" required></textarea>
+          </div>
+        </div>
+        <!--  -->
+        <span class="block font-normal text-gray-600 mt-6 mb-4  ">¿Existen las herramientas mínimas necesarias para
+          desempeñar su labor?<span class="text-red-600"> *</span></span>
+        <div class="flex items-center justify-evenly flex-wrap lg:flex-nowrap ">
+          <label class=" flex items-center space-x-2 cursor-pointer">
+            <input type="radio" name="solicitud-rp4" value="si"
+              class="w-5 h-5 text-blue-500 focus:ring-blue-400 border-gray-300" required>
+            <span class="text-gray-700">SI</span>
+          </label>
+
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <input type="radio" name="solicitud-rp4" value="no"
+              class="w-5 h-5 text-blue-500 focus:ring-blue-400 border-gray-300">
+            <span class="text-gray-700">NO</span>
+          </label>
+
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <input type="radio" name="solicitud-rp4" value="n/a"
+              class="w-5 h-5 text-blue-500 focus:ring-blue-400 border-gray-300">
+            <span class="text-gray-700">N/A</span>
+          </label>
+          <div class="flex flex-col mt-4 lg:mt-0">
+            <label for="solicitud-txt-rp4" class="block font-normal text-gray-600 mt-0">Mencione cuáles:</label>
+            <textarea id="solicitud-txt-rp4" name="solicitud-txt-rp4" rows="2" cols="50"
+              class="resize-none border rounded-md p-2 w-full" required></textarea>
+          </div>
+        </div>
+        <!--  -->
+      </article>
+
+      <article class="w-11/12 mt-4 bg-white p-4 pb-6 mx-auto rounded-md">
+
+        <span class="block font-medium text-blue-600 mt-6 mb-4  ">Mencione las compras y/o adecuaciones de espacio,
+          bienes o equipo requeridas:</span>
+        <textarea id="solicitud-txt-compras" name="solicitud-txt-compras" rows="1" cols="50"
+          class="resize-none border rounded-md p-2 w-full lg:w-8/12" required></textarea>
+
+
+        <span class="block font-medium text-blue-600 mt-6 mb-4  ">Fecha tentativa para generar las condiciones adecuadas
+          del puesto:<span class="text-red-600"> *</span></span>
+        <input type="date" name="solicitud-fecha-tentativa" id="solicitud-fecha-tentativa"
+          class=" border rounded-md p-2 w-full lg:w-8/12" required>
+        <span class="block font-normal text-blue-600 mt-6 mb-4  ">Mencione el responsable de gestionarlas con la
+          respectiva autorización del Director General:<span class="text-red-600"> *</span></span>
+        <textarea id="solicitud-txt-respgestion" name="solicitud-txt-respgestion" rows="1" cols="50"
+          class="resize-none border rounded-md p-2 w-full lg:w-8/12" required></textarea>
+        <span class="block font-normal text-blue-600 mt-6 mb-4  ">Número de vacantes<span class="text-red-600">
+            *</span></span>
+        <input type="number" name="solicitud-vacantes" id="solicitud-vacantes" min="1" step="1" value="1"
+          class="border rounded-md p-2 w-full lg:w-36" inputmode="numeric" pattern="\d*" required>
+      </article>
+
+      <article class="w-11/12 mt-4 bg-white p-4 pb-6 mx-auto rounded-md">
+        <section class="md:grid md:grid-cols-3 md:justify-items-center">
+          <div class="w-full lg:w-8/12">
+            <span class="block font-bold text-gray-600 mt-2 leading-normal">Sexo:<span class="text-red-600">
+                *</span></span>
+            <select id="solicitud-sexo" name="solicitud-sexo"
+              class="block w-full  px-4 py-2 my-2  text-gray-700 font-semibold bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              required>
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option value="hombre">Hombre</option>
+              <option value="mujer">Mujer</option>
+              <option value="indistinto">Indistinto</option>
+            </select>
+          </div>
+          <div class="w-full lg:w-8/12">
+            <span class="block font-bold text-gray-600 mt-2 leading-normal">Estado cilvil:<span class="text-red-600">
+                *</span></span>
+            <select id="solicitud-estado-civil" name="solicitud-estado-civil"
+              class="block w-full  px-4 py-2 my-2  text-gray-700 font-semibold bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              required>
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option value="casado">Casado</option>
+              <option value="soltero">Soltero</option>
+              <option value="indistinto">Indistinto</option>
+            </select>
+          </div>
+          <div class="w-full lg:w-8/12">
+            <span class="block font-bold text-gray-600 mt-2 leading-normal">Escolaridad:<span class="text-red-600">
+                *</span></span>
+            <select id="solicitud-escolaridad" name="solicitud-escolaridad"
+              class="block w-full  px-4 py-2 my-2  text-gray-700 font-semibold bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              required>
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option value="secundaria">Secundaria</option>
+              <option value="media superior">Media superior</option>
+              <option value="superior">Superior</option>
+            </select>
+          </div>
+        </section>
+        <section class="lg:flex lg:justify-around mt-4">
+          <article>
+            <span class="block font-bold text-gray-600 mt-2 leading-normal">Selecciona rango de edad:<span
+                class="text-red-600">
+                *</span></span>
+            <div class="px-6 mt-4">
+              <span class=" font-normal text-gray-600 mt-6 mb-4  ">De</span>
+              <input type="number" name="solicitud-age-min" id="solicitud-age-min" min="1" step="1"
+                class="inline-block border rounded-md p-2 mb-4  w-16 text-center" required>
+              <span class=" font-normal text-gray-600 mt-6 mb-4  ">a</span>
+              <input type="number" name="solicitud-age-max" id="solicitud-age-max" min="1" step="1"
+                class="inline-block border rounded-md p-2 mx-4  w-16 text-center" required>
+              <span class=" font-normal text-gray-600 mt-6 mb-4  ">años</span>
+            </div>
+          </article>
+          <article>
+            <span class="block font-bold text-gray-600 mt-2 leading-normal">Selecciona años de experiencia:<span
+                class="text-red-600">
+                *</span></span>
+            <div class="px-6 mt-4">
+              <input type="number" name="solicitud-experiencia" id="solicitud-experiencia" min="1" step="1"
+                class="inline-block border rounded-md p-2 mb-4  w-16 text-center" required>
+              <span class=" font-normal text-gray-600 mt-6 mb-4  ">año(s)</span>
+            </div>
+          </article>
+        </section>
+      </article>
+      <!--  -->
+      <article class="w-11/12 mt-4 bg-white p-4 pb-6 mx-auto rounded-md">
+        <span class="block font-bold text-blue-600 mt-2 leading-normal">Requerimientos:</span>
+
+        <span class="block font-normal text-blue-600 mt-6 mb-4  ">Conocimientos:<span class="text-red-600">
+            *</span></span>
+        <textarea id="solicitud-txt-conocimientos" name="solicitud-txt-conocimientos" rows="2"
+          class="resize-none border rounded-md p-2 w-full lg:w-5/6" required></textarea>
+        <span class="block font-normal text-blue-600 mt-6 mb-4  ">Competencias o habilidades:<span class="text-red-600">
+            *</span></span>
+        <textarea id="solicitud-txt-habilidades" name="solicitud-txt-habilidades" rows="2"
+          class="resize-none border rounded-md p-2 w-full lg:w-5/6" required></textarea>
+        <span class="block font-normal text-blue-600 mt-6 mb-4  ">Manejo de alguna herramienta en
+          especial:<span class="text-red-600">
+            *</span></span>
+        <textarea id="solicitud-txt-tools" name="solicitud-txt-tools" rows="2"
+          class="resize-none border rounded-md p-2 w-full lg:w-5/6" required></textarea>
+        <section class="flex justify-around">
+          <article>
+            <span class="block font-bold text-blue-600 mt-2 leading-normal">Sueldo sugerido:<span class="text-red-600">
+                *</span></span>
+            <select name="solicitud-sueldo" id="solicitud-sueldo"
+              class="block w-full  px-4 py-2 my-4  text-gray-700 font-semibold bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              required>
+              <option value="" disabled selected>Selecciona una opción</option>
+            </select>
+          </article>
+          <article>
+            <span class="block font-bold text-blue-600 mt-2 leading-normal">Horario:<span class="text-red-600">
+                *</span></span>
+            <select id="solicitud-horario" name="solicitud-horario"
+              class="block w-full  px-4 py-2 my-4  text-gray-700 font-semibold bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              required>
+              <option value="" disabled selected>Selecciona una opción</option>
+            </select>
+          </article>
+          <article>
+            <span class="block font-bold text-blue-600 mt-2 leading-normal">Rola turnos?<span class="text-red-600">
+                *</span></span>
+            <select id="solicitud-rolar" name="solicitud-rolar"
+              class="block w-full  px-4 py-2 my-4  text-gray-700 font-semibold bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              required>
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option value="si">Si</option>
+              <option value="no">No</option>
+            </select>
+          </article>
+        </section>
+      </article>
+      <!--  -->
+
+      <article class="w-11/12 mt-4 bg-white p-4 pb-4 mx-auto " id="edit-contain">
+        <p class="font-bold text-gray-600 text-lg text-center">Confirmación de edición</p>
+        <div class="md:flex justify-evenly items-center mt-4">
+          <button id="btn-autorizar-solicitud"
+            class="bg-green-600 hover:bg-green-700 text-white font-semibold  rounded-md p-2 text-lg">Editar
+            Solicitud</button>
+          <button id="btn-rechazar-solicitud"
+            class="bg-red-600 hover:bg-red-700 text-white font-semibold  rounded-md p-2 text-lg mt-4">Cancelar
+            Solicitud</button>
+        </div>
+
+      </article>
+
+    </form>
+
+  </main>
+  <section class="load"><img src="./assets/puff.svg" alt="cargando"></section>
+
+  <script type="module" src="./js/index.js?v=1"></script>
+</body>
+
+</html>
