@@ -18,19 +18,21 @@
 <!-- rgb:(0,66,97) rgb:(8,90,129) rgb:(13,106,151) -->
 
 <body class="bg-gray-200 select-none">
+  <header data-include="./header.html"></header>
   <main class="w-full   lg:w-10/12 mx-auto bg-gray-200 ">
     <section class=" w-full lg:flex items-center  px-6 py-4 lg:py-5 lg:mt-8 bg-white ">
-      <button class="w-8 h-auto mr-2" id="go-back"><img class="w-full h-auto" src="./assets/arrow-left-circle-fill.svg"
-          alt="goBack"></button>
+      <button class="hidden w-8 h-auto mr-2" id="go-back"><img class="w-full h-auto"
+          src="./assets/arrow-left-circle-fill.svg" alt="goBack"></button>
       <h3 class="inline lg:block text-2xl lg:text-3xl font-semibold lg:font-bold text-blue-700 grow text-center">
         Mis solicitudes de personal
       </h3>
     </section>
 
-    <section class=" w-full  px-0 py-0  lg:mt-8 bg-white overflow-x-auto">
-      <table class="min-w-full bg-white rounded-lg shadow-md">
+    <section
+      class=" w-full  px-0 py-0  lg:mt-8 bg-white overflow-x-auto shadow-lg shadow-[3px_4px_10px_rgba(0,0,0,0.15)] rounded">
+      <table class="table-auto min-w-full bg-white rounded-lg shadow-md">
         <thead>
-          <tr class="bg-blue-800 text-white text-left text-sm">
+          <tr class="bg-[#085a80] text-white text-left text-sm">
             <th class="py-3 px-4">PUESTO</th>
             <th class="py-3 px-4">STATUS</th>
             <th class="py-3 px-4">AUTORIZADOR 1</th>
