@@ -53,8 +53,10 @@ export default async function listSolicitudes(data) {
       } else if (el.solicitud_autorizacion1 === "Rechazada") {
         statusElement.textContent = el.solicitud_autorizacion1;
         statusElement.classList.add("bg-red-600");
+      } else {
+        statusElement.textContent = "Autorizada";
+        statusElement.classList.add("bg-green-600");
       }
-
       $clone.querySelector("[data-auth]").textContent =
         el.autorizador1_nombre_completo === ""
           ? "-"
