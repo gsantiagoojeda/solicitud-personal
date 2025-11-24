@@ -7,8 +7,8 @@ require "../conexion_intranet.php";
 require "../conexion_vacaciones.php";
 require "../conexion_solicitud.php";
 
-$idUser = "3009"; // usuario actual
-// $idUser = $_POST['user-id']; // usuario actual
+
+$idUser = $_POST['user-id']; // usuario actual
 
 // Paso 1: Obtener puesto y autoridad del usuario
 $sqlUser = "SELECT puesto, id_autoridad FROM empleados WHERE id = ?";
