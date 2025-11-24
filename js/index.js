@@ -14,6 +14,7 @@ import listSolicitudes from "./listSolicitudes.js";
 import multiselect from "./multiselect.js";
 import detailAuthSolicitud from "./detailAuthSolicitud.js";
 import autorizarSolicitud from "./autorizarSolicitud.js";
+import goMiSolicitud from "./goMiSolicitud.js";
 
 const d = document;
 
@@ -23,6 +24,7 @@ d.addEventListener("click", (e) => {
   menu(e);
   goAutorizarSolicitud(e);
   goVerSolicitud(e);
+  goMiSolicitud(e);
   autorizarSolicitud(e);
 });
 
