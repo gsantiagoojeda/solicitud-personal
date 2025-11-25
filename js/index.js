@@ -49,8 +49,7 @@ d.addEventListener("DOMContentLoaded", async (e) => {
 });
 
 d.addEventListener("change", (e) => {
-  console.log(e);
-  // validateRangeFilter(e);
+  validateRangeFilter(e);
 });
 
 async function validarJWT() {
