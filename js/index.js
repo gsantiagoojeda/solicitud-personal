@@ -35,11 +35,6 @@ d.addEventListener("submit", (e) => {
   createSolicitud(e);
 });
 
-d.addEventListener("change", (e) => {
-  console.log(e);
-  validateRangeFilter(e);
-});
-
 d.addEventListener("DOMContentLoaded", async (e) => {
   const data = await validarJWT();
   await pushHtml();
@@ -51,6 +46,11 @@ d.addEventListener("DOMContentLoaded", async (e) => {
   listSolicitudes(data);
   listMisSolicitudes(data);
   detailAuthSolicitud(data);
+});
+
+d.addEventListener("change", (e) => {
+  console.log(e);
+  validateRangeFilter(e);
 });
 
 async function validarJWT() {
