@@ -11,6 +11,7 @@ export default function validateRangeFilter(e) {
     return;
   }
 
+  const $btnFilters = d.getElementById("btn-apply-filters");
   const $startYear = d.getElementById("start-year");
   let startYear = $startYear.value;
   const $endYear = d.getElementById("end-year");
@@ -20,5 +21,6 @@ export default function validateRangeFilter(e) {
     $endYear.classList.remove("border-gray-600");
     $endYear.classList.add("text-red-600");
     $endYear.classList.add("border-red-600");
+    $btnFilters.setAttribute("disabled", true);
   }
 }
