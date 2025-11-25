@@ -22,5 +22,7 @@ export default function validateRangeFilter(e) {
     $endYear.classList.add("text-red-600");
     $endYear.classList.add("border-red-600");
     $btnFilters.setAttribute("disabled", true);
+    $btnFilters.classList.add("opacity-50");
+    $btnFilters.classList.add("cursor-not-allowed");
   }
 }
