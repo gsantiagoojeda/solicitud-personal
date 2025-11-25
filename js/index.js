@@ -36,6 +36,7 @@ d.addEventListener("submit", (e) => {
 });
 
 d.addEventListener("DOMContentLoaded", async (e) => {
+  consoleñ;
   const data = await validarJWT();
   await pushHtml();
   infoMenu(data);
