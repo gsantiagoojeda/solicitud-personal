@@ -36,7 +36,7 @@ d.addEventListener("submit", (e) => {
 });
 
 d.addEventListener("change", (e) => {
-  console.log(e.target);
+  console.log(e);
   validateRangeFilter(e);
 });
 
