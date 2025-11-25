@@ -24,5 +24,12 @@ export default function validateRangeFilter(e) {
     $btnFilters.setAttribute("disabled", true);
     $btnFilters.classList.add("opacity-50");
     $btnFilters.classList.add("cursor-not-allowed");
+  } else {
+    $endYear.classList.add("border-gray-600");
+    $endYear.classList.remove("text-red-600");
+    $endYear.classList.remove("border-red-600");
+    $btnFilters.removeAttribute("disabled");
+    $btnFilters.classList.remove("opacity-50");
+    $btnFilters.classList.remove("cursor-not-allowed");
   }
 }
