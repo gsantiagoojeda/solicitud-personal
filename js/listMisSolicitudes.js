@@ -27,7 +27,7 @@ export default async function listMisSolicitudes(data) {
 
     const $fragment = document.createDocumentFragment();
 
-    json.data.forEach((el) => {
+    json.solicitudes.forEach((el) => {
       console.log(el);
       let $clone = document.importNode($template, true);
 
