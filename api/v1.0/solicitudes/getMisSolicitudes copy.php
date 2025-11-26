@@ -11,39 +11,6 @@ require "../conexion_solicitud.php";
 // $idUser = $_POST['user-id']; // usuario actual
 $idUser ="264"; // usuario actual
 
-// --- PASO 1: Obtener datos del empleado actual ($idUser) y definir la variable $user ---
-$user = []; // Inicializamos $user como un array vacío
-
-$sqlUser = "SELECT id, nombre, apellido_paterno, apellido_materno, puesto, correo, empresa, id_departamento 
-             FROM empleados 
-             WHERE id= '$idUser' ";
-$resultUser = $mysqli_vacaciones->query($sqlUser); // Cambié la variable de $result a $resultUser para evitar conflictos
-
-if ($resultUser && $rowUser = $resultUser->fetch_assoc()) {
-    // Definimos $user con los datos del empleado
-    $nombreCompleto = trim(
-        ($rowUser['nombre'] ?? '') . ' ' .
-        ($rowUser['apellido_paterno'] ?? '') . ' ' .
-        ($rowUser['apellido_materno'] ?? '')
-    );
-
-    $user = [
-        'id' => $rowUser['id'],
-        'nombre_completo' => $nombreCompleto,
-        'puesto' => $rowUser['puesto'] ?? null,
-        'correo' => $rowUser['correo'] ?? '',
-        'empresa' => $rowUser['empresa'] ?? '',
-        'id_departamento' => $rowUser['id_departamento'] ?? null,
-        // Agrega cualquier otro campo que necesites en el array $user
-    ];
-} else {
-    // Manejo de error o empleado no encontrado (opcional, pero recomendado)
-    // Podrías detener la ejecución o asignar valores por defecto.
-    echo "Error: Empleado con ID $idUser no encontrado.";
-    // exit();
-}
-
-// --------------------------------------------------------------------------------------
 
 
 // Paso previo: cargar departamentos
@@ -64,7 +31,7 @@ if ($resultPuestos) {
     }
 }
 
-// Paso previo: cargar empleados con puesto y nombre completo para autorizador1 y 2
+// Paso previo: cargar empleados con puesto y nombre completo para autorizador1
 $empleados = [];
 $sql = "SELECT id, puesto, nombre, apellido_paterno, apellido_materno FROM empleados";
 $resultEmps = $mysqli_vacaciones->query($sql);
@@ -87,19 +54,19 @@ if ($resultEmps) {
 $listaSolicitudes = [];
 $sqlSolicitudes;
 
-    
+   
     $userId = $mysqli_solicitud->real_escape_string($idUser);
     $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE solicitud_solicitante_id= '$userId' ";
 
     $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
 
 if ($resultSolicitudes) {
-    while ($row = $resultSolicitudes->fetch_assoc()) {
-        $solicitudBlindada = array_map(function($v){
-            return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8');
-        }, $row);
-        
-        
+  while ($row = $resultSolicitudes->fetch_assoc()) {
+    $solicitudBlindada = array_map(function($v){
+      return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8');
+    }, $row);
+    
+    
             // Puesto del solicitante
             $nombrePuesto = '';
             $puestoId = $solicitudBlindada['solicitud_puesto_id'] ?? '';
@@ -109,8 +76,7 @@ if ($resultSolicitudes) {
 
             // Departamento del usuario autorizado
             $nombreDepartamento = '';
-            // 🐛 CORRECCIÓN: Usa $user['id_departamento'] definido arriba
-            $deptoId = $user['id_departamento'] ?? ''; 
+            $deptoId = $user['id_departamento'] ?? '';
             if ($deptoId && isset($departamentos[$deptoId])) {
                 $nombreDepartamento = $departamentos[$deptoId];
             }
@@ -131,15 +97,14 @@ if ($resultSolicitudes) {
                 $aut2NombreCompleto = $empleados[$aut2Id]['nombre_completo'];
                 $aut2Puesto = $empleados[$aut2Id]['puesto'];
             }
-            
-            // 🐛 CORRECCIÓN: Asegurarse de que $user contenga los índices necesarios para evitar Notice.
+
             $solicitudConUsuario = array_merge($solicitudBlindada, [
-                "usuario_id" => $user['id'] ?? null,
-                "usuario_nombre_completo" => $user['nombre_completo'] ?? '',
-                "usuario_puesto" => $user['puesto'] ?? null,
+                "usuario_id" => $user['id'],
+                "usuario_nombre_completo" => $user['nombre_completo'],
+                "usuario_puesto" => $user['puesto'],
                 "usuario_correo" => $user['correo'] ?? '',
-                "usuario_empresa" => $user['empresa'] ?? '',
-                "usuario_id_departamento" => $user['id_departamento'] ?? null,
+                "usuario_empresa" => $user['empresa'],
+                "usuario_id_departamento" => $user['id_departamento'],
                 "usuario_departamento_nombre" => $nombreDepartamento,
                 "solicitud_nombre_puesto" => $nombrePuesto,
                 "autorizador1_nombre_completo" => $aut1NombreCompleto,
@@ -151,3 +116,4 @@ if ($resultSolicitudes) {
             $listaSolicitudes[] = $solicitudConUsuario;
         }
     }
+    
