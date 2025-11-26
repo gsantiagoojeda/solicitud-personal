@@ -8,8 +8,8 @@ require "../conexion_vacaciones.php";
 require "../conexion_solicitud.php";
 
 
-// $idUser = $_POST['user-id']; // usuario actual
-$idUser ="264"; // usuario actual
+$idUser = $_POST['user-id']; // usuario actual
+// $idUser ="264"; // usuario actual
 
 // --- PASO 1: Obtener datos del empleado actual ($idUser) y definir la variable $user ---
 $user = []; // Inicializamos $user como un array vacío
