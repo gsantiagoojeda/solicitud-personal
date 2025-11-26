@@ -34,13 +34,17 @@ if ($resultUser && $rowUser = $resultUser->fetch_assoc()) {
         'correo' => $rowUser['correo'] ?? '',
         'empresa' => $rowUser['empresa'] ?? '',
         'id_departamento' => $rowUser['id_departamento'] ?? null,
-        // Agrega cualquier otro campo que necesites en el array $user
     ];
 } else {
-    // Manejo de error o empleado no encontrado (opcional, pero recomendado)
-    // Podrías detener la ejecución o asignar valores por defecto.
-    echo "Error: Empleado con ID $idUser no encontrado.";
-    // exit();
+    // Si no se encuentra el empleado, inicializamos $user con valores seguros para evitar errores.
+    $user = [
+        'id' => $idUser, 
+        'nombre_completo' => 'Empleado No Encontrado', 
+        'puesto' => null, 
+        'correo' => '', 
+        'empresa' => '', 
+        'id_departamento' => null,
+    ];
 }
 
 // --------------------------------------------------------------------------------------
@@ -85,10 +89,10 @@ if ($resultEmps) {
 
 // Paso 4: Construir solicitudes
 $listaSolicitudes = [];
-$sqlSolicitudes;
 
     
     $userId = $mysqli_solicitud->real_escape_string($idUser);
+    // Asumiendo que 'solicitud_solicitante_id' en 'sp_solicitud' es el ID del empleado.
     $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE solicitud_solicitante_id= '$userId' ";
 
     $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
@@ -100,16 +104,15 @@ if ($resultSolicitudes) {
         }, $row);
         
         
-            // Puesto del solicitante
+            // Puesto del solicitante (usando el ID del puesto guardado en la solicitud)
             $nombrePuesto = '';
             $puestoId = $solicitudBlindada['solicitud_puesto_id'] ?? '';
             if ($puestoId && isset($puestos[$puestoId])) {
                 $nombrePuesto = $puestos[$puestoId];
             }
 
-            // Departamento del usuario autorizado
+            // Departamento del usuario solicitante (usando el ID del departamento cargado en $user)
             $nombreDepartamento = '';
-            // 🐛 CORRECCIÓN: Usa $user['id_departamento'] definido arriba
             $deptoId = $user['id_departamento'] ?? ''; 
             if ($deptoId && isset($departamentos[$deptoId])) {
                 $nombreDepartamento = $departamentos[$deptoId];
@@ -121,7 +124,10 @@ if ($resultSolicitudes) {
             $aut1Id = $solicitudBlindada['solicitud_autorizador1_id'] ?? '';
             if ($aut1Id && isset($empleados[$aut1Id])) {
                 $aut1NombreCompleto = $empleados[$aut1Id]['nombre_completo'];
-                $aut1Puesto = $empleados[$aut1Id]['puesto'];
+                // Para obtener el nombre del puesto, se requiere otra búsqueda o asegurar que $empleados lo contenga.
+                // Usaremos el ID de puesto y el array $puestos si 'puesto' en $empleados es un ID.
+                $aut1PuestoId = $empleados[$aut1Id]['puesto'];
+                $aut1Puesto = $puestos[$aut1PuestoId] ?? $aut1PuestoId; // Asume que 'puesto' en $empleados es el ID del puesto.
             }
             // Autorizador2: nombre completo y puesto
             $aut2NombreCompleto = '';
@@ -129,10 +135,11 @@ if ($resultSolicitudes) {
             $aut2Id = $solicitudBlindada['solicitud_autorizador2_id'] ?? '';
             if ($aut2Id && isset($empleados[$aut2Id])) {
                 $aut2NombreCompleto = $empleados[$aut2Id]['nombre_completo'];
-                $aut2Puesto = $empleados[$aut2Id]['puesto'];
+                $aut2PuestoId = $empleados[$aut2Id]['puesto'];
+                $aut2Puesto = $puestos[$aut2PuestoId] ?? $aut2PuestoId; // Asume que 'puesto' en $empleados es el ID del puesto.
             }
             
-            // 🐛 CORRECCIÓN: Asegurarse de que $user contenga los índices necesarios para evitar Notice.
+            // Unir los datos de la solicitud con los datos del usuario solicitante
             $solicitudConUsuario = array_merge($solicitudBlindada, [
                 "usuario_id" => $user['id'] ?? null,
                 "usuario_nombre_completo" => $user['nombre_completo'] ?? '',
@@ -151,3 +158,20 @@ if ($resultSolicitudes) {
             $listaSolicitudes[] = $solicitudConUsuario;
         }
     }
+
+// --------------------------------------------------------------------------------------
+## 📤 Salida JSON
+
+// 1. Establecer el encabezado de respuesta para JSON
+header('Content-Type: application/json');
+
+// 2. Convertir el array a JSON y enviarlo al navegador
+echo json_encode([
+    'success' => true,
+    'total_solicitudes' => count($listaSolicitudes),
+    'empleado_solicitante' => $user, // Puedes incluir la info del empleado si es útil
+    'solicitudes' => $listaSolicitudes
+], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE); // JSON_PRETTY_PRINT es opcional para formato legible
+
+exit; // Detener la ejecución del script
+?>
