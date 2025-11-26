@@ -8,7 +8,8 @@ require "../conexion_vacaciones.php";
 require "../conexion_solicitud.php";
 
 
-$idUser = $_POST['user-id']; // usuario actual
+// $idUser = $_POST['user-id']; // usuario actual
+$idUser ="264"; // usuario actual
 
 
 
