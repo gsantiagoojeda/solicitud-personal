@@ -8,21 +8,25 @@ require "../conexion_vacaciones.php";
 require "../conexion_solicitud.php";
 
 
-// $idUser = $_POST['user-id']; // usuario actual
-$idUser ="264"; // usuario actual
+// --- CONFIGURACIÓN DE DATOS (AJUSTAR PARA PRODUCCIÓN) ---
 
+// **IMPORTANTE: Descomenta estas líneas y comenta las de simulación al subir a producción**
+/*
+$idUser = $_POST['user-id'] ?? null; 
+$filterAuth = $_POST['filterAuth'] ?? 'false'; 
+$filterPend = $_POST['filterPend'] ?? 'false'; 
+$filterRech = $_POST['filterRech'] ?? 'false'; 
+$filterYearStart = $_POST['filterYearStart'] ?? null; 
+$filterYearEnd = $_POST['filterYearEnd'] ?? null;
+*/
+
+// SIMULACIÓN DE DATOS
+$idUser ="264"; // usuario actual
 $filterAuth = "false"; 
 $filterPend = "false"; 
 $filterRech = "false"; 
 $filterYearStart = "2025"; 
 $filterYearEnd = "2025";
-// $filterAuth = $_POST['filterAuth']; 
-// $filterPend = $_POST['filterPend']; 
-// $filterRech = $_POST['filterRech']; 
-// $filterYearStart = $_POST['filterYearStart']; 
-// $filterYearEnd = $_POST['filterYearEnd'];
-
-
 
 
 // --- PASO 1: Obtener datos del empleado actual ($idUser) y definir la variable $user ---
@@ -31,10 +35,9 @@ $user = []; // Inicializamos $user como un array vacío
 $sqlUser = "SELECT id, nombre, apellido_paterno, apellido_materno, puesto, correo, empresa, id_departamento 
              FROM empleados 
              WHERE id= '$idUser' ";
-$resultUser = $mysqli_vacaciones->query($sqlUser); // Cambié la variable de $result a $resultUser para evitar conflictos
+$resultUser = $mysqli_vacaciones->query($sqlUser); 
 
 if ($resultUser && $rowUser = $resultUser->fetch_assoc()) {
-    // Definimos $user con los datos del empleado
     $nombreCompleto = trim(
         ($rowUser['nombre'] ?? '') . ' ' .
         ($rowUser['apellido_paterno'] ?? '') . ' ' .
@@ -50,7 +53,6 @@ if ($resultUser && $rowUser = $resultUser->fetch_assoc()) {
         'id_departamento' => $rowUser['id_departamento'] ?? null,
     ];
 } else {
-    // Si no se encuentra el empleado, inicializamos $user con valores seguros para evitar errores.
     $user = [
         'id' => $idUser, 
         'nombre_completo' => 'Empleado No Encontrado', 
@@ -101,12 +103,11 @@ if ($resultEmps) {
 }
 
 
-// 1. Array para almacenar las condiciones de los filtros
+// --- INICIO DE CONSTRUCCIÓN DINÁMICA DE LA CONSULTA ---
 $filtros = [];
 $statusConditions = [];
 
-// 2. Definición de las condiciones SQL por cada estado
-
+// 2. Definición de las condiciones SQL por cada estado (USANDO COMPARACIÓN ESTRICTA)
 if ($filterAuth === "true") {
     // CONDICIÓN AUTORIZADA: Ambos campos deben ser 'AUTORIZADA'
     $statusConditions[] = "(solicitud_autorizacion1 = 'AUTORIZADA' AND solicitud_autorizacion2 = 'AUTORIZADA')";
@@ -122,14 +123,17 @@ if ($filterRech === "true") {
     $statusConditions[] = "(solicitud_autorizacion1 = 'RECHAZADA')";
 }
 
-// 3. Combinación de los filtros de estado (si existen)
+// 3. Combinación de los filtros de estado
 if (!empty($statusConditions)) {
-    // Unimos todas las condiciones de estado con ' OR ' dentro de un gran paréntesis
+    // Si al menos un filtro está activo, se construye el filtro OR normal.
     $filtros[] = "(" . implode(" OR ", $statusConditions) . ")";
+} else {
+    // Si NINGÚN filtro de estado está activo, agregamos una condición imposible para no traer resultados.
+    $filtros[] = "(1 = 0)"; 
 }
 
 
-// 4. Filtros de Rango de Año (Fecha) - Se mantiene la misma lógica
+// 4. Filtros de Rango de Año (Fecha)
 if (!empty($filterYearStart) && !empty($filterYearEnd)) {
     // Usamos YEAR() para extraer el año del TIMESTAMP y BETWEEN para el rango.
     $filtros[] = "CAST(YEAR(solicitud_date_create) AS UNSIGNED) BETWEEN " . (int)$filterYearStart . " AND " . (int)$filterYearEnd;
@@ -137,24 +141,17 @@ if (!empty($filterYearStart) && !empty($filterYearEnd)) {
 
 
 // 5. Condición Obligatoria del Usuario (Solicitante)
-// ¡Recuerda sanitizar $userId o usar consultas preparadas!
-$filtros[] = "solicitud_solicitante_id = '" . $idUser . "'";
-
+$filtros[] = "solicitud_solicitante_id = '" . $idUser . "'"; 
 
 // 6. Construcción Final de la Consulta
 $clausulaWhere = " WHERE " . implode(" AND ", $filtros);
-
 $sqlSolicitudes = "SELECT * FROM sp_solicitud" . $clausulaWhere;
 
-echo "$sqlSolicitudes";
 
-// Para depuración:
-// echo $sqlSolicitudes;
+// --- EJECUCIÓN DE LA CONSULTA Y PROCESAMIENTO ---
 
-// Para depuración:
-// echo $sqlSolicitudes;
-$listaSolicitudes = [];
-    $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
+$listaSolicitudes = []; // Inicialización crucial
+$resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
 
 if ($resultSolicitudes) {
     while ($row = $resultSolicitudes->fetch_assoc()) {
@@ -183,11 +180,10 @@ if ($resultSolicitudes) {
             $aut1Id = $solicitudBlindada['solicitud_autorizador1_id'] ?? '';
             if ($aut1Id && isset($empleados[$aut1Id])) {
                 $aut1NombreCompleto = $empleados[$aut1Id]['nombre_completo'];
-                // Para obtener el nombre del puesto, se requiere otra búsqueda o asegurar que $empleados lo contenga.
-                // Usaremos el ID de puesto y el array $puestos si 'puesto' en $empleados es un ID.
                 $aut1PuestoId = $empleados[$aut1Id]['puesto'];
-                $aut1Puesto = $puestos[$aut1PuestoId] ?? $aut1PuestoId; // Asume que 'puesto' en $empleados es el ID del puesto.
+                $aut1Puesto = $puestos[$aut1PuestoId] ?? $aut1PuestoId; 
             }
+            
             // Autorizador2: nombre completo y puesto
             $aut2NombreCompleto = '';
             $aut2Puesto = '';
@@ -195,7 +191,7 @@ if ($resultSolicitudes) {
             if ($aut2Id && isset($empleados[$aut2Id])) {
                 $aut2NombreCompleto = $empleados[$aut2Id]['nombre_completo'];
                 $aut2PuestoId = $empleados[$aut2Id]['puesto'];
-                $aut2Puesto = $puestos[$aut2PuestoId] ?? $aut2PuestoId; // Asume que 'puesto' en $empleados es el ID del puesto.
+                $aut2Puesto = $puestos[$aut2PuestoId] ?? $aut2PuestoId; 
             }
             
             // Unir los datos de la solicitud con los datos del usuario solicitante
@@ -215,8 +211,8 @@ if ($resultSolicitudes) {
             ]);
 
             $listaSolicitudes[] = $solicitudConUsuario;
-        }
     }
+}
 
 // --------------------------------------------------------------------------------------
 ## 📤 Salida JSON
@@ -227,10 +223,10 @@ header('Content-Type: application/json');
 // 2. Convertir el array a JSON y enviarlo al navegador
 echo json_encode([
     'success' => true,
-    'total_solicitudes' => count($listaSolicitudes),
-    'empleado_solicitante' => $user, // Puedes incluir la info del empleado si es útil
+    'total_solicitudes' => count($listaSolicitudes), 
+    'empleado_solicitante' => $user, 
     'solicitudes' => $listaSolicitudes
-], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE); // JSON_PRETTY_PRINT es opcional para formato legible
+], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE); 
 
-exit; // Detener la ejecución del script
+exit; 
 ?>
