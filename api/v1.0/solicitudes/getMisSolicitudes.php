@@ -10,23 +10,22 @@ require "../conexion_solicitud.php";
 
 // --- CONFIGURACIÓN DE DATOS (AJUSTAR PARA PRODUCCIÓN) ---
 
-// **IMPORTANTE: Descomenta estas líneas y comenta las de simulación al subir a producción**
-/*
+
 $idUser = $_POST['user-id'] ?? null; 
 $filterAuth = $_POST['filterAuth'] ?? 'false'; 
 $filterPend = $_POST['filterPend'] ?? 'false'; 
 $filterRech = $_POST['filterRech'] ?? 'false'; 
 $filterYearStart = $_POST['filterYearStart'] ?? null; 
 $filterYearEnd = $_POST['filterYearEnd'] ?? null;
-*/
+
 
 // SIMULACIÓN DE DATOS
-$idUser ="264"; // usuario actual
-$filterAuth = "false"; 
-$filterPend = "false"; 
-$filterRech = "true"; 
-$filterYearStart = "2025"; 
-$filterYearEnd = "2025";
+// $idUser ="264"; // usuario actual
+// $filterAuth = "false"; 
+// $filterPend = "false"; 
+// $filterRech = "true"; 
+// $filterYearStart = "2025"; 
+// $filterYearEnd = "2025";
 
 
 // --- PASO 1: Obtener datos del empleado actual ($idUser) y definir la variable $user ---
