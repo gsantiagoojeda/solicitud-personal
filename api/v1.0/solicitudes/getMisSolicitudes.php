@@ -11,9 +11,9 @@ require "../conexion_solicitud.php";
 // $idUser = $_POST['user-id']; // usuario actual
 $idUser ="264"; // usuario actual
 
-$filterAuth = "true"; 
+$filterAuth = "false"; 
 $filterPend = "false"; 
-$filterRech = "true"; 
+$filterRech = "false"; 
 $filterYearStart = "2025"; 
 $filterYearEnd = "2025";
 // $filterAuth = $_POST['filterAuth']; 
