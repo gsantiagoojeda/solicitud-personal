@@ -5,7 +5,10 @@ const d = document;
 export default async function listMisSolicitudes(data = null, e = null) {
   if (!location.pathname.includes("ver-solicitudes.html")) return;
   if (e !== null && !e.target.matches("#btn-apply-filters")) return;
-  else data = sessionStorage.getItem("data");
+
+  if (e !== null && e.target.matches("#btn-apply-filters")) {
+    data = sessionStorage.getItem("data");
+  }
 
   console.log(data);
   if (data !== null) sessionStorage.setItem("data", data);
