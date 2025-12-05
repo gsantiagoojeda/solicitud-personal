@@ -147,8 +147,8 @@ $filtros[] = "solicitud_solicitante_id = '" . $idUser . "'";
 $clausulaWhere = " WHERE " . implode(" AND ", $filtros);
 $sqlSolicitudes = "SELECT * FROM sp_solicitud" . $clausulaWhere;
 
-// Para depuración:
-echo "SQL Generada: " . $sqlSolicitudes . "<br />";
+
+// echo "SQL Generada: " . $sqlSolicitudes . "<br />";
 
 
 // --- EJECUCIÓN DE LA CONSULTA Y PROCESAMIENTO ---
@@ -157,8 +157,7 @@ $listaSolicitudes = []; // Inicialización crucial
 $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
 
 if ($resultSolicitudes) {
-    // Para depuración:
-    echo "Número de filas encontradas: " . $resultSolicitudes->num_rows . "<br />";
+    // echo "Número de filas encontradas: " . $resultSolicitudes->num_rows . "<br />";
     
     while ($row = $resultSolicitudes->fetch_assoc()) {
         $solicitudBlindada = array_map(function($v){
