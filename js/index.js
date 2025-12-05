@@ -19,6 +19,7 @@ import listMisSolicitudes from "./listMisSolicitudes.js";
 import validateRangeFilter from "./validateRangeFilter.js";
 
 const d = document;
+let data;
 
 d.addEventListener("click", (e) => {
   goBack(e);
@@ -28,7 +29,7 @@ d.addEventListener("click", (e) => {
   goVerSolicitud(e);
   goMiSolicitud(e);
   autorizarSolicitud(e);
-  listMisSolicitudes();
+  listMisSolicitudes(data, e);
 });
 
 d.addEventListener("submit", (e) => {
@@ -37,7 +38,7 @@ d.addEventListener("submit", (e) => {
 });
 
 d.addEventListener("DOMContentLoaded", async (e) => {
-  const data = await validarJWT();
+   data = await validarJWT();
   await pushHtml();
   infoMenu(data);
   setPuestos(data);
