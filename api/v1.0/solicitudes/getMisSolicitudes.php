@@ -107,17 +107,17 @@ $statusConditions = [];
 
 // 2. Definición de las condiciones SQL por cada estado
 
-if ($filterAuth = "true") {
+if ($filterAuth === "true") {
     // CONDICIÓN AUTORIZADA: Ambos campos deben ser 'AUTORIZADA'
     $statusConditions[] = "(solicitud_autorizacion1 = 'AUTORIZADA' AND solicitud_autorizacion2 = 'AUTORIZADA')";
 }
 
-if ($filterPend = "true") {
+if ($filterPend === "true") {
     // CONDICIÓN PENDIENTE: No hay Autorización 1 O Autorización 1 está 'AUTORIZADA' PERO Autorización 2 es NULL
     $statusConditions[] = "((solicitud_autorizacion1 IS NULL) OR (solicitud_autorizacion1 = 'AUTORIZADA' AND solicitud_autorizacion2 IS NULL))";
 }
 
-if ($filterRech = "true") {
+if ($filterRech === "true") {
     // CONDICIÓN RECHAZADA: Autorización 1 es 'RECHAZADA'
     $statusConditions[] = "(solicitud_autorizacion1 = 'RECHAZADA')";
 }
