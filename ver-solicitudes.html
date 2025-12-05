@@ -97,41 +97,39 @@
             <th class="py-3 px-4">FECHA</th>
           </tr>
         </thead>
+        <template id="template-edit-solicitud">
+          <tr class="border-b cursor-pointer" data-td-id>
+            <td class="py-3 px-4">
+              <p class="font-bold" data-vacante></p>
+            </td>
+            <td class="py-3 px-4">
+              <span class=" text-white text-sm font-semibold px-3 py-1 rounded-full" data-status1></span>
+            </td>
+            <td class="py-3 px-4 flex items-center space-x-3">
+              <div>
+                <p class="font-medium text-center " data-auth1></p>
+                <p class="text-gray-500 text-xs text-center" data-auth1puesto></p>
+              </div>
+            </td>
+            <td class="py-3 px-4">
+              <span class="font-semibold text-center" data-auth1date></span>
+            </td>
+            <td class="py-3 px-4">
+              <span class=" text-white text-sm font-semibold px-3 py-1 rounded-full" data-status2></span>
+            </td>
+            <td class="py-3 px-4 flex items-center space-x-3">
+              <div>
+                <p class="font-medium text-center " data-auth2></p>
+                <p class="text-gray-500 text-xs text-center" data-auth2puesto></p>
+              </div>
+            </td>
+            <td class="py-3 px-4">
+              <span class="font-semibold text-center" data-auth2date></span>
+            </td>
+
+          </tr>
+        </template>
         <tbody class="text-gray-700 text-sm" id="tbody-edit">
-          <template id="template-edit-solicitud">
-            <tr class="border-b cursor-pointer" data-td-id>
-              <td class="py-3 px-4">
-                <p class="font-bold" data-vacante></p>
-              </td>
-              <td class="py-3 px-4">
-                <span class=" text-white text-sm font-semibold px-3 py-1 rounded-full" data-status1></span>
-              </td>
-              <td class="py-3 px-4 flex items-center space-x-3">
-                <div>
-                  <p class="font-medium text-center " data-auth1></p>
-                  <p class="text-gray-500 text-xs text-center" data-auth1puesto></p>
-                </div>
-              </td>
-              <td class="py-3 px-4">
-                <span class="font-semibold text-center" data-auth1date></span>
-              </td>
-              <td class="py-3 px-4">
-                <span class=" text-white text-sm font-semibold px-3 py-1 rounded-full" data-status2></span>
-              </td>
-              <td class="py-3 px-4 flex items-center space-x-3">
-                <div>
-                  <p class="font-medium text-center " data-auth2></p>
-                  <p class="text-gray-500 text-xs text-center" data-auth2puesto></p>
-                </div>
-              </td>
-              <td class="py-3 px-4">
-                <span class="font-semibold text-center" data-auth2date></span>
-              </td>
-
-            </tr>
-          </template>
-
-
         </tbody>
       </table>
     </section>
