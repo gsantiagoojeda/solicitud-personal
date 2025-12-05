@@ -132,7 +132,7 @@ if (!empty($statusConditions)) {
 // 4. Filtros de Rango de Año (Fecha) - Se mantiene la misma lógica
 if (!empty($filterYearStart) && !empty($filterYearEnd)) {
     // Usamos YEAR() para extraer el año del TIMESTAMP y BETWEEN para el rango.
-    $filtros[] = "CAST(YEAR(solicitud_data_create) AS UNSIGNED) BETWEEN " . (int)$filterYearStart . " AND " . (int)$filterYearEnd;
+    $filtros[] = "CAST(YEAR(solicitud_date_create) AS UNSIGNED) BETWEEN " . (int)$filterYearStart . " AND " . (int)$filterYearEnd;
 }
 
 
