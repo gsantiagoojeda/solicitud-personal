@@ -6,8 +6,6 @@ export default async function listMisSolicitudes(data = null, e = null) {
   if (!location.pathname.includes("ver-solicitudes.html")) return;
   if (e !== null && !e.target.matches("#btn-apply-filters")) return;
 
-  console.log(data);
-
   const userId = data.id;
 
   const $tbody = d.getElementById("tbody-edit"),
@@ -28,9 +26,9 @@ export default async function listMisSolicitudes(data = null, e = null) {
     formData.append("filterYearStart", filterYearStart);
     formData.append("filterYearEnd", filterYearEnd);
 
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
+    // for (const [key, value] of formData.entries()) {
+    //   console.log(`${key}: ${value}`);
+    // }
 
     let options = {
       method: "POST",
