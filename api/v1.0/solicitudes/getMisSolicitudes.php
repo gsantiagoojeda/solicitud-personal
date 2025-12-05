@@ -101,71 +101,53 @@ if ($resultEmps) {
 }
 
 
-// Paso 4: Construir solicitudes
-$listaSolicitudes = [];
-
-    
-    $userId = $mysqli_solicitud->real_escape_string($idUser);
-    // Asumiendo que 'solicitud_solicitante_id' en 'sp_solicitud' es el ID del empleado.
-  // 1. Array para almacenar las condiciones de los filtros
+// 1. Array para almacenar las condiciones de los filtros
 $filtros = [];
+$statusConditions = [];
 
-// 2. Filtros de Estado (Status)
+// 2. Definición de las condiciones SQL por cada estado
 
-// Si al menos uno de los filtros de estado está en 'true', construimos la sub-condición.
-if ($filterAuth || $filterPend || $filterRech) {
-    $statusConditions = [];
-    
-    // Si $filterAuth es true, agregamos 'AUTORIZADA' a las condiciones
-    if ($filterAuth) {
-        $statusConditions[] = "'AUTORIZADA'";
-    }
-    
-    // Si $filterPend es true, agregamos 'PENDIENTE' a las condiciones
-    if ($filterPend) {
-        $statusConditions[] = "'PENDIENTE'";
-    }
-    
-    // Si $filterRech es true, agregamos 'RECHAZADA' a las condiciones
-    if ($filterRech) {
-        $statusConditions[] = "'RECHAZADA'";
-    }
-    
-    // Unimos las condiciones con 'OR' dentro de un IN para la cláusula WHERE
-    // Ejemplo: solicitud_status IN ('AUTORIZADA', 'PENDIENTE')
-    if (!empty($statusConditions)) {
-        $filtros[] = "solicitud_status IN (" . implode(", ", $statusConditions) . ")";
-    }
+if ($filterAuth) {
+    // CONDICIÓN AUTORIZADA: Ambos campos deben ser 'AUTORIZADA'
+    $statusConditions[] = "(solicitud_autorizacion1 = 'AUTORIZADA' AND solicitud_autorizacion2 = 'AUTORIZADA')";
 }
 
-// 3. Filtros de Rango de Año (Fecha)
-// La columna solicitud_data_create es un TIMESTAMP, por lo que usamos YEAR() y la función BETWEEN
+if ($filterPend) {
+    // CONDICIÓN PENDIENTE: No hay Autorización 1 O Autorización 1 está 'AUTORIZADA' PERO Autorización 2 es NULL
+    $statusConditions[] = "((solicitud_autorizacion1 IS NULL) OR (solicitud_autorizacion1 = 'AUTORIZADA' AND solicitud_autorizacion2 IS NULL))";
+}
 
-// Verificamos que ambos filtros de año existan y no estén vacíos.
+if ($filterRech) {
+    // CONDICIÓN RECHAZADA: Autorización 1 es 'RECHAZADA'
+    $statusConditions[] = "(solicitud_autorizacion1 = 'RECHAZADA')";
+}
+
+// 3. Combinación de los filtros de estado (si existen)
+if (!empty($statusConditions)) {
+    // Unimos todas las condiciones de estado con ' OR ' dentro de un gran paréntesis
+    $filtros[] = "(" . implode(" OR ", $statusConditions) . ")";
+}
+
+
+// 4. Filtros de Rango de Año (Fecha) - Se mantiene la misma lógica
 if (!empty($filterYearStart) && !empty($filterYearEnd)) {
     // Usamos YEAR() para extraer el año del TIMESTAMP y BETWEEN para el rango.
-    // También usamos CAST() para asegurar que los años sean numéricos.
     $filtros[] = "CAST(YEAR(solicitud_data_create) AS UNSIGNED) BETWEEN " . (int)$filterYearStart . " AND " . (int)$filterYearEnd;
 }
 
 
-// 4. Condición Obligatoria del Usuario
-// Agregamos la condición base del usuario. ¡Ojo! Es crucial sanitizar $userId.
+// 5. Condición Obligatoria del Usuario (Solicitante)
+// ¡Recuerda sanitizar $userId o usar consultas preparadas!
 $filtros[] = "solicitud_solicitante_id = '" . $userId . "'";
 
 
-// 5. Construcción Final de la Consulta
-// Si hay filtros, unimos todos los elementos del array con ' AND '.
-if (!empty($filtros)) {
-    $clausulaWhere = " WHERE " . implode(" AND ", $filtros);
-} else {
-    // Si por alguna razón no hay filtros (aunque la del userId es obligatoria),
-    // solo ponemos la cláusula del usuario.
-    $clausulaWhere = " WHERE solicitud_solicitante_id = '" . $userId . "'";
-}
-
+// 6. Construcción Final de la Consulta
+$clausulaWhere = " WHERE " . implode(" AND ", $filtros);
 
 $sqlSolicitudes = "SELECT * FROM sp_solicitud" . $clausulaWhere;
+
+// Para depuración:
+// echo $sqlSolicitudes;
 
 // Para depuración:
 // echo $sqlSolicitudes;
