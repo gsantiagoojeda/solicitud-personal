@@ -138,7 +138,7 @@ if (!empty($filterYearStart) && !empty($filterYearEnd)) {
 
 // 5. Condición Obligatoria del Usuario (Solicitante)
 // ¡Recuerda sanitizar $userId o usar consultas preparadas!
-$filtros[] = "solicitud_solicitante_id = '" . $userId . "'";
+$filtros[] = "solicitud_solicitante_id = '" . $idUser . "'";
 
 
 // 6. Construcción Final de la Consulta
@@ -151,7 +151,7 @@ $sqlSolicitudes = "SELECT * FROM sp_solicitud" . $clausulaWhere;
 
 // Para depuración:
 // echo $sqlSolicitudes;
-
+$listaSolicitudes = [];
     $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
 
 if ($resultSolicitudes) {
