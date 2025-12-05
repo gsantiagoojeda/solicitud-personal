@@ -3,7 +3,7 @@ import app from "../helpers/app.js";
 const d = document;
 
 export default async function listMisSolicitudes(data, e = null) {
-  if (!e.target.matches("#btn-apply-filters") && e !== null) return;
+  if (e !== null && !e.target.matches("#btn-apply-filters")) return;
   if (!location.pathname.includes("ver-solicitudes.html")) return;
 
   const userId = data.id;
