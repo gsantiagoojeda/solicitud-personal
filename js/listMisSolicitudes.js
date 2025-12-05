@@ -2,9 +2,14 @@ import app from "../helpers/app.js";
 
 const d = document;
 
-export default async function listMisSolicitudes(data, e = null) {
-  if (e !== null && !e.target.matches("#btn-apply-filters")) return;
+export default async function listMisSolicitudes(data = null, e = null) {
   if (!location.pathname.includes("ver-solicitudes.html")) return;
+  if (e !== null && !e.target.matches("#btn-apply-filters")) return;
+
+  if (data !== null) sessionStorage.setItem("data", data);
+
+  if (e.target.matches("#btn-apply-filters"))
+    data = sessionStorage.getItem("data");
 
   const userId = data.id;
 

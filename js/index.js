@@ -28,6 +28,7 @@ d.addEventListener("click", (e) => {
   goVerSolicitud(e);
   goMiSolicitud(e);
   autorizarSolicitud(e);
+  listMisSolicitudes();
 });
 
 d.addEventListener("submit", (e) => {
