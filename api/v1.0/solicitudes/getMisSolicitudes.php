@@ -8,14 +8,19 @@ require "../conexion_vacaciones.php";
 require "../conexion_solicitud.php";
 
 
-$idUser = $_POST['user-id']; // usuario actual
-// $idUser ="264"; // usuario actual
+// $idUser = $_POST['user-id']; // usuario actual
+$idUser ="264"; // usuario actual
 
-$filterAuth = $_POST['filterAuth']; 
-$filterPend = $_POST['filterPend']; 
-$filterRech = $_POST['filterRech']; 
-$filterYearStart = $_POST['filterYearStart']; 
-$filterYearEnd = $_POST['filterYearEnd'];
+$filterAuth = "true"; 
+$filterPend = "true"; 
+$filterRech = "true"; 
+$filterYearStart = "2025"; 
+$filterYearEnd = "2025";
+// $filterAuth = $_POST['filterAuth']; 
+// $filterPend = $_POST['filterPend']; 
+// $filterRech = $_POST['filterRech']; 
+// $filterYearStart = $_POST['filterYearStart']; 
+// $filterYearEnd = $_POST['filterYearEnd'];
 
 
 
