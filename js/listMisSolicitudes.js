@@ -26,6 +26,10 @@ export default async function listMisSolicitudes(data, e = null) {
     formData.append("filterYearStart", filterYearStart);
     formData.append("filterYearEnd", filterYearEnd);
 
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
     let options = {
       method: "POST",
       body: formData,
