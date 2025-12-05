@@ -2,8 +2,10 @@ import app from "../helpers/app.js";
 
 const d = document;
 
-export default async function listMisSolicitudes(data) {
+export default async function listMisSolicitudes(data, e = null) {
+  if (!e.target.matches("#btn-apply-filters") && e !== null) return;
   if (!location.pathname.includes("ver-solicitudes.html")) return;
+
   const userId = data.id;
 
   const $tbody = d.getElementById("tbody-edit"),
@@ -11,8 +13,18 @@ export default async function listMisSolicitudes(data) {
   const { SOLICITUDES } = app;
 
   try {
+    const filterAuth = d.getElementById("status-autorizadas").checked;
+    const filterPend = d.getElementById("status-pendientes").checked;
+    const filterRech = d.getElementById("status-rechazadas").checked;
+    const filterYearStart = d.getElementById("start-year").value;
+    const filterYearEnd = d.getElementById("end-year").value;
     const formData = new FormData();
     formData.append("user-id", userId);
+    formData.append("filterAuth", filterAuth);
+    formData.append("filterPend", filterPend);
+    formData.append("filterRech", filterRech);
+    formData.append("filterYearStart", filterYearStart);
+    formData.append("filterYearEnd", filterYearEnd);
 
     let options = {
       method: "POST",
