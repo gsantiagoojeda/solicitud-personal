@@ -23,8 +23,8 @@ $filterYearEnd = $_POST['filterYearEnd'] ?? null;
 // SIMULACIÓN DE DATOS
 $idUser ="264"; // usuario actual
 $filterAuth = "false"; 
-$filterPend = "true"; 
-$filterRech = "false"; 
+$filterPend = "false"; 
+$filterRech = "true"; 
 $filterYearStart = "2025"; 
 $filterYearEnd = "2025";
 
