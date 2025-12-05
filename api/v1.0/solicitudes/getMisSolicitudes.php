@@ -12,7 +12,7 @@ require "../conexion_solicitud.php";
 $idUser ="264"; // usuario actual
 
 $filterAuth = "true"; 
-$filterPend = "true"; 
+$filterPend = "false"; 
 $filterRech = "true"; 
 $filterYearStart = "2025"; 
 $filterYearEnd = "2025";
