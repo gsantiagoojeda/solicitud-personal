@@ -146,6 +146,8 @@ $clausulaWhere = " WHERE " . implode(" AND ", $filtros);
 
 $sqlSolicitudes = "SELECT * FROM sp_solicitud" . $clausulaWhere;
 
+echo "$sqlSolicitudes";
+
 // Para depuración:
 // echo $sqlSolicitudes;
 
