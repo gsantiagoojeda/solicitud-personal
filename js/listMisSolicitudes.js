@@ -108,6 +108,7 @@ export default async function listMisSolicitudes(data = null, e = null) {
 
       $fragment.appendChild($clone);
     });
+    $tbody.innerHTML = "";
     $tbody.appendChild($fragment);
     alternarFilas();
   } catch (err) {
