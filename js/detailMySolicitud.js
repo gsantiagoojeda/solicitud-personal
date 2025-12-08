@@ -194,31 +194,13 @@ export default async function detailMySolicitud(data) {
     $form["solicitud-rolar"].value =
       solicitud["solicitud_rolar"] === 1 ? "si" : "no";
 
-    // let levelAuth1 = solicitud["solicitud_autorizacion1"];
-    // console.log("kevel:", levelAuth1);
-    // if (levelAuth1 === "") {
-    //   d.getElementById("auth-level").textContent = " 1";
-    //   d.getElementById("btn-autorizar-solicitud").setAttribute(
-    //     "data-level",
-    //     "1"
-    //   );
-    //   d.getElementById("btn-rechazar-solicitud").setAttribute(
-    //     "data-level",
-    //     "1"
-    //   );
-    // } else if (puestoAuth.includes("Gerente de Recursos Humanos")) {
-    //   d.getElementById("auth-level").textContent = " 2";
-    //   d.getElementById("btn-autorizar-solicitud").setAttribute(
-    //     "data-level",
-    //     "2"
-    //   );
-    //   d.getElementById("btn-rechazar-solicitud").setAttribute(
-    //     "data-level",
-    //     "2"
-    //   );
-    // } else {
-    //   d.getElementById("auth-contain").style.display = "none";
-    // }
+    let levelAuth1 = solicitud["solicitud_autorizacion1"];
+    console.log("level:", levelAuth1);
+    if (levelAuth1 === "") {
+      d.getElementById("edit-contain").style.display = "block";
+    } else {
+      d.getElementById("edit-contain").style.display = "none";
+    }
   } catch (err) {
     console.log(err);
     let message = err.statusText || "ocurrio un error";
