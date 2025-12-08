@@ -114,6 +114,7 @@ export default async function listMisSolicitudes(data = null, e = null) {
       $tbody.appendChild($fragment);
       alternarFilas();
     } else {
+      $tbody.innerHTML = "";
       let $clone = document.importNode($templateEmpty, true);
       $tbody.appendChild($clone);
     }
