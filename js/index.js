@@ -17,6 +17,7 @@ import goMiSolicitud from "./goMiSolicitud.js";
 import listMisSolicitudes from "./listMisSolicitudes.js";
 import validateRangeFilter from "./validateRangeFilter.js";
 import detailMySolicitud from "./detailMySolicitud.js";
+import editarSolicitud from "./editarSolicitud.js";
 
 const d = document;
 let data;
@@ -29,6 +30,7 @@ d.addEventListener("click", (e) => {
   goMiSolicitud(e);
   autorizarSolicitud(e);
   listMisSolicitudes(data, e);
+  editarSolicitud(e);
 });
 
 d.addEventListener("submit", (e) => {
