@@ -5,7 +5,8 @@ const d = document;
 export default async function setSueldos() {
   if (
     !location.pathname.includes("crear-solicitud.html") &&
-    !location.pathname.includes("autorizar-solicitud.html")
+    !location.pathname.includes("autorizar-solicitud.html") &&
+    !location.pathname.includes("mi-solicitud.html")
   )
     return;
 
