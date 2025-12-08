@@ -3,7 +3,6 @@ import createSolicitud from "./createSolicitud.js";
 import goAutorizarSolicitud from "./goAutorizarSolicitud.js";
 import goHome from "./goHome.js";
 import goBack from "./goBack.js";
-import goVerSolicitud from "./goVerSolicitud.js";
 import infoMenu from "./infoMenu.js";
 import menu from "./menu.js";
 import { pushHtml } from "./pushHtml.js";
