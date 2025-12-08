@@ -2,7 +2,7 @@ import app from "../helpers/app.js";
 
 const d = document;
 
-export default async function detailAuthSolicitud(data) {
+export default async function detailMySolicitud(data) {
   if (!location.pathname.includes("mi-solicitud.html")) return;
   const { DOMAIN, SOLICITUDES } = app;
 

@@ -16,6 +16,7 @@ import autorizarSolicitud from "./autorizarSolicitud.js";
 import goMiSolicitud from "./goMiSolicitud.js";
 import listMisSolicitudes from "./listMisSolicitudes.js";
 import validateRangeFilter from "./validateRangeFilter.js";
+import detailMySolicitud from "./detailMySolicitud.js";
 
 const d = document;
 let data;
@@ -46,6 +47,7 @@ d.addEventListener("DOMContentLoaded", async (e) => {
   listSolicitudes(data);
   listMisSolicitudes(data);
   detailAuthSolicitud(data);
+  detailMySolicitud(data);
 });
 
 d.addEventListener("change", (e) => {
