@@ -81,7 +81,7 @@ if (!$stmt) {
 
 
 $stmt->bind_param(
-    "ssssssssssssssssssssssssssss", 
+    "sssssssssssssssssssssssss", 
     $rp1,
     $trp1,
     $rp2,
