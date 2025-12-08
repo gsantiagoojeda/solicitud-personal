@@ -26,7 +26,6 @@ d.addEventListener("click", (e) => {
   goHome(e);
   menu(e);
   goAutorizarSolicitud(e);
-  goVerSolicitud(e);
   goMiSolicitud(e);
   autorizarSolicitud(e);
   listMisSolicitudes(data, e);
@@ -38,7 +37,7 @@ d.addEventListener("submit", (e) => {
 });
 
 d.addEventListener("DOMContentLoaded", async (e) => {
-   data = await validarJWT();
+  data = await validarJWT();
   await pushHtml();
   infoMenu(data);
   setPuestos(data);
