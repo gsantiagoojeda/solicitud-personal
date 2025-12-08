@@ -59,10 +59,7 @@ UPDATE sp_solicitud SET
     solicitud_tools = ?,
     solicitud_sueldo_id = ?,
     solicitud_horario_id = ?,
-    solicitud_rolar = ?,
-    solicitud_autorizador1_id = ?,
-    solicitud_autorizacion1 = ?,
-    solicitud_date_autorizacion1 = ?
+    solicitud_rolar = ?
 WHERE solicitud_id = ?
 ";
 
