@@ -3,7 +3,7 @@ import app from "../helpers/app.js";
 const d = document;
 
 export default async function detailAuthSolicitud(data) {
-  if (!location.pathname.includes("autorizar-solicitud.html")) return;
+  if (!location.pathname.includes("mi-solicitud.html")) return;
   const { DOMAIN, SOLICITUDES } = app;
 
   let idSolicitud = sessionStorage.getItem("id_solicitud");
