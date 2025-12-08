@@ -80,7 +80,7 @@ export default async function editarSolicitud(e) {
     if (!json.err) {
       document.querySelector(".load").style.display = "none";
       alert(`Solicitud${json.statusText}`);
-      // location.href = `${DOMAIN}ver-solicitudes.html`;
+      location.href = `${DOMAIN}ver-solicitudes.html`;
     } else {
       throw { status: "200", statusText: json.statusText };
     }
