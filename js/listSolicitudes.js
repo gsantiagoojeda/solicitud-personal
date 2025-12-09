@@ -41,7 +41,7 @@ export default async function listSolicitudes(data = null, e = null) {
       throw { status: res.status, statusText: res.statusText };
 
     const $fragment = document.createDocumentFragment();
-    const solicitudes = json.solicitudes;
+    const solicitudes = json.data;
 
     if (solicitudes.length > 0) {
       json.data.forEach((el) => {
