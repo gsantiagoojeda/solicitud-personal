@@ -11,7 +11,7 @@ export default async function listMisSolicitudes(data = null, e = null) {
   const userId = data.id;
 
   const $tbody = d.getElementById("tbody-edit"),
-    $template = d.getElementById("template-edit-solicitud").content,
+    $template = d.getElementById("template-item-solicitud").content,
     $templateEmpty = d.getElementById("template-tr-empty").content;
   const { SOLICITUDES } = app;
 
