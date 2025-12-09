@@ -10,9 +10,11 @@ require "../conexion_solicitud.php";
 
 $idUser = $_POST['user-id']; // usuario actual
 
-$filterAuth = $_POST['filterAuth'] ?? 'false'; 
-$filterPend = $_POST['filterPend'] ?? 'false'; 
-$filterRech = $_POST['filterRech'] ?? 'false'; 
+// Los filtros de estado se asumen:
+// $filterAuth = true; 
+// $filterPend = false; 
+// $filterRech = false; 
+
 $filterYearStart = $_POST['filterYearStart'] ?? null; 
 $filterYearEnd = $_POST['filterYearEnd'] ?? null;
 
@@ -77,10 +79,29 @@ if ($resultEmps) {
     }
 }
 
+// --------------------------------------------------------------------------------------
+// --- CONFIGURACIÓN DE FILTROS PARA SOLO AUTORIZADAS ---
+// --------------------------------------------------------------------------------------
+
+// 1. Condición base para que la solicitud esté AUTORIZADA:
+// Ambos niveles de autorización (Autorizador1 y Autorizador2) deben ser 'AUTORIZADA'.
+// Notarás que el código original de getSolicitudes.php solo maneja una autorización
+// cuando no es RH. Dado que el objetivo es obtener SOLICITUDES TERMINADAS Y AUTORIZADAS,
+// usaremos la condición estricta de ambos niveles:
+$condicionAutorizada = " AND (solicitud_autorizacion1 = 'AUTORIZADA' AND solicitud_autorizacion2 = 'AUTORIZADA')";
+
+// 2. Filtros de Rango de Año (Fecha)
+$clausulaYear = "";
+if (!empty($filterYearStart) && !empty($filterYearEnd)) {
+    // Usamos YEAR() para extraer el año del TIMESTAMP y BETWEEN para el rango.
+    $clausulaYear = " AND CAST(YEAR(solicitud_date_create) AS UNSIGNED) BETWEEN " . (int)$filterYearStart . " AND " . (int)$filterYearEnd;
+}
+
+// --------------------------------------------------------------------------------------
+
 
 // Paso 4: Construir solicitudes
 $listaSolicitudes = [];
-$sqlSolicitudes;
 
 if ($puesto === 'Gerente de Recursos Humanos') {
    $sqlUsers = "SELECT id, nombre, apellido_paterno, apellido_materno, puesto, correo, empresa, id_departamento 
@@ -88,6 +109,7 @@ if ($puesto === 'Gerente de Recursos Humanos') {
                  WHERE (puesto LIKE '%Gerente%' OR puesto LIKE '%Director%') AND status_empleado ='Activo' ";
     $result = $mysqli_vacaciones->query($sqlUsers);
     if ($result) {
+        $listaUserAutorizados = [];
         while ($row = $result->fetch_assoc()) {
             $nombreCompleto = trim(
                 ($row['nombre'] ?? '') . ' ' .
@@ -105,63 +127,65 @@ if ($puesto === 'Gerente de Recursos Humanos') {
             ];
         }
     }
-    // Si $puesto es exactamente 'Gerente de Recursos Humanos', busca NULL o 'Rechazada' en solicitud_autorizacion2
+    // Para RH (el supervisor final), busca solo solicitudes Autorizadas + filtro de año
     foreach ($listaUserAutorizados as $user) {
-    $userId = $mysqli_solicitud->real_escape_string($user['id']);
-    $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE solicitud_solicitante_id= '$userId' AND  (solicitud_autorizacion2 IS NULL OR solicitud_autorizacion2 = 'Rechazada') AND (solicitud_autorizacion1 ='Autorizada')";
+        $userId = $mysqli_solicitud->real_escape_string($user['id']);
+        
+        // La consulta busca las solicitudes de cada usuario que estén completamente Autorizadas
+        $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE solicitud_solicitante_id= '$userId' " . $condicionAutorizada . $clausulaYear;
 
-    $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
+        $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
 
-if ($resultSolicitudes) {
-  while ($row = $resultSolicitudes->fetch_assoc()) {
-    $solicitudBlindada = array_map(function($v){
-      return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8');
-    }, $row);
-    
-    
-            // Puesto del solicitante
-            $nombrePuesto = '';
-            $puestoId = $solicitudBlindada['solicitud_puesto_id'] ?? '';
-            if ($puestoId && isset($puestos[$puestoId])) {
-                $nombrePuesto = $puestos[$puestoId];
+        if ($resultSolicitudes) {
+            while ($row = $resultSolicitudes->fetch_assoc()) {
+                $solicitudBlindada = array_map(function($v){
+                    return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8');
+                }, $row);
+                
+                // ... (el resto del código de procesamiento de datos sigue igual) ...
+                
+                // Puesto del solicitante
+                $nombrePuesto = '';
+                $puestoId = $solicitudBlindada['solicitud_puesto_id'] ?? '';
+                if ($puestoId && isset($puestos[$puestoId])) {
+                    $nombrePuesto = $puestos[$puestoId];
+                }
+
+                // Departamento del usuario autorizado
+                $nombreDepartamento = '';
+                $deptoId = $user['id_departamento'] ?? '';
+                if ($deptoId && isset($departamentos[$deptoId])) {
+                    $nombreDepartamento = $departamentos[$deptoId];
+                }
+
+                // Autorizador1: nombre completo y puesto
+                $aut1NombreCompleto = '';
+                $aut1Puesto = '';
+                $aut1Id = $solicitudBlindada['solicitud_autorizador1_id'] ?? '';
+                if ($aut1Id && isset($empleados[$aut1Id])) {
+                    $aut1NombreCompleto = $empleados[$aut1Id]['nombre_completo'];
+                    $aut1Puesto = $empleados[$aut1Id]['puesto'];
+                }
+
+                $solicitudConUsuario = array_merge($solicitudBlindada, [
+                    "usuario_id" => $user['id'],
+                    "usuario_nombre_completo" => $user['nombre_completo'],
+                    "usuario_puesto" => $user['puesto'],
+                    "usuario_correo" => $user['correo'] ?? '',
+                    "usuario_empresa" => $user['empresa'],
+                    "usuario_id_departamento" => $user['id_departamento'],
+                    "usuario_departamento_nombre" => $nombreDepartamento,
+                    "solicitud_nombre_puesto" => $nombrePuesto,
+                    "autorizador1_nombre_completo" => $aut1NombreCompleto,
+                    "autorizador1_puesto" => $aut1Puesto
+                ]);
+
+                $listaSolicitudes[] = $solicitudConUsuario;
             }
-
-            // Departamento del usuario autorizado
-            $nombreDepartamento = '';
-            $deptoId = $user['id_departamento'] ?? '';
-            if ($deptoId && isset($departamentos[$deptoId])) {
-                $nombreDepartamento = $departamentos[$deptoId];
-            }
-
-            // Autorizador1: nombre completo y puesto
-            $aut1NombreCompleto = '';
-            $aut1Puesto = '';
-            $aut1Id = $solicitudBlindada['solicitud_autorizador1_id'] ?? '';
-            if ($aut1Id && isset($empleados[$aut1Id])) {
-                $aut1NombreCompleto = $empleados[$aut1Id]['nombre_completo'];
-                $aut1Puesto = $empleados[$aut1Id]['puesto'];
-            }
-
-            $solicitudConUsuario = array_merge($solicitudBlindada, [
-                "usuario_id" => $user['id'],
-                "usuario_nombre_completo" => $user['nombre_completo'],
-                "usuario_puesto" => $user['puesto'],
-                "usuario_correo" => $user['correo'] ?? '',
-                "usuario_empresa" => $user['empresa'],
-                "usuario_id_departamento" => $user['id_departamento'],
-                "usuario_departamento_nombre" => $nombreDepartamento,
-                "solicitud_nombre_puesto" => $nombrePuesto,
-                "autorizador1_nombre_completo" => $aut1NombreCompleto,
-                "autorizador1_puesto" => $aut1Puesto
-            ]);
-
-            $listaSolicitudes[] = $solicitudConUsuario;
         }
     }
-    }
-}else{
+} else {
   
-
 // Paso 2: Obtener grupos autorizados
 $sqlAuth = "SELECT id, clave, clave_autorizador 
             FROM autoridad_departamental 
@@ -211,18 +235,18 @@ foreach ($listaGruposAutorizados as $grupo) {
 foreach ($listaUserAutorizados as $user) {
     $userId = $mysqli_solicitud->real_escape_string($user['id']);
  
-    // Si $puesto incluye 'Director', busca NULL o 'Rechazada' en solicitud_autorizacion1
-    $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE solicitud_solicitante_id = '$userId' AND (solicitud_autorizacion1 IS NULL OR solicitud_autorizacion1 = 'Rechazada')";
+    // Para Directores/Jefes, busca solo solicitudes Autorizadas + filtro de año
+    $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE solicitud_solicitante_id = '$userId' " . $condicionAutorizada . $clausulaYear;
 
-$resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
+    $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
 
-if ($resultSolicitudes) {
-  while ($row = $resultSolicitudes->fetch_assoc()) {
-    $solicitudBlindada = array_map(function($v){
-      return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8');
-    }, $row);
-    
-    
+    if ($resultSolicitudes) {
+        while ($row = $resultSolicitudes->fetch_assoc()) {
+            $solicitudBlindada = array_map(function($v){
+                return htmlspecialchars($v ?? '', ENT_QUOTES, 'UTF-8');
+            }, $row);
+            
+            
             // Puesto del solicitante
             $nombrePuesto = '';
             $puestoId = $solicitudBlindada['solicitud_puesto_id'] ?? '';
@@ -266,8 +290,6 @@ if ($resultSolicitudes) {
 }
 
 
-
-
 // Ordenar el array $listaSolicitudes por 'solicitud_id' (Descendente por defecto)
 usort($listaSolicitudes, function($a, $b) {
     // Convierte a entero para asegurar la comparación numérica
@@ -279,8 +301,6 @@ usort($listaSolicitudes, function($a, $b) {
         return 0;
     }
     return ($idA > $idB) ? -1 : 1;
-    // Si quisieras orden ascendente (menor ID primero), sería:
-    // return $idA - $idB;
 });
 
 // Paso 5: Devolver JSON
