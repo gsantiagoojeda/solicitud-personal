@@ -30,6 +30,7 @@ d.addEventListener("click", (e) => {
   goMiSolicitud(e);
   autorizarSolicitud(e);
   listMisSolicitudes(data, e);
+  listSolicitudes(data, e);
   editarSolicitud(e);
 });
 
