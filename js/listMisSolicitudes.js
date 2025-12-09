@@ -6,6 +6,8 @@ export default async function listMisSolicitudes(data = null, e = null) {
   if (!location.pathname.includes("ver-solicitudes.html")) return;
   if (e !== null && !e.target.matches("#btn-apply-filters")) return;
 
+  sessionStorage.removeItem("id_mi_solicitud");
+
   const userId = data.id;
 
   const $tbody = d.getElementById("tbody-edit"),

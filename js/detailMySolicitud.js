@@ -6,8 +6,7 @@ export default async function detailMySolicitud(data) {
   if (!location.pathname.includes("mi-solicitud.html")) return;
   const { DOMAIN, SOLICITUDES } = app;
 
-  let idSolicitud = sessionStorage.getItem("id_solicitud");
-  let puestoAuth = sessionStorage.getItem("puesto_user");
+  let idSolicitud = sessionStorage.getItem("id_mi_solicitud");
   if (!idSolicitud) location.href(`${DOMAIN}autorizar-solicitudes.html`);
 
   try {
