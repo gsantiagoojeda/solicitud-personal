@@ -18,6 +18,7 @@ import listMisSolicitudes from "./listMisSolicitudes.js";
 import validateRangeFilter from "./validateRangeFilter.js";
 import detailMySolicitud from "./detailMySolicitud.js";
 import editarSolicitud from "./editarSolicitud.js";
+import listSolicitudesAuth from "./listSolicitudesAuth.js";
 
 const d = document;
 let data;
@@ -31,6 +32,7 @@ d.addEventListener("click", (e) => {
   autorizarSolicitud(e);
   listMisSolicitudes(data, e);
   listSolicitudes(data, e);
+  listSolicitudesAuth(data, e);
   editarSolicitud(e);
 });
 
@@ -48,6 +50,7 @@ d.addEventListener("DOMContentLoaded", async (e) => {
   setSueldos();
   multiselect();
   listSolicitudes(data);
+  listSolicitudesAuth(data);
   listMisSolicitudes(data);
   detailAuthSolicitud(data);
   detailMySolicitud(data);
