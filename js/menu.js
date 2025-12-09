@@ -23,7 +23,7 @@ export default function menu(e) {
       location.href = ` ${DOMAIN}autorizar-solicitudes.html`;
       break;
     case "btn-go-approved":
-      location.href = ` ${DOMAIN}approved-solicitudes.html`;
+      location.href = ` ${DOMAIN}solicitudes-autorizadas.html`;
       break;
     case "btn-go-users":
       location.href = ` ${DOMAIN}usuarios.html`;
