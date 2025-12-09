@@ -11,8 +11,8 @@ export default async function listSolicitudes(data = null, e = null) {
   const userId = data.id;
 
   const $tbody = d.getElementById("tbody-create"),
-    $template = d.getElementById("template-create-solicitud").content;
-  $templateEmpty = d.getElementById("template-tr-empty").content;
+    $template = d.getElementById("template-create-solicitud").content,
+    $templateEmpty = d.getElementById("template-tr-empty").content;
   const { SOLICITUDES } = app;
 
   try {
