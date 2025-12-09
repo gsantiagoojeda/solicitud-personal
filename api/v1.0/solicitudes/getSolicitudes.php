@@ -10,6 +10,12 @@ require "../conexion_solicitud.php";
 
 $idUser = $_POST['user-id']; // usuario actual
 
+$filterAuth = $_POST['filterAuth'] ?? 'false'; 
+$filterPend = $_POST['filterPend'] ?? 'false'; 
+$filterRech = $_POST['filterRech'] ?? 'false'; 
+$filterYearStart = $_POST['filterYearStart'] ?? null; 
+$filterYearEnd = $_POST['filterYearEnd'] ?? null;
+
 // Paso 1: Obtener puesto y autoridad del usuario
 $sqlUser = "SELECT puesto, id_autoridad FROM empleados WHERE id = ?";
 $stmt = $mysqli_vacaciones->prepare($sqlUser);

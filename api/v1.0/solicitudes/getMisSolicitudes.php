@@ -7,11 +7,8 @@ require "../conexion_intranet.php";
 require "../conexion_vacaciones.php";
 require "../conexion_solicitud.php";
 
-
-// --- CONFIGURACIÓN DE DATOS (AJUSTAR PARA PRODUCCIÓN) ---
-
-
 $idUser = $_POST['user-id'] ?? null; 
+
 $filterAuth = $_POST['filterAuth'] ?? 'false'; 
 $filterPend = $_POST['filterPend'] ?? 'false'; 
 $filterRech = $_POST['filterRech'] ?? 'false'; 
@@ -19,7 +16,6 @@ $filterYearStart = $_POST['filterYearStart'] ?? null;
 $filterYearEnd = $_POST['filterYearEnd'] ?? null;
 
 
-// SIMULACIÓN DE DATOS
 // $idUser ="264"; // usuario actual
 // $filterAuth = "false"; 
 // $filterPend = "false"; 

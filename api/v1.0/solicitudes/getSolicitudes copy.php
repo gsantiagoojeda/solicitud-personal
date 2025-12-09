@@ -1,14 +1,20 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 
 require "../conexion_intranet.php";
 require "../conexion_vacaciones.php";
 require "../conexion_solicitud.php";
 
-$idUser = "3009"; // usuario actual
-// $idUser = $_POST['user-id']; // usuario actual
+
+$idUser = $_POST['user-id']; // usuario actual
+
+$filterAuth = $_POST['filterAuth'] ?? 'false'; 
+$filterPend = $_POST['filterPend'] ?? 'false'; 
+$filterRech = $_POST['filterRech'] ?? 'false'; 
+$filterYearStart = $_POST['filterYearStart'] ?? null; 
+$filterYearEnd = $_POST['filterYearEnd'] ?? null;
 
 // Paso 1: Obtener puesto y autoridad del usuario
 $sqlUser = "SELECT puesto, id_autoridad FROM empleados WHERE id = ?";
@@ -34,53 +40,6 @@ if (!$stmt->fetch()) {
     exit;
 }
 $stmt->close();
-
-// Paso 2: Obtener grupos autorizados
-$sqlAuth = "SELECT id, clave, clave_autorizador 
-            FROM autoridad_departamental 
-            WHERE clave_autorizador = ? OR id = ?";
-$stmtAuth = $mysqli_vacaciones->prepare($sqlAuth);
-$stmtAuth->bind_param("ss", $autoridad, $autoridad);
-$stmtAuth->execute();
-$stmtAuth->bind_result($authId, $clave, $claveAutorizador);
-
-$listaGruposAutorizados = [];
-while ($stmtAuth->fetch()) {
-    $listaGruposAutorizados[] = [
-        "id" => $authId,
-        "clave" => $clave,
-        "clave_autorizador" => $claveAutorizador
-    ];
-}
-$stmtAuth->close();
-
-// Paso 3: Obtener usuarios de cada grupo autorizado
-$listaUserAutorizados = [];
-foreach ($listaGruposAutorizados as $grupo) {
-    $grupoClave = $mysqli_vacaciones->real_escape_string($grupo['id']);
-    $sqlUsers = "SELECT id, nombre, apellido_paterno, apellido_materno, puesto, correo, empresa, id_departamento 
-                 FROM empleados 
-                 WHERE id_autoridad = '$grupoClave' AND status_empleado ='Activo' ";
-    $result = $mysqli_vacaciones->query($sqlUsers);
-    if ($result) {
-        while ($row = $result->fetch_assoc()) {
-            $nombreCompleto = trim(
-                ($row['nombre'] ?? '') . ' ' .
-                ($row['apellido_paterno'] ?? '') . ' ' .
-                ($row['apellido_materno'] ?? '')
-            );
-
-            $listaUserAutorizados[] = [
-                "id" => htmlspecialchars($row['id'] ?? '', ENT_QUOTES, 'UTF-8'),
-                "nombre_completo" => htmlspecialchars($nombreCompleto, ENT_QUOTES, 'UTF-8'),
-                "puesto" => htmlspecialchars($row['puesto'] ?? '', ENT_QUOTES, 'UTF-8'),
-                "correo" => htmlspecialchars($row['correo'] ?? '', ENT_QUOTES, 'UTF-8'),
-                "empresa" => htmlspecialchars($row['empresa'] ?? '', ENT_QUOTES, 'UTF-8'),
-                "id_departamento" => htmlspecialchars($row['id_departamento'] ?? '', ENT_QUOTES, 'UTF-8')
-            ];
-        }
-    }
-}
 
 // Paso previo: cargar departamentos
 $departamentos = [];
@@ -118,14 +77,38 @@ if ($resultEmps) {
     }
 }
 
-// print_r($listaUserAutorizados);
+
 // Paso 4: Construir solicitudes
 $listaSolicitudes = [];
 $sqlSolicitudes;
 
 if ($puesto === 'Gerente de Recursos Humanos') {
+   $sqlUsers = "SELECT id, nombre, apellido_paterno, apellido_materno, puesto, correo, empresa, id_departamento 
+                 FROM empleados 
+                 WHERE (puesto LIKE '%Gerente%' OR puesto LIKE '%Director%') AND status_empleado ='Activo' ";
+    $result = $mysqli_vacaciones->query($sqlUsers);
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $nombreCompleto = trim(
+                ($row['nombre'] ?? '') . ' ' .
+                ($row['apellido_paterno'] ?? '') . ' ' .
+                ($row['apellido_materno'] ?? '')
+            );
+
+            $listaUserAutorizados[] = [
+                "id" => htmlspecialchars($row['id'] ?? '', ENT_QUOTES, 'UTF-8'),
+                "nombre_completo" => htmlspecialchars($nombreCompleto, ENT_QUOTES, 'UTF-8'),
+                "puesto" => htmlspecialchars($row['puesto'] ?? '', ENT_QUOTES, 'UTF-8'),
+                "correo" => htmlspecialchars($row['correo'] ?? '', ENT_QUOTES, 'UTF-8'),
+                "empresa" => htmlspecialchars($row['empresa'] ?? '', ENT_QUOTES, 'UTF-8'),
+                "id_departamento" => htmlspecialchars($row['id_departamento'] ?? '', ENT_QUOTES, 'UTF-8')
+            ];
+        }
+    }
     // Si $puesto es exactamente 'Gerente de Recursos Humanos', busca NULL o 'Rechazada' en solicitud_autorizacion2
-    $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE  (solicitud_autorizacion2 IS NULL OR solicitud_autorizacion2 = 'Rechazada')";
+    foreach ($listaUserAutorizados as $user) {
+    $userId = $mysqli_solicitud->real_escape_string($user['id']);
+    $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE solicitud_solicitante_id= '$userId' AND  (solicitud_autorizacion2 IS NULL OR solicitud_autorizacion2 = 'Rechazada') AND (solicitud_autorizacion1 ='Autorizada')";
 
     $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
 
@@ -175,7 +158,56 @@ if ($resultSolicitudes) {
             $listaSolicitudes[] = $solicitudConUsuario;
         }
     }
+    }
 }else{
+  
+
+// Paso 2: Obtener grupos autorizados
+$sqlAuth = "SELECT id, clave, clave_autorizador 
+            FROM autoridad_departamental 
+            WHERE clave_autorizador = ? OR id = ?";
+$stmtAuth = $mysqli_vacaciones->prepare($sqlAuth);
+$stmtAuth->bind_param("ss", $autoridad, $autoridad);
+$stmtAuth->execute();
+$stmtAuth->bind_result($authId, $clave, $claveAutorizador);
+
+$listaGruposAutorizados = [];
+while ($stmtAuth->fetch()) {
+    $listaGruposAutorizados[] = [
+        "id" => $authId,
+        "clave" => $clave,
+        "clave_autorizador" => $claveAutorizador
+    ];
+}
+$stmtAuth->close();
+
+// Paso 3: Obtener usuarios de cada grupo autorizado
+$listaUserAutorizados = [];
+foreach ($listaGruposAutorizados as $grupo) {
+    $grupoClave = $mysqli_vacaciones->real_escape_string($grupo['id']);
+    $sqlUsers = "SELECT id, nombre, apellido_paterno, apellido_materno, puesto, correo, empresa, id_departamento 
+                 FROM empleados 
+                 WHERE id_autoridad = '$grupoClave' AND status_empleado ='Activo' ";
+    $result = $mysqli_vacaciones->query($sqlUsers);
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $nombreCompleto = trim(
+                ($row['nombre'] ?? '') . ' ' .
+                ($row['apellido_paterno'] ?? '') . ' ' .
+                ($row['apellido_materno'] ?? '')
+            );
+
+            $listaUserAutorizados[] = [
+                "id" => htmlspecialchars($row['id'] ?? '', ENT_QUOTES, 'UTF-8'),
+                "nombre_completo" => htmlspecialchars($nombreCompleto, ENT_QUOTES, 'UTF-8'),
+                "puesto" => htmlspecialchars($row['puesto'] ?? '', ENT_QUOTES, 'UTF-8'),
+                "correo" => htmlspecialchars($row['correo'] ?? '', ENT_QUOTES, 'UTF-8'),
+                "empresa" => htmlspecialchars($row['empresa'] ?? '', ENT_QUOTES, 'UTF-8'),
+                "id_departamento" => htmlspecialchars($row['id_departamento'] ?? '', ENT_QUOTES, 'UTF-8')
+            ];
+        }
+    }
+}
 foreach ($listaUserAutorizados as $user) {
     $userId = $mysqli_solicitud->real_escape_string($user['id']);
  
