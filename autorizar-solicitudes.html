@@ -29,65 +29,59 @@
     </section>
 
     <section
-      class="hidden w-full  px-0 py-0 mt-2 lg:mt-4 bg-white overflow-x-auto shadow-xl shadow-[3px_4px_10px_rgba(0,0,0,0.15)] rounded">
-      <!-- SECCION FILTROS-->
+      class="w-full px-4 py-3 mt-2 lg:mt-4 bg-white overflow-x-auto shadow-xl shadow-[3px_4px_10px_rgba(0,0,0,0.15)] rounded">
+      <span class="font-bold text-gray-600 mb-2">Filtrar por:</span>
+      <div class="w-full flex flex-wrap justify-around items-center space-x-6">
 
-      <article class="w-11/12  bg-white px-4  py-2 mx-auto rounded-md">
-        <span class="font-bold text-gray-600 mb-2">Filtrar por:</span>
-        <div class="md:flex gap-4 items-end">
+        <div class="flex items-center space-x-6">
 
-          <!-- Empresa -->
-          <section class="flex-1">
-            <label class="block font-bold text-gray-600">Empresa:</label>
-            <select
-              class="block w-full px-4 py-2 h-[42px] text-gray-700 font-semibold bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-              <option value="" disabled selected>Selecciona una opción</option>
-              <option value="Aramluz">Aramluz</option>
-              <option value="Etiroch">Etiroch</option>
-              <option value="Alze">Alze</option>
-              <option value="Topavel">Topavel</option>
-              <option value="JD">Juan Diego</option>
-            </select>
-          </section>
+          <label class="flex items-center mr-4">
+            <input type="checkbox" class="form-checkbox h-5 w-5 accent-green-600 rounded" name="status-autorizadas"
+              id="status-autorizadas" value="autorizadas">
+            <span class="ml-2 text-gray-700 font-medium text-sm">Autorizadas</span>
+          </label>
 
-          <!-- Departamento -->
-          <section class="flex-1">
-            <label class="block font-bold text-gray-600 mb-2">Departamento:</label>
-            <div class="multi-options relative" data-options="depto">
-              <div
-                class="dropdown-toggle border border-gray-300 bg-white px-2 py-1.5 rounded cursor-pointer min-h-[42px] flex flex-wrap gap-2 items-center">
-                <div class="selected-tags flex flex-wrap gap-2"></div>
-                <input type="text" placeholder="Buscar..."
-                  class="search-input flex-1 outline-none text-sm min-w-[100px] bg-transparent" autocomplete="off" />
-              </div>
-              <ul
-                class="dropdown-options absolute z-10 mt-1 max-h-40 w-full overflow-y-auto bg-white border border-gray-300 rounded shadow-md hidden no-scrollbar">
-              </ul>
-              <input type="hidden" name="deptos" class="selected-deptos" />
-            </div>
-          </section>
+          <label class="flex items-center mr-4">
+            <input type="checkbox" class="form-checkbox h-5 w-5 accent-yellow-500 rounded" name="status-pendientes"
+              id="status-pendientes" value="pendientes" checked>
+            <span class="ml-2 text-gray-700 font-medium text-sm">Pendientes</span>
+          </label>
 
-          <!-- Empleado -->
-          <section class="flex-1">
-            <label class="block font-bold text-gray-600 mb-2">Empleado:</label>
-            <div class="multi-options relative" data-options="empleado">
-              <div
-                class="dropdown-toggle border border-gray-300 bg-white px-2 py-1.5 rounded cursor-pointer min-h-[42px] flex flex-wrap gap-2 items-center">
-                <div class="selected-tags flex flex-wrap gap-2"></div>
-                <input type="text" placeholder="Buscar..."
-                  class="search-input flex-1 outline-none text-sm min-w-[100px] bg-transparent" autocomplete="off" />
-              </div>
-              <ul
-                class="dropdown-options absolute z-10 mt-1 max-h-40 w-full overflow-y-auto bg-white border border-gray-300 rounded shadow-md hidden no-scrollbar">
-              </ul>
-              <input type="hidden" name="empleados" class="selected-empleados" />
-            </div>
-          </section>
+          <label class="flex items-center">
+            <input type="checkbox" class=" h-5 w-5 accent-red-600 rounded" name="status-rechazadas"
+              id="status-rechazadas" value="rechazadas">
+            <span class="ml-2 text-gray-700 font-medium text-sm">Rechazadas</span>
+          </label>
+
         </div>
 
-        <!--  FIN SECCION FILTROS -->
-    </section>
+        <div class="flex space-x-4 ml-6">
 
+          <div class="w-36">
+            <label for="start-year" class="block text-sm font-medium text-gray-500 mb-1">
+              Año de Inicio
+            </label>
+            <input type="number" id="start-year" name="start-year" placeholder="Desde"
+              class="block w-full py-2 px-3 text-sm border border-gray-600 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              min="2025" max="2030" value="2025" />
+          </div>
+
+          <div class="w-36">
+            <label for="end-year" class="block text-sm font-medium text-gray-500 mb-1">
+              Año de Fin
+            </label>
+            <input type="number" id="end-year" name="end-year" placeholder="Hasta"
+              class="block w-full py-2 px-3 text-sm border border-gray-600 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              min="2025" max="2030" value="2025" />
+          </div>
+        </div>
+
+        <button id="btn-apply-filters"
+          class="w-32 h-12 bg-blue-600 hover:bg-blue-700 text-white font-semibold  rounded-md p-2 text-sm">Aplicar
+          Filtros</button>
+
+      </div>
+    </section>
 
     <section
       class=" w-full  px-0 py-0 mt-2 lg:mt-4 bg-white overflow-x-auto shadow-lg shadow-[3px_4px_10px_rgba(0,0,0,0.15)] rounded">

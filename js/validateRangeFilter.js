@@ -2,11 +2,10 @@ const d = document;
 
 export default function validateRangeFilter(e) {
   if (
-    !location.pathname.includes("ver-solicitudes.html") ||
-    (!e.target.matches("#start-year") &&
-      !e.target.matches("#start-year *") &&
-      !e.target.matches("#end-year") &&
-      !e.target.matches("#end-year *"))
+    !e.target.matches("#start-year") &&
+    !e.target.matches("#start-year *") &&
+    !e.target.matches("#end-year") &&
+    !e.target.matches("#end-year *")
   ) {
     return;
   }
