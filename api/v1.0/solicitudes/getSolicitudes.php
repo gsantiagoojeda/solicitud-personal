@@ -85,26 +85,22 @@ $filtrosStatus = [];
 
 // CONDICIÓN PENDIENTE (Adaptada a la lógica de getSolicitudes.php)
 if ($filterPend === "true") {
-    // Si es RH: Solicitud 1 Autorizada Y Solicitud 2 es NULL
-    // Si es Director: Solicitud 1 es NULL
     if ($puesto === 'Gerente de Recursos Humanos') {
-        // En tu código original, para RH, si el puesto es 'Gerente de Recursos Humanos', 
-        // solo busca NULL o 'Rechazada' en solicitud_autorizacion2, y 'Autorizada' en solicitud_autorizacion1.
-        // Si el estado es "Pendiente" para RH, solo es cuando solicitud_autorizacion2 es NULL
+        // RH: Solicitud 1 Autorizada Y Solicitud 2 es NULL (PENDIENTE para RH)
         $filtrosStatus[] = "(solicitud_autorizacion1 = 'Autorizada' AND solicitud_autorizacion2 IS NULL)";
     } else {
-        // Para Directores/Jefes: Solicitud 1 es NULL
+        // Director/Jefe: Solicitud 1 es NULL (PENDIENTE para Director/Jefe)
         $filtrosStatus[] = "(solicitud_autorizacion1 IS NULL)";
     }
 }
 
 // CONDICIÓN RECHAZADA (Adaptada a la lógica de getSolicitudes.php)
 if ($filterRech === "true") {
-    // Si es RH: Solicitud 1 Autorizada Y Solicitud 2 es 'Rechazada'
-    // Si es Director: Solicitud 1 es 'Rechazada'
     if ($puesto === 'Gerente de Recursos Humanos') {
+        // RH: Solicitud 1 Autorizada Y Solicitud 2 es 'Rechazada' (RECHAZADA por RH)
         $filtrosStatus[] = "(solicitud_autorizacion1 = 'Autorizada' AND solicitud_autorizacion2 = 'Rechazada')";
     } else {
+        // Director/Jefe: Solicitud 1 es 'Rechazada' (RECHAZADA por Director/Jefe)
         $filtrosStatus[] = "(solicitud_autorizacion1 = 'Rechazada')";
     }
 }
@@ -114,14 +110,8 @@ if (!empty($filtrosStatus)) {
     // Si al menos un filtro está activo, se construye el filtro OR normal.
     $clausulaStatus = " AND (" . implode(" OR ", $filtrosStatus) . ")";
 } else {
-    // Si NINGÚN filtro de estado (Pendiente o Rechazada) está activo, 
-    // mantenemos la condición original de cada rol (que trae pendientes y rechazadas por defecto).
-    // Si el usuario no selecciona ningún filtro de estado, se espera que se traigan las solicitudes pendientes por aprobar.
-    if ($puesto === 'Gerente de Recursos Humanos') {
-        $clausulaStatus = " AND (solicitud_autorizacion2 IS NULL OR solicitud_autorizacion2 = 'Rechazada') AND (solicitud_autorizacion1 ='Autorizada')";
-    } else {
-        $clausulaStatus = " AND (solicitud_autorizacion1 IS NULL OR solicitud_autorizacion1 = 'Rechazada')";
-    }
+    // *** CORRECCIÓN: Si NINGÚN filtro está activo, no devolver nada.
+    $clausulaStatus = " AND (1 = 0)"; 
 }
 
 // Filtros de Rango de Año (Fecha)
@@ -168,7 +158,9 @@ if ($puesto === 'Gerente de Recursos Humanos') {
         $userId = $mysqli_solicitud->real_escape_string($user['id']);
         
         // ** Aplicación de los filtros dinámicos **
-        $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE solicitud_solicitante_id= '$userId' " . $clausulaStatus . $clausulaYear;
+        // Se mantiene la condición 'solicitud_autorizacion1 = Autorizada' porque es el primer paso
+        // para que la solicitud llegue a RH, y se combina con los filtros de estado/año.
+        $sqlSolicitudes = "SELECT * FROM sp_solicitud WHERE solicitud_solicitante_id= '$userId' AND (solicitud_autorizacion1 ='Autorizada')" . $clausulaStatus . $clausulaYear;
 
         $resultSolicitudes = $mysqli_solicitud->query($sqlSolicitudes);
 
