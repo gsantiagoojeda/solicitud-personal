@@ -7,6 +7,10 @@ export default function menu(e) {
   const button = e.target.closest('[id^="btn-go-"]');
   if (!button) return;
 
+  const isActive = button.getAttribute("data-active");
+
+  if (isActive !== "true") return;
+
   const key = button.id;
   console.log(key);
   switch (key) {
