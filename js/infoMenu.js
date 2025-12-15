@@ -23,7 +23,13 @@ export default function infoMenu(data) {
     $btnGoApproved.setAttribute("data-active", "true");
     $btnGoApproved.style.opacity = "1";
   } else {
-    $btnGoApproved.style.opacity = "0.5";
-    $btnGoAuth.style.opacity = "0.5";
+    if (data.puesto.includes("Reclutador")) {
+      $btnGoApproved.setAttribute("data-active", "true");
+      $btnGoApproved.style.opacity = "1";
+      $btnGoAuth.style.opacity = "0.5";
+    } else {
+      $btnGoApproved.style.opacity = "0.5";
+      $btnGoAuth.style.opacity = "0.5";
+    }
   }
 }
