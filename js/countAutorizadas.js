@@ -11,6 +11,7 @@ export default async function countAutorizadas(data) {
     const $container = d.getElementById("container-mis-pendientes");
 
     const userId = data.id;
+    const userPuesto = data.puesto;
 
     const formData = new FormData();
     formData.append("user-id", userId);
@@ -28,6 +29,16 @@ export default async function countAutorizadas(data) {
     console.log(json);
     if (!res.ok || json.err)
       throw { status: res.status, statusText: res.statusText };
+    $count.textContent = `${json["countSolicitudesAutorizadas"]}`;
+    if (
+      userPuesto.includes("Director") ||
+      userPuesto === "Gerente de Recursos Humanos"
+    )
+      $container.style.opacity = "1";
+    else {
+      $container.style.opacity = "1";
+      $count.textContent = "-";
+    }
   } catch (err) {
     console.log(err);
     let message = err.statusText || "ocurrio un error";
