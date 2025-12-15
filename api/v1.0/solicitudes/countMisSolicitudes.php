@@ -8,7 +8,7 @@ require "../conexion_solicitud.php";
 
 // Obtener el ID del usuario
 $idUser = $_POST['user-id'] ?? null;  
-// $idUser = "264";  
+$idUser = "264";  
 
 // Inicialización para la respuesta
 $countPendientes = 0; 
