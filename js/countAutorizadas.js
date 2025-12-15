@@ -7,8 +7,8 @@ export default async function countAutorizadas(data) {
 
   try {
     const { SOLICITUDES, DOMAIN } = app;
-    const $count = d.getElementById("count-mis-pendientes");
-    const $container = d.getElementById("container-mis-pendientes");
+    const $count = d.getElementById("count-autorizadas");
+    const $container = d.getElementById("container-autorizadas");
 
     const userId = data.id;
     const userPuesto = data.puesto;
@@ -36,7 +36,7 @@ export default async function countAutorizadas(data) {
     )
       $container.style.opacity = "1";
     else {
-      $container.style.opacity = "1";
+      $container.style.opacity = "0.5";
       $count.textContent = "-";
     }
   } catch (err) {
