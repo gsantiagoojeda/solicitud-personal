@@ -29,7 +29,7 @@ export default async function countAutorizadas(data) {
     console.log(json);
     if (!res.ok || json.err)
       throw { status: res.status, statusText: res.statusText };
-    $count.textContent = `${json["countSolicitudesAutorizadas"]}`;
+    $count.textContent = `${json["data"]}`;
     if (
       userPuesto.includes("Director") ||
       userPuesto === "Gerente de Recursos Humanos"
