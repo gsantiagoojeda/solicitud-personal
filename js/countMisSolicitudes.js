@@ -4,6 +4,7 @@ export default async function countMisSolicitudes(data) {
   if (!location.pathname.includes("menu.html")) return;
 
   try {
+    const { SOLICITUDES, DOMAIN } = app;
     const $count = d.getElementById("count-mis-pendientes");
     const $container = d.getElementById("container-mis-pendientes");
 
