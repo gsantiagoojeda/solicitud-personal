@@ -7,8 +7,8 @@ error_reporting(E_ALL);
 require "../conexion_solicitud.php"; 
 
 // Obtener el ID del usuario
-// $idUser = $_POST['user-id'] ?? null;  
-$idUser = "264";  
+$idUser = $_POST['user-id'] ?? null;  
+// $idUser = "264";  
 
 // Inicialización para la respuesta
 $countPendientes = 0; 
@@ -48,7 +48,8 @@ header('Content-Type: application/json');
 // 2. Convertir el array a JSON y enviarlo al navegador
 echo json_encode([
     'success' => $success,
-    'id_usuario' => $idUser,
+     'id_usuario' => $idUser,
+           'script' => "countMisSolicitudes",
     'total_solicitudes_pendientes' => $countPendientes
 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE); 
 

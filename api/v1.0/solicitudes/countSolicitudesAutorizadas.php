@@ -151,12 +151,16 @@ if ($totalSolicitudes === 0) {
     echo json_encode([
         "err" => false,
         "statusText" => "No se encontraron solicitudes.",
+          'id_usuario' => $idUser,
+           'script' => "countSolicitudesAutorizadas",
         "data" => 0 // Devolver el conteo como 0
     ], JSON_UNESCAPED_UNICODE);
 } else {
     echo json_encode([
         "err" => false,
         "statusText" => "Conteo de solicitudes obtenido correctamente.",
+          'id_usuario' => $idUser,
+           'script' => "countSolicitudesAutorizadas",
         "data" => $totalSolicitudes // Devolver el conteo total
     ], JSON_UNESCAPED_UNICODE);
 }
