@@ -27,6 +27,8 @@ export default async function countMisSolicitudes(data) {
     console.log(json);
     if (!res.ok || json.err)
       throw { status: res.status, statusText: res.statusText };
+
+    $count.textContent = `${json["total_solicitudes_pendientes"]}`;
   } catch (err) {
     console.log(err);
     let message = err.statusText || "ocurrio un error";
