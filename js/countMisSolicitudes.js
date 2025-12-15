@@ -12,6 +12,8 @@ export default async function countMisSolicitudes(data) {
 
     const userId = data.id;
 
+    console.log(data);
+
     const formData = new FormData();
     formData.append("user-id", userId);
 
