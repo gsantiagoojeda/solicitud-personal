@@ -19,7 +19,7 @@ import validateRangeFilter from "./validateRangeFilter.js";
 import detailMySolicitud from "./detailMySolicitud.js";
 import editarSolicitud from "./editarSolicitud.js";
 import listSolicitudesAuth from "./listSolicitudesAuth.js";
-import countMisSolicitudes from "./countAutorizadas.js";
+import countMisSolicitudes from "./countMisSolicitudes.js";
 import countPendAutorizar from "./countPendAutorizar.js";
 import countAutorizadas from "./countAutorizadas.js";
 
