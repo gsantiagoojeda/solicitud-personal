@@ -1,6 +1,6 @@
 const d = document;
 
-export default async function countMisSolicitudes(data) {
+export default async function countAutorizadas(data) {
   if (!location.pathname.includes("menu.html")) return;
 
   try {

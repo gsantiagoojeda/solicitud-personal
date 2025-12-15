@@ -19,6 +19,9 @@ import validateRangeFilter from "./validateRangeFilter.js";
 import detailMySolicitud from "./detailMySolicitud.js";
 import editarSolicitud from "./editarSolicitud.js";
 import listSolicitudesAuth from "./listSolicitudesAuth.js";
+import countMisSolicitudes from "./countAutorizadas.js";
+import countPendAutorizar from "./countPendAutorizar.js";
+import countAutorizadas from "./countAutorizadas.js";
 
 const d = document;
 let data;
@@ -54,6 +57,9 @@ d.addEventListener("DOMContentLoaded", async (e) => {
   listMisSolicitudes(data);
   detailAuthSolicitud(data);
   detailMySolicitud(data);
+  countMisSolicitudes(data);
+  countPendAutorizar(data);
+  countAutorizadas(data);
 });
 
 d.addEventListener("change", (e) => {
