@@ -15,5 +15,5 @@ export default function goVerSolicitudAuth(e) {
 
   sessionStorage.setItem("id_solicitud", id);
 
-  location.href = `${DOMAIN}detailAuthSolicitud.html`;
+  location.href = `${DOMAIN}autorizar-solicitud.html`;
 }
