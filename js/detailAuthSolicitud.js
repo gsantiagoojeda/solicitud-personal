@@ -196,23 +196,41 @@ export default async function detailAuthSolicitud(data) {
       solicitud["solicitud_rolar"] === 1 ? "si" : "no";
 
     let levelAuth1 = solicitud["solicitud_autorizacion1"];
+    let levelAuth2 = solicitud["solicitud_autorizacion2"];
     console.log("kevel:", levelAuth1);
     if (levelAuth1 === "") {
-      d.getElementById("auth-level").textContent = " 1";
-      d.getElementById("btn-autorizar-solicitud").setAttribute(
-        "data-level",
-        "1"
-      );
-      d.getElementById("btn-rechazar-solicitud").setAttribute(
-        "data-level",
-        "1"
-      );
-    } else if (puestoAuth.includes("Gerente de Recursos Humanos")) {
+      if (puestoAuth.includes("Gerente de Recursos Humanos")) {
+        d.getElementById("auth-level").textContent = " 2";
+        d.getElementById("btn-autorizar-solicitud").setAttribute(
+          "data-level",
+          "12"
+        );
+        d.getElementById("btn-rechazar-solicitud").setAttribute(
+          "data-level",
+          "12"
+        );
+      }
+      {
+        d.getElementById("auth-level").textContent = " 1";
+        d.getElementById("btn-autorizar-solicitud").setAttribute(
+          "data-level",
+          "1"
+        );
+        d.getElementById("btn-rechazar-solicitud").setAttribute(
+          "data-level",
+          "1"
+        );
+      }
+    } else if (
+      puestoAuth.includes("Gerente de Recursos Humanos") &&
+      levelAuth2 === ""
+    ) {
       d.getElementById("auth-level").textContent = " 2";
       d.getElementById("btn-autorizar-solicitud").setAttribute(
         "data-level",
         "2"
       );
+      d;
       d.getElementById("btn-rechazar-solicitud").setAttribute(
         "data-level",
         "2"
