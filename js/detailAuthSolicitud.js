@@ -235,6 +235,17 @@ export default async function detailAuthSolicitud(data) {
         "data-level",
         "2"
       );
+    } else if (puestoAuth.includes("Reclutador")) {
+      d.getElementById("auth-level").textContent = " Reclutar";
+      d.getElementById("btn-autorizar-solicitud").setAttribute(
+        "data-level",
+        "3"
+      );
+      d;
+      d.getElementById("btn-rechazar-solicitud").setAttribute(
+        "data-level",
+        "3"
+      );
     } else {
       d.getElementById("auth-contain").style.display = "none";
     }
