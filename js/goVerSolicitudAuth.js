@@ -2,7 +2,7 @@ import app from "../helpers/app.js";
 
 const d = document;
 
-export default function goAutorizarSolicitud(e) {
+export default function goVerSolicitudAuth(e) {
   if (
     !location.pathname.includes("solicitudes-autorizadas.html") ||
     !e.target.closest("[data-td-id]")
