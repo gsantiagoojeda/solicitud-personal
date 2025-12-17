@@ -198,7 +198,11 @@ export default async function detailAuthSolicitud(data) {
     let levelAuth1 = solicitud["solicitud_autorizacion1"];
     let levelAuth2 = solicitud["solicitud_autorizacion2"];
     console.log("kevel:", levelAuth1);
-    if (levelAuth1 === "") {
+    if (
+      levelAuth1 === "" &&
+      (puestoAuth.includes("Gerente de Recursos Humanos") ||
+        puestoAuth.includes("Director"))
+    ) {
       if (puestoAuth.includes("Gerente de Recursos Humanos")) {
         d.getElementById("auth-level").textContent = " 2";
         d.getElementById("btn-autorizar-solicitud").setAttribute(
@@ -209,8 +213,7 @@ export default async function detailAuthSolicitud(data) {
           "data-level",
           "12"
         );
-      }
-      {
+      } else {
         d.getElementById("auth-level").textContent = " 1";
         d.getElementById("btn-autorizar-solicitud").setAttribute(
           "data-level",
