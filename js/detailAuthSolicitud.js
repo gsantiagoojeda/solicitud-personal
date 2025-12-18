@@ -197,7 +197,62 @@ export default async function detailAuthSolicitud(data) {
 
     let levelAuth1 = solicitud["solicitud_autorizacion1"];
     let levelAuth2 = solicitud["solicitud_autorizacion2"];
+    let levelAuth3 = solicitud["solicitud_autorizacion3"];
+
+    const $btnAuth = d.getElementById("btn-autorizar-solicitud");
+    const $btnRechazar = d.getElementById("btn-rechazar-solicitud");
+    const $btnReclutar = d.getElementById("btn-reclutar-solicitud");
     console.log("kevel:", levelAuth1);
+
+    if (puestoAuth.includes("Director")) {
+      if (levelAuth1 === "") {
+        d.getElementById("auth-level").textContent = " 1";
+        d.getElementById("btn-autorizar-solicitud").setAttribute(
+          "data-level",
+          "1"
+        );
+        d.getElementById("btn-rechazar-solicitud").setAttribute(
+          "data-level",
+          "1"
+        );
+      } else {
+        d.getElementById("auth-contain").style.display = "none";
+      }
+    }
+
+    if (puestoAuth === "Gerente de Recursos Humanos") {
+      if (levelAuth2 === "") {
+        d.getElementById("auth-level").textContent = " 2";
+        d.getElementById("btn-autorizar-solicitud").setAttribute(
+          "data-level",
+          "2"
+        );
+        d;
+        d.getElementById("btn-rechazar-solicitud").setAttribute(
+          "data-level",
+          "2"
+        );
+      } else {
+        d.getElementById("auth-contain").style.display = "none";
+      }
+    }
+
+    if (puestoAuth.includes("Reclutador")) {
+      if (levelAuth3 === "") {
+        d.getElementById("auth-level").textContent = "Reclutar";
+        d.getElementById("btn-autorizar-solicitud").setAttribute(
+          "data-level",
+          "3"
+        );
+        d.getElementById("btn-rechazar-solicitud").setAttribute(
+          "data-level",
+          "3"
+        );
+      } else {
+        d.getElementById("auth-contain").style.display = "none";
+      }
+    }
+    // a eliminar
     if (
       levelAuth1 === "" &&
       (puestoAuth.includes("Gerente de Recursos Humanos") ||
