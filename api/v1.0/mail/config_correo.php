@@ -2,7 +2,7 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require __DIR__ . '/../../vacaciones/vendor/autoload.php';
+require __DIR__ . '/../../../../vacaciones/vendor/autoload.php';
 
 function getMailer() {
     $mail = new PHPMailer(true);
