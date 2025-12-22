@@ -168,7 +168,7 @@ if ($stmt->execute()) {
         <p>Puedes dar seguimiento a las solicitudes en el sistema.</p>
     ";
     // $destinatario="reclutamiento@gpoalze.com";
-   $destinatarios = ["gonzalo.santiago@etiroch.com", "lucio.zempoalteca@gpoalze.com"];
+   $destinatarios = ["gonzalo.santiago@etiroch.onmicrosoft.com", "lucio.zempoalteca@gpoalze.com"];
 
     $template_path = __DIR__ . '/../mail/solcitud_aprobada.html';
     $template = file_exists($template_path) 
