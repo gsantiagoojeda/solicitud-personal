@@ -1,6 +1,6 @@
 <?php
 require "../conexion_solicitud.php";
-require_once __DIR__ . '/enviar_correo.php';
+require_once __DIR__ . '/../enviar_correo.php';
 
 header('Content-Type: application/json');
 
@@ -169,7 +169,7 @@ if ($stmt->execute()) {
     ";
     // $destinatario="reclutamiento@gpoalze.com";
    $destinatarios = ["gonzalo.santiago@etiroch.com", "lucio.zempoalteca@gpoalze.com"];
-   
+
     $template_path = __DIR__ . '/../mail/solcitud_aprobada.html';
     $template = file_exists($template_path) 
         ? file_get_contents($template_path) 
