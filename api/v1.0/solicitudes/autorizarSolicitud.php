@@ -177,7 +177,7 @@ if ($stmt->execute()) {
 
     $url_intranet = "https://gpoalze.cloud/solicitud-personal/menu.html";
     $correoHTML = str_replace(['{{CONTENIDO}}','{{URL_INTRANET}}'], [$contenidoHTML, $url_intranet], $template);
-
+    $asunto="VACANTE AUTORIZADA";
     enviarCorreo($asunto, $destinatarios, $correoHTML);
 
 
