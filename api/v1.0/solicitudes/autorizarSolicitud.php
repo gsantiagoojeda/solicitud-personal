@@ -1,6 +1,6 @@
 <?php
 require "../conexion_solicitud.php";
-require_once __DIR__ . '/../enviar_correo.php';
+require_once __DIR__ . '/../mail/enviar_correo.php';
 
 header('Content-Type: application/json');
 
