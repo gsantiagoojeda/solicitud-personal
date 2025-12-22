@@ -207,14 +207,8 @@ export default async function detailAuthSolicitud(data) {
     if (puestoAuth.includes("Director")) {
       if (levelAuth1 === "") {
         d.getElementById("auth-level").textContent = " 1";
-        d.getElementById("btn-autorizar-solicitud").setAttribute(
-          "data-level",
-          "1"
-        );
-        d.getElementById("btn-rechazar-solicitud").setAttribute(
-          "data-level",
-          "1"
-        );
+        $btnAuth.setAttribute("data-level", "1");
+        $btnRechazar.setAttribute("data-level", "1");
       } else {
         d.getElementById("auth-contain").style.display = "none";
       }
@@ -223,15 +217,9 @@ export default async function detailAuthSolicitud(data) {
     if (puestoAuth === "Gerente de Recursos Humanos") {
       if (levelAuth2 === "") {
         d.getElementById("auth-level").textContent = " 2";
-        d.getElementById("btn-autorizar-solicitud").setAttribute(
-          "data-level",
-          "2"
-        );
+        $btnAuth.setAttribute("data-level", "2");
         d;
-        d.getElementById("btn-rechazar-solicitud").setAttribute(
-          "data-level",
-          "2"
-        );
+        $btnRechazar.setAttribute("data-level", "2");
       } else {
         d.getElementById("auth-contain").style.display = "none";
       }
@@ -240,72 +228,11 @@ export default async function detailAuthSolicitud(data) {
     if (puestoAuth.includes("Reclutador")) {
       if (levelAuth3 === "") {
         d.getElementById("auth-level").textContent = "Reclutar";
-        d.getElementById("btn-autorizar-solicitud").setAttribute(
-          "data-level",
-          "3"
-        );
-        d.getElementById("btn-rechazar-solicitud").setAttribute(
-          "data-level",
-          "3"
-        );
+        $btnAuth.setAttribute("data-level", "3");
+        $btnRechazar.setAttribute("data-level", "3");
       } else {
         d.getElementById("auth-contain").style.display = "none";
       }
-    }
-    // a eliminar
-    if (
-      levelAuth1 === "" &&
-      (puestoAuth.includes("Gerente de Recursos Humanos") ||
-        puestoAuth.includes("Director"))
-    ) {
-      if (puestoAuth.includes("Gerente de Recursos Humanos")) {
-        d.getElementById("auth-level").textContent = " 2";
-        d.getElementById("btn-autorizar-solicitud").setAttribute(
-          "data-level",
-          "12"
-        );
-        d.getElementById("btn-rechazar-solicitud").setAttribute(
-          "data-level",
-          "12"
-        );
-      } else {
-        d.getElementById("auth-level").textContent = " 1";
-        d.getElementById("btn-autorizar-solicitud").setAttribute(
-          "data-level",
-          "1"
-        );
-        d.getElementById("btn-rechazar-solicitud").setAttribute(
-          "data-level",
-          "1"
-        );
-      }
-    } else if (
-      puestoAuth.includes("Gerente de Recursos Humanos") &&
-      levelAuth2 === ""
-    ) {
-      d.getElementById("auth-level").textContent = " 2";
-      d.getElementById("btn-autorizar-solicitud").setAttribute(
-        "data-level",
-        "2"
-      );
-      d;
-      d.getElementById("btn-rechazar-solicitud").setAttribute(
-        "data-level",
-        "2"
-      );
-    } else if (puestoAuth.includes("Reclutador")) {
-      d.getElementById("auth-level").textContent = " Reclutar";
-      d.getElementById("btn-autorizar-solicitud").setAttribute(
-        "data-level",
-        "3"
-      );
-      d;
-      d.getElementById("btn-rechazar-solicitud").setAttribute(
-        "data-level",
-        "3"
-      );
-    } else {
-      d.getElementById("auth-contain").style.display = "none";
     }
   } catch (err) {
     console.log(err);

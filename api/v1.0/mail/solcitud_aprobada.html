@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>SOLICITUD APROBADA</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+    body {
+      font-family: 'Montserrat', Arial, sans-serif;
+      background-color: #f4f6f4;
+      color: #333333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: 30px auto;
+      background-color: #ffffff;
+      border-radius: 10px;
+      border: 2px solid #15774D;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    .header {
+      background-color: #15774D;
+      color: #ffffff;
+      text-align: center;
+      padding: 25px 20px;
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .content {
+      padding: 25px 30px;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .content h2 {
+      color: #15774D;
+      margin-top: 0;
+      font-weight: 600;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 12px 20px;
+      background-color: #15774D;
+      color: #ffffff !important;
+      text-decoration: none;
+      border-radius: 4px;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+
+    .button:hover {
+      background-color: #12623E;
+    }
+
+    .footer {
+      background-color: #f4f4f4;
+      text-align: center;
+      font-size: 12px;
+      color: #777777;
+      padding: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">SOLICITUD APROBADA</div>
+    <div class="content">
+      {{CONTENIDO}}
+      <br><br>
+      <a href="{{URL_INTRANET}}" class="button">VER SOLICITUD</a>
+    </div>
+    <div class="footer">
+      Este es un correo automático del sistema de SOLICITUD PERSONAL<br>
+      No responda a este mensaje.
+    </div>
+  </div>
+</body>
+
+</html>

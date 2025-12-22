@@ -1,5 +1,6 @@
 <?php
 require "../conexion_solicitud.php";
+require_once __DIR__ . '/enviar_correo.php';
 
 header('Content-Type: application/json');
 
@@ -160,6 +161,27 @@ if ($stmt->execute()) {
         "statusText" => "Datos actualizados correctamente. Filas afectadas: " . $stmt->affected_rows,
         "postData" => $_POST
     ]);
+    if($level ==2){
+          $contenidoHTML = "
+        <h2>SOLICITUD AUTORIZADA</h2>
+        <p>Una nueva vacante fue aprobada para su reclutamiento. <b>$id</b>.</p>
+        <p>Puedes dar seguimiento a las solicitudes en el sistema.</p>
+    ";
+    // $destinatario="reclutamiento@gpoalze.com";
+   $destinatarios = ["gonzalo.santiago@etiroch.com", "lucio.zempoalteca@gpoalze.com"];
+   
+    $template_path = __DIR__ . '/../mail/solcitud_aprobada.html';
+    $template = file_exists($template_path) 
+        ? file_get_contents($template_path) 
+        : "<html><body>{{CONTENIDO}}<br><a href='{{URL_INTRANET}}'>Ver Solicitudes</a></body></html>";
+
+    $url_intranet = "https://gpoalze.cloud/solicitud-personal/menu.html";
+    $correoHTML = str_replace(['{{CONTENIDO}}','{{URL_INTRANET}}'], [$contenidoHTML, $url_intranet], $template);
+
+    enviarCorreo($asunto, $destinatarios, $correoHTML);
+
+
+    }
 } else {
     echo json_encode([
         "err" => true,
