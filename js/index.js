@@ -72,13 +72,13 @@ async function validarJWT() {
   const data = await obtenerJWT();
   if (!data) {
     alert("No se valido la sesión");
-    //location.href = "https://gpoalze.cloud/";
+    location.href = "https://gpoalze.cloud/";
   }
 
   let puesto = data.puesto.toLowerCase();
   if (!puesto.includes("gerente") && !puesto.includes("director")) {
     alert("No tienes los permisos para entrar a este módulo");
-    // location.href = "http://gpoalze.cloud/";
+    location.href = "http://gpoalze.cloud/";
   }
   return data;
 }
