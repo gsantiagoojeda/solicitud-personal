@@ -170,7 +170,7 @@ if ($stmt->execute()) {
     // $destinatario="reclutamiento@gpoalze.com";
    $destinatarios = ["gonzalo.santiago@etiroch.onmicrosoft.com", "lucio.zempoalteca@gpoalze.com"];
 
-    $template_path = __DIR__ . '/../mail/solcitud_aprobada.html';
+    $template_path = __DIR__ . '/../mail/solicitud_aprobada.html';
     $template = file_exists($template_path) 
         ? file_get_contents($template_path) 
         : "<html><body>{{CONTENIDO}}<br><a href='{{URL_INTRANET}}'>Ver Solicitudes</a></body></html>";
