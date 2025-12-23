@@ -7,6 +7,8 @@ header('Content-Type: application/json');
 // --- 1. Obtener y Sanitizar Datos ---
 
 $id = $_POST['id'] ?? null;
+$vacante = $_POST['vacante'] ?? null;
+$solicitante = $_POST['solicitante'] ?? null;
 $rp1 = $_POST['rp1'] ?? null;
 $rp2 = $_POST['rp2'] ?? null;
 $rp3 = $_POST['rp3'] ?? null;
@@ -163,8 +165,9 @@ if ($stmt->execute()) {
     ]);
     if($level ==2){
           $contenidoHTML = "
-        <h2>SOLICITUD AUTORIZADA</h2>
-        <p>Una nueva vacante fue aprobada para su reclutamiento. <b>$id</b>.</p>
+        <h2>VACANTE AUTORIZADA</h2>
+        <p>Una nueva vacante para <b>$vacante</b> fue aprobada para su reclutamiento. .</p>
+        <p>Solicitada por: <b>$solicitante</b></p>
         <p>Puedes dar seguimiento a las solicitudes en el sistema.</p>
     ";
     // $destinatario="reclutamiento@gpoalze.com";

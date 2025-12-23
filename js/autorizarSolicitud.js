@@ -13,6 +13,8 @@ export default async function autorizarSolicitud(e) {
 
   const $form = d.getElementById("form-auth-solicitud"),
     id = $form["solicitud-id"].value,
+    vacante = d.getElementById("puesto").textContent,
+    solicitante = d.getElementById("solicitante").textContent,
     rp1 = $form["solicitud-rp1"].value,
     rp2 = $form["solicitud-rp2"].value,
     rp3 = $form["solicitud-rp3"].value,
@@ -47,6 +49,8 @@ export default async function autorizarSolicitud(e) {
 
   const formData = new FormData();
   formData.append("id", id);
+  formData.append("vacante", vacante);
+  formData.append("solicitante", solicitante);
   formData.append("rp1", rp1);
   formData.append("rp2", rp2);
   formData.append("rp3", rp3);
