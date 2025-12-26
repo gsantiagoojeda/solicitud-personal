@@ -79,9 +79,9 @@ export default async function autorizarSolicitud(e) {
   formData.append("status", status);
   formData.append("level", level);
 
-  for (const [key, value] of formData.entries()) {
-    console.log(`${key}: ${value}`);
-  }
+  // for (const [key, value] of formData.entries()) {
+  //   console.log(`${key}: ${value}`);
+  // }
 
   let options = {
     method: "POST",
