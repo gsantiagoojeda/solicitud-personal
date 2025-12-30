@@ -5,7 +5,7 @@ const d = document;
 export default async function createSolicitud(e) {
   if (!e.target.matches("#form-create-solicitud")) return;
 
-  const { SOLICITUDES } = app;
+  const { SOLICITUDES, DOMAIN } = app;
 
   const $form = d.getElementById("form-create-solicitud"),
     puesto = $form["solicitud-puesto"].value,
@@ -80,16 +80,13 @@ export default async function createSolicitud(e) {
   try {
     let res = await fetch(`${SOLICITUDES}createSolicitud.php`, options);
     if (!res.ok) throw { status: res.status, statusText: res.statusText };
-    console.log("if 0");
     let json = await res.json();
     console.log(json);
     if (!json.err) {
-      console.log("if 1");
       document.querySelector(".load").style.display = "none";
       alert(`Solicitud creada`);
       location.href = `${DOMAIN}ver-solicitudes.html`;
     } else {
-      console.log("if 2");
       throw { status: "200", statusText: json.statusText };
     }
   } catch (err) {
