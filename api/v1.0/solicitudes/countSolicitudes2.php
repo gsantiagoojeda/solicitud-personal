@@ -157,7 +157,7 @@ if ($puesto === 'Gerente de Recursos Humanos') {
         }
     }
     echo "lista autorizados:";
-    print_r($listaGruposAutorizadosIds);
+    print_r($listaUserAutorizadosIds);
     if (!empty($listaUserAutorizadosIds)) {
         $userIds = "'" . implode("','", $listaUserAutorizadosIds) . "'";
         
