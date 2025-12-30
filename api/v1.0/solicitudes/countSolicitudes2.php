@@ -161,6 +161,7 @@ if ($puesto === 'Gerente de Recursos Humanos') {
     if (!empty($listaUserAutorizadosIds)) {
         $userIds = "'" . implode("','", $listaUserAutorizadosIds) . "'";
         
+        print_r($userIds);
         // 2.2 Consulta COUNT(*) única en sp_solicitud
         // Esta consulta aplica para Director/Jefe (solicitud_autorizacion1 IS NULL o 'Rechazada')
         $sqlCount = "SELECT COUNT(*) AS total 
