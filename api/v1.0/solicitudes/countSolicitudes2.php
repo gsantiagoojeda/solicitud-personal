@@ -170,6 +170,8 @@ if ($puesto === 'Gerente de Recursos Humanos') {
                      . $clausulaStatus 
                      . $clausulaYear;
 
+        echo $sqlCount;             
+
         $resultCount = $mysqli_solicitud->query($sqlCount);
 
         if ($resultCount) {
