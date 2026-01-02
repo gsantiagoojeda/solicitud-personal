@@ -1,91 +1,277 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-MX">
 
 <head>
   <meta charset="UTF-8">
-  <title>SOLICITUD APROBADA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="shortcut icon" href="./assets/logo.jpeg" type="image/x-icon">
+  <link href="./css/style_out.css" rel="stylesheet">
+  <title>Autorizar Solicitud de Personal</title>
+
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+    /* Estilos específicos para impresión */
+    @media print {
+      @page {
+        size: letter;
+        margin: 1cm;
+      }
 
-    body {
-      font-family: 'Montserrat', Arial, sans-serif;
-      background-color: #f4f6f4;
-      color: #333333;
-      margin: 0;
-      padding: 0;
-    }
+      /* Ocultar elementos de navegación y botones */
+      header,
+      #go-back,
+      #auth-contain,
+      .load,
+      #btn-autorizar-solicitud,
+      #btn-rechazar-solicitud,
+      #btn-reclutar-solicitud,
+      .material-icons {
+        display: none !important;
+      }
 
-    .container {
-      max-width: 650px;
-      margin: 30px auto;
-      background-color: #ffffff;
-      border-radius: 10px;
-      border: 2px solid #15774D;
-      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
-      overflow: hidden;
-    }
+      /* Ajustar cuerpo y fondo */
+      body {
+        background-color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
 
-    .header {
-      background-color: #15774D;
-      color: #ffffff;
-      text-align: center;
-      padding: 25px 20px;
-      font-size: 24px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
+      /* Compactar el diseño */
+      main {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
 
-    .content {
-      padding: 25px 30px;
-      line-height: 1.7;
-      font-size: 15px;
-      text-align: center;
-    }
+      section,
+      article {
+        box-shadow: none !important;
+        border: 1px solid #d1d5db !important;
+        margin-top: 0.5rem !important;
+        padding: 0.5rem !important;
+        page-break-inside: avoid;
+        /* Evita que un cuadro se parta entre hojas */
+      }
 
-    .content h2 {
-      color: #15774D;
-      margin-top: 0;
-      font-weight: 600;
-    }
+      /* Ajuste de fuentes para ahorrar espacio */
+      h3 {
+        font-size: 1.25rem !important;
+        color: #1e40af !important;
+      }
 
-    .button {
-      display: inline-block;
-      padding: 20px 20px;
-      background-color: #15774D;
-      color: #ffffff !important;
-      text-decoration: none;
-      border-radius: 4px;
-      margin-top: 15px;
-      margin-bottom: 15px;
-      font-weight: 600;
-    }
+      span,
+      label,
+      p,
+      select,
+      input,
+      textarea,
+      div {
+        font-size: 10px !important;
+        line-height: 1.2 !important;
+      }
 
-    .button:hover {
-      background-color: #12623E;
-    }
+      .font-bold {
+        font-weight: 700 !important;
+      }
 
-    .footer {
-      background-color: #f4f4f4;
-      text-align: center;
-      font-size: 12px;
-      color: #777777;
-      padding: 15px;
+      /* Ajustar textareas para que no ocupen espacio innecesario */
+      textarea {
+        height: auto !important;
+        min-height: 25px !important;
+        border: 0.5px solid #9ca3af !important;
+      }
+
+      /* Forzar que las columnas se mantengan en la impresión */
+      .lg\:flex,
+      .md\:grid,
+      .flex {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        gap: 5px;
+      }
+
+      .flex-col {
+        flex-direction: column !important;
+      }
+
+      /* Ocultar asteriscos rojos en la impresión si se desea un look más limpio */
+      .text-red-600 {
+        display: none;
+      }
     }
   </style>
 </head>
 
-<body>
-  <div class="container">
-    <div class="header">SOLICITUD APROBADA</div>
-    <div class="content">
-      {{CONTENIDO}}
-      <a href="{{URL_INTRANET}}" class="button">VER SOLICITUD</a>
-    </div>
-    <div class="footer">
-      Este es un correo automático del sistema de SOLICITUD PERSONAL<br>
-      No responda a este mensaje.
-    </div>
-  </div>
+<body class="bg-white select-none">
+  <header data-include="./header.html"></header>
+
+  <main class="w-full lg:w-10/12 mx-auto bg-white">
+    <section class="w-full flex items-center px-6 py-4 lg:mt-8 bg-white shadow-md rounded-md">
+      <button class="hidden w-8 h-auto mr-2" id="go-back">
+        <img class="w-full h-auto" src="./assets/arrow-left-circle-fill.svg" alt="goBack">
+      </button>
+      <h3 class="text-2xl lg:text-3xl font-bold text-blue-700 grow text-center">
+        Autorizar solicitud de personal
+      </h3>
+      <div class="flex flex-col items-end font-bold text-xs">
+        <span class="block text-gray-700">Código: F01-PR-01-RH</span>
+        <span class="block text-gray-700">Rev: 01</span>
+      </div>
+    </section>
+
+    <form id="form-auth-solicitud">
+      <input type="hidden" id="solicitud-id" name="solicitud-id">
+
+      <article class="w-11/12 mt-4 bg-white p-4 mx-auto rounded-md border border-gray-100">
+        <section class="flex flex-col lg:flex-row justify-around gap-2">
+          <div class="flex gap-2">
+            <span class="font-medium text-gray-600">Puesto:</span>
+            <span class="font-bold text-blue-800" id="puesto"></span>
+          </div>
+          <div class="flex gap-2">
+            <span class="font-medium text-gray-600">Solicitante:</span>
+            <span class="font-bold text-blue-800" id="solicitante">Lucio Zempoalteca</span>
+          </div>
+          <div class="flex gap-2">
+            <span class="font-medium text-gray-600">Fecha:</span>
+            <span class="font-bold text-blue-800">19/09/2025</span>
+          </div>
+        </section>
+      </article>
+
+      <article class="hidden w-11/12 mt-4 bg-white p-4 mx-auto shadow-sm border border-gray-200 rounded-md"
+        id="container-auths">
+        <section class="flex justify-start gap-8" id="container-auth1">
+          <div class="flex gap-2">
+            <span class="font-medium text-gray-600">Autorizador N1:</span>
+            <span class="font-bold text-blue-800" id="auth1-name">David Inclan</span>
+          </div>
+          <div class="flex gap-2">
+            <span class="font-medium text-gray-600">Fecha:</span>
+            <span class="font-bold text-blue-800" id="auth1-date">19/09/2025</span>
+          </div>
+        </section>
+      </article>
+
+      <article class="w-11/12 mt-4 bg-white p-4 mx-auto rounded-md border border-gray-100">
+        <span class="block font-bold text-gray-700 mb-4">Condiciones físicas y ambientales:</span>
+
+        <div class="mb-4">
+          <p class="text-gray-600 mb-2 text-sm font-medium">1. ¿Existe un espacio de trabajo definido?<span
+              class="text-red-600"> *</span></p>
+          <div class="flex items-center gap-6">
+            <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="solicitud-rp1"
+                value="si" required> <span>SI</span></label>
+            <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="solicitud-rp1"
+                value="no"> <span>NO</span></label>
+            <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="solicitud-rp1"
+                value="n/a"> <span>N/A</span></label>
+            <textarea id="solicitud-txt-rp1" name="solicitud-txt-rp1" placeholder="Mencione cuáles..."
+              class="border rounded-md p-1 grow text-xs" rows="1"></textarea>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <p class="text-gray-600 mb-2 text-sm font-medium">2. ¿Existe el mobiliario de oficina requerido?<span
+              class="text-red-600"> *</span></p>
+          <div class="flex items-center gap-6">
+            <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="solicitud-rp2"
+                value="si" required> <span>SI</span></label>
+            <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="solicitud-rp2"
+                value="no"> <span>NO</span></label>
+            <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="solicitud-rp2"
+                value="n/a"> <span>N/A</span></label>
+            <textarea id="solicitud-txt-rp2" name="solicitud-txt-rp2" placeholder="Mencione cuáles..."
+              class="border rounded-md p-1 grow text-xs" rows="1"></textarea>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <p class="text-gray-600 mb-2 text-sm font-medium">3. ¿Existe el equipo de cómputo necesario?<span
+              class="text-red-600"> *</span></p>
+          <div class="flex items-center gap-6">
+            <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="solicitud-rp3"
+                value="si" required> <span>SI</span></label>
+            <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="solicitud-rp3"
+                value="no"> <span>NO</span></label>
+            <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="solicitud-rp3"
+                value="n/a"> <span>N/A</span></label>
+            <textarea id="solicitud-txt-rp3" name="solicitud-txt-rp3" placeholder="Mencione cuáles..."
+              class="border rounded-md p-1 grow text-xs" rows="1"></textarea>
+          </div>
+        </div>
+      </article>
+
+      <article class="w-11/12 mt-4 bg-white p-4 mx-auto rounded-md border border-gray-100">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-medium text-blue-700">Adecuaciones requeridas:</label>
+            <textarea id="solicitud-txt-compras" name="solicitud-txt-compras"
+              class="border rounded-md p-2 w-full text-sm" rows="1"></textarea>
+          </div>
+          <div>
+            <label class="block font-medium text-blue-700">Responsable de gestión:</label>
+            <textarea id="solicitud-txt-respgestion" name="solicitud-txt-respgestion"
+              class="border rounded-md p-2 w-full text-sm" rows="1"></textarea>
+          </div>
+        </div>
+      </article>
+
+      <article class="w-11/12 mt-4 bg-white p-4 mx-auto rounded-md border border-gray-100">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <span class="font-bold text-gray-600">Sexo:</span>
+            <select id="solicitud-sexo" name="solicitud-sexo" class="w-full border p-1 rounded">
+              <option value="indistinto">Indistinto</option>
+            </select>
+          </div>
+          <div>
+            <span class="font-bold text-gray-600">Edad:</span>
+            <div class="flex items-center gap-1">
+              <input type="number" class="border w-12 text-center" placeholder="Min"> a <input type="number"
+                class="border w-12 text-center" placeholder="Max">
+            </div>
+          </div>
+          <div>
+            <span class="font-bold text-gray-600">Vacantes:</span>
+            <input type="number" id="solicitud-vacantes" class="border w-16 text-center" value="1">
+          </div>
+        </div>
+      </article>
+
+      <article class="w-11/12 mt-4 bg-white p-4 mx-auto rounded-md border border-gray-100">
+        <span class="block font-bold text-blue-600 mb-2">Requerimientos:</span>
+        <div class="space-y-2">
+          <p><span class="font-semibold text-xs">Conocimientos:</span> <textarea id="solicitud-txt-conocimientos"
+              class="w-full border p-1 text-xs" rows="1"></textarea></p>
+          <p><span class="font-semibold text-xs">Habilidades:</span> <textarea id="solicitud-txt-habilidades"
+              class="w-full border p-1 text-xs" rows="1"></textarea></p>
+        </div>
+      </article>
+
+      <article class="w-11/12 mt-4 bg-white p-4 mx-auto text-center" id="auth-contain">
+        <p class="font-bold text-gray-600 mb-4">Autorización nivel <span id="auth-level"></span></p>
+        <div class="flex justify-center gap-4">
+          <button id="btn-autorizar-solicitud" type="button"
+            class="bg-green-600 text-white px-6 py-2 rounded-md font-bold hover:bg-green-700">Autorizar</button>
+          <button id="btn-rechazar-solicitud" type="button"
+            class="bg-red-600 text-white px-6 py-2 rounded-md font-bold hover:bg-red-700">Rechazar</button>
+        </div>
+      </article>
+
+    </form>
+  </main>
+
+  <section class="load hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <img src="./assets/puff.svg" alt="cargando">
+  </section>
+
+  <script type="module" src="./js/index.js?v=1"></script>
 </body>
 
 </html>
