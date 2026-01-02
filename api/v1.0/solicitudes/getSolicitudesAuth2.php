@@ -9,7 +9,7 @@ require "../conexion_solicitud.php";
 
 
 // $idUser = $_POST['user-id']; // usuario actual
-$idUser = "391"; // usuario actual
+$idUser = "3190"; // usuario actual
 
 $filterYearStart = $_POST['filterYearStart'] ?? null; 
 $filterYearEnd = $_POST['filterYearEnd'] ?? null;
