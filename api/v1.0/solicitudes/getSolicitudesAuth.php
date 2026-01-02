@@ -90,7 +90,7 @@ if (!empty($filterYearStart) && !empty($filterYearEnd)) {
 
 $listaSolicitudes = [];
 
-if ($puesto === 'Gerente de Recursos Humanos') {
+if ($puesto === 'Gerente de Recursos Humanos' or str_contains($puesto, 'Reclutador') ) {
    $sqlUsers = "SELECT id, nombre, apellido_paterno, apellido_materno, puesto, correo, empresa, id_departamento 
                  FROM empleados 
                  WHERE (puesto LIKE '%Gerente%' OR puesto LIKE '%Director%') AND status_empleado ='Activo' ";
