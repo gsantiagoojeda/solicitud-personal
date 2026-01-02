@@ -13,6 +13,8 @@ export default function infoMenu(data) {
 
   const $btnGoAuth = d.getElementById("btn-go-auth");
   const $btnGoApproved = d.getElementById("btn-go-approved");
+  const $btnGocreate = d.getElementById("btn-go-create");
+  const $btnGoHistory = d.getElementById("btn-go-history");
 
   if (
     data.puesto.includes("Director") ||
@@ -27,9 +29,13 @@ export default function infoMenu(data) {
       $btnGoApproved.setAttribute("data-active", "true");
       $btnGoApproved.style.opacity = "1";
       $btnGoAuth.style.opacity = "0.5";
+      $btnGocreate.style.opacity = "0.5";
+      $btnGoHistory.style.opacity = "0.5";
     } else {
       $btnGoApproved.style.opacity = "0.5";
       $btnGoAuth.style.opacity = "0.5";
+      $btnGocreate.style.opacity = "0.5";
+      $btnGoHistory.style.opacity = "0.5";
     }
   }
 }
