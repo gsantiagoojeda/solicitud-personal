@@ -76,7 +76,11 @@ async function validarJWT() {
   }
 
   let puesto = data.puesto.toLowerCase();
-  if (!puesto.includes("gerente") && !puesto.includes("director")) {
+  if (
+    !puesto.includes("gerente") &&
+    !puesto.includes("director") &&
+    !puesto.includes("reclutador")
+  ) {
     alert("No tienes los permisos para entrar a este módulo");
     location.href = "http://gpoalze.cloud/";
   }
