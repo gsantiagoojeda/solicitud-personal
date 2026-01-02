@@ -79,7 +79,17 @@ if ($resultEmps) {
 // --------------------------------------------------------------------------------------
 
 // Ambas autorizaciones deben ser 'AUTORIZADA'
-$condicionAutorizada = " AND (solicitud_autorizacion1 = 'AUTORIZADA' AND solicitud_autorizacion2 = 'AUTORIZADA')";
+
+ $condicionAutorizada="";
+if ($puesto === 'Gerente de Recursos Humanos' || str_contains($puesto, 'Reclutador')) {
+
+    $condicionAutorizada = " AND (solicitud_autorizacion1 = 'AUTORIZADA' AND solicitud_autorizacion2 = 'AUTORIZADA')";
+} else {
+    // Para cualquier otro puesto, solo la primera
+    $condicionAutorizada = " AND (solicitud_autorizacion1 = 'AUTORIZADA')";
+}
+
+$sql = "SELECT * FROM solicitudes WHERE estatus = 'Activo' " . $condicionAutorizada;
 
 $clausulaYear = "";
 if (!empty($filterYearStart) && !empty($filterYearEnd)) {
