@@ -88,6 +88,7 @@
       <table class="table-auto min-w-full bg-white rounded-lg shadow-md">
         <thead>
           <tr class="bg-[#085a80] text-white text-left text-sm">
+            <th class="py-3 px-4">ID</th>
             <th class="py-3 px-4">SOLICITANTE</th>
             <th class="py-3 px-4">DEPARTAMENTO</th>
             <th class="py-3 px-4">VACANTE</th>
@@ -101,6 +102,9 @@
         </thead>
         <template id="template-item-solicitud">
           <tr class="border-b cursor-pointer" data-td-id>
+            <td class="px-4 py-3 align-middle">
+              <p class="font-bold" data-id></p>
+            </td>
             <td class="px-4 py-3 align-middle">
               <div class="flex flex-col justify-center">
                 <p class="font-medium" data-name></p>

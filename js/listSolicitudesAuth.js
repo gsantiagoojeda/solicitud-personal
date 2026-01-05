@@ -51,6 +51,7 @@ export default async function listSolicitudesAuth(data = null, e = null) {
         $clone
           .querySelector("[data-td-id]")
           .setAttribute("data-td-id", el.solicitud_id);
+        $clone.querySelector("[data-id]").textContent = el.solicitud_id_format;
         $clone.querySelector("[data-name]").textContent =
           el.usuario_nombre_completo;
         $clone.querySelector("[data-empresa]").textContent = el.usuario_empresa;
