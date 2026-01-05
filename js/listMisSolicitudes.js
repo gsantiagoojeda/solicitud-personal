@@ -54,6 +54,7 @@ export default async function listMisSolicitudes(data = null, e = null) {
         $clone
           .querySelector("[data-td-id]")
           .setAttribute("data-td-id", el.solicitud_id);
+        $clone.querySelector("[data-id]").textContent = el.usuario_id_format;
         $clone.querySelector("[data-vacante]").textContent =
           el.solicitud_nombre_puesto;
         const status1Element = $clone.querySelector("[data-status1]");
