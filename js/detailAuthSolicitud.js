@@ -211,6 +211,11 @@ export default async function detailAuthSolicitud(data) {
         $btnRechazar.setAttribute("data-level", "1");
       } else {
         d.getElementById("auth-contain").style.display = "none";
+        const $inputs = document.querySelectorAll("input");
+
+        $inputs.forEach((input) => {
+          input.disabled = true; // Esto agrega el atributo 'disabled'
+        });
       }
     }
 
@@ -222,6 +227,11 @@ export default async function detailAuthSolicitud(data) {
         $btnRechazar.setAttribute("data-level", "2");
       } else {
         d.getElementById("auth-contain").style.display = "none";
+        const $inputs = document.querySelectorAll("input");
+
+        $inputs.forEach((input) => {
+          input.disabled = true; // Esto agrega el atributo 'disabled'
+        });
       }
     }
 
@@ -233,6 +243,11 @@ export default async function detailAuthSolicitud(data) {
       } else {
         d.getElementById("auth-contain").style.display = "none";
       }
+      const $inputs = document.querySelectorAll("input");
+
+      $inputs.forEach((input) => {
+        input.disabled = true; // Esto agrega el atributo 'disabled'
+      });
     }
   } catch (err) {
     console.log(err);
