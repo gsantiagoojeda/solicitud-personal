@@ -57,7 +57,7 @@ export default async function detailMySolicitud(data) {
       d.getElementById("container-auth1").classList.remove("lg:hidden");
       d.getElementById("container-auth1").classList.add("lg:flex");
 
-      const $inputs = document.querySelectorAll("input");
+      const $inputs = document.querySelectorAll("input, select, textarea");
 
       $inputs.forEach((input) => {
         input.disabled = true; // Esto agrega el atributo 'disabled'
@@ -78,7 +78,7 @@ export default async function detailMySolicitud(data) {
       d.getElementById("container-auth2").classList.remove("lg:hidden");
       d.getElementById("container-auth2").classList.add("lg:flex");
 
-      const $inputs = document.querySelectorAll("input");
+     const $inputs = document.querySelectorAll("input, select, textarea");
 
       $inputs.forEach((input) => {
         input.disabled = true; // Esto agrega el atributo 'disabled'
