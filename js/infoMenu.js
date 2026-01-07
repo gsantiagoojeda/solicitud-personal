@@ -34,8 +34,8 @@ export default function infoMenu(data) {
     } else {
       $btnGoApproved.style.opacity = "0.5";
       $btnGoAuth.style.opacity = "0.5";
-      $btnGocreate.style.opacity = "0.5";
-      $btnGoHistory.style.opacity = "0.5";
+      // $btnGocreate.style.opacity = "0.5";
+      // $btnGoHistory.style.opacity = "0.5";
     }
   }
 }
