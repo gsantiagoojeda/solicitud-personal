@@ -6,124 +6,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="shortcut icon" href="./assets/logo.jpeg" type="image/x-icon">
   <link href="./css/style_out.css" rel="stylesheet">
   <title>Autorizar Solicitud de Personal</title>
 
   <style>
-    /* Estilos de impresión optimizados */
+    /* Optimizaciones específicas para impresión */
     @media print {
-      @page {
-        size: letter;
-        margin: 1cm 1.5cm;
+
+      /* 1. Resetear fondos y forzar colores de impresión */
+      body {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        background-color: white !important;
+        font-size: 10pt;
+        /* Reducir ligeramente la fuente general */
       }
 
-      /* Ocultar elementos innecesarios */
+      /* 2. Ocultar elementos innecesarios (Botones, Header web, Loader) */
       header,
       #go-back,
       #auth-contain,
       .load,
-      button,
-      .material-icons,
-      img[src*="arrow"] {
+      script {
         display: none !important;
       }
 
-      body {
-        background-color: white !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-        font-family: 'Montserrat', sans-serif;
-      }
-
+      /* 3. Ajustar márgenes y anchos */
       main {
         width: 100% !important;
-        max-width: 100% !important;
         margin: 0 !important;
         padding: 0 !important;
       }
 
-      /* Bloques de información */
-      article {
-        box-shadow: none !important;
-        border: 1px solid #e5e7eb !important;
-        margin-top: 8px !important;
-        padding: 10px !important;
-        border-radius: 6px;
-        page-break-inside: avoid;
-        /* Evita cortes feos */
-      }
-
+      article,
       section {
+        width: 100% !important;
+        margin-top: 10px !important;
+        padding: 5px !important;
         box-shadow: none !important;
-        margin-top: 0 !important;
+        /* Eliminar sombras para ahorrar tinta */
+        border: 1px solid #e2e8f0;
+        /* Borde ligero para estructura */
       }
 
-      /* Tipografía ajustable para impresión */
-      h3 {
-        font-size: 1.25rem !important;
-        color: #1d4ed8 !important;
-        /* text-blue-700 */
-      }
-
-      span,
-      label,
-      p,
-      select,
-      input,
-      textarea,
-      div {
-        font-size: 10px !important;
-        line-height: 1.2 !important;
-      }
-
-      .font-bold {
-        font-weight: 700 !important;
-      }
-
-      /* Forzar layouts horizontales en papel */
-      .lg\:flex,
-      .md\:grid,
-      .lg\:flex-row {
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-        gap: 10px !important;
-        justify-content: space-between !important;
-      }
-
-      /* Ajuste de inputs y textareas */
-      textarea {
-        height: auto !important;
-        min-height: 30px !important;
-        border: 0.5px solid #d1d5db !important;
-        overflow: hidden !important;
-      }
-
-      input[type="number"],
-      input[type="date"],
-      select {
-        border: 0.5px solid #d1d5db !important;
-        padding: 2px 4px !important;
-        background: transparent !important;
-      }
-
-      /* Espaciado de preguntas */
-      .mt-6 {
-        margin-top: 0.75rem !important;
-      }
-
-      .mb-4 {
+      /* 4. Compactar espacios */
+      .mt-4,
+      .mt-6,
+      .my-4 {
+        margin-top: 0.5rem !important;
         margin-bottom: 0.5rem !important;
       }
 
-      /* Limpieza visual de asteriscos */
-      .text-red-600 {
-        color: #6b7280 !important;
+      /* 5. Convertir textareas e inputs en texto plano o líneas simples */
+      textarea {
+        height: auto !important;
+        min-height: 20px !important;
+        border: none !important;
+        border-bottom: 1px solid #ccc !important;
+        overflow: hidden !important;
+      }
+
+      input[type="radio"] {
+        transform: scale(0.8);
+      }
+
+      /* 6. Forzar rejillas a una sola fila para ahorrar espacio vertical */
+      .lg\:flex,
+      .md\:grid {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        gap: 10px !important;
+      }
+
+      /* 7. Control de saltos de página */
+      article {
+        page-break-inside: avoid;
+      }
+
+      h3 {
+        font-size: 18pt !important;
+        margin-bottom: 5px !important;
       }
     }
   </style>
@@ -133,230 +98,89 @@
   <header data-include="./header.html"></header>
 
   <main class="w-full lg:w-10/12 mx-auto bg-white">
-    <section class="w-full flex items-center px-6 py-4 lg:py-5 lg:mt-8 bg-white shadow-md rounded-md border-b">
-      <button class="hidden w-8 h-auto mr-2" id="go-back">
-        <img class="w-full h-auto" src="./assets/arrow-left-circle-fill.svg" alt="goBack">
-      </button>
-      <h3 class="inline lg:block text-2xl lg:text-3xl font-semibold lg:font-bold text-blue-700 grow text-center">
+    <section class="w-full flex items-center px-6 py-2 mt-4 bg-white shadow-md rounded-md border">
+      <h3 class="text-2xl font-bold text-blue-700 grow text-center">
         Autorizar solicitud de personal
       </h3>
-      <div class="flex flex-col items-end font-bold text-xs lg:text-sm">
-        <span class="block">Código: F01-PR-01-RH</span>
-        <span class="block">Rev: 01</span>
+      <div class="flex flex-col items-end font-bold text-xs">
+        <span>Código: F01-PR-01-RH</span>
+        <span>Rev: 01</span>
       </div>
     </section>
 
     <form id="form-auth-solicitud">
       <input type="hidden" id="solicitud-id" name="solicitud-id">
 
-      <article class="w-11/12 mt-4 bg-white p-4 mx-auto rounded-md">
-        <section class="lg:flex justify-around items-baseline">
-          <div class="flex gap-2">
-            <span class="font-medium text-gray-600">Puesto solicitado:</span>
-            <span class="font-bold text-blue-800" id="puesto">Gerente de Operaciones</span>
+      <article class="w-11/12 mt-4 bg-white p-4 mx-auto rounded-md border">
+        <section class="flex flex-wrap justify-between gap-4">
+          <div>
+            <span class="font-medium text-gray-600">Puesto:</span>
+            <span class="font-bold text-blue-800" id="puesto">Gerente de Ventas</span>
           </div>
-          <div class="flex gap-2">
+          <div>
             <span class="font-medium text-gray-600">Solicitante:</span>
             <span class="font-bold text-blue-800" id="solicitante">Lucio Zempoalteca</span>
           </div>
-          <div class="flex gap-2">
-            <span class="font-medium text-gray-600">Fecha creación:</span>
-            <span class="font-bold text-blue-800">19/09/2025 13:40</span>
+          <div>
+            <span class="font-medium text-gray-600">Fecha:</span>
+            <span class="font-bold text-blue-800">19/09/2025</span>
           </div>
         </section>
       </article>
 
-      <article class="hidden w-11/12 mt-4 bg-white p-4 mx-auto shadow-md rounded-md" id="container-auths">
-        <section class="flex flex-col gap-2" id="container-auth1">
-          <div class="flex gap-2">
-            <span class="font-medium text-gray-600">Autorizador N1:</span>
-            <span class="font-bold text-blue-800" id="auth1-name">David Inclan</span>
-            <span class="ml-4 font-medium text-gray-600">Fecha:</span>
-            <span class="font-bold text-blue-800" id="auth1-date">19/09/2025 13:40:00</span>
-          </div>
-        </section>
-      </article>
+      <article class="w-11/12 mt-2 bg-white p-4 mx-auto rounded-md border">
+        <p class="font-bold text-gray-700 text-sm mb-2">Condiciones físicas y ambientales:</p>
 
-      <article class="w-11/12 mt-4 bg-white p-4 mx-auto rounded-md">
-        <span class="block font-bold text-gray-600 mb-2">Consideraciones de desempeño:</span>
-        <span class="block font-semibold text-gray-600 mb-4">Condiciones físicas y ambientales laborales:</span>
-
-        <div class="mb-6">
-          <span class="block font-normal text-gray-600 mb-2">1. ¿Existe un espacio de trabajo definido?<span
-              class="text-red-600"> *</span></span>
-          <div class="flex items-center gap-6 flex-wrap lg:flex-nowrap">
-            <div class="flex gap-4">
-              <label class="flex items-center space-x-2"><input type="radio" name="solicitud-rp1" value="si" required>
-                <span>SI</span></label>
-              <label class="flex items-center space-x-2"><input type="radio" name="solicitud-rp1" value="no">
-                <span>NO</span></label>
-              <label class="flex items-center space-x-2"><input type="radio" name="solicitud-rp1" value="n/a">
-                <span>N/A</span></label>
-            </div>
-            <div class="flex items-center gap-2 grow">
-              <label class="whitespace-nowrap">Mencione cuáles:</label>
-              <textarea name="solicitud-txt-rp1" rows="1" class="border rounded-md p-1 w-full"></textarea>
-            </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 border-b pb-2 mb-2">
+          <div class="text-xs text-gray-600">¿Existe un espacio de trabajo definido? *</div>
+          <div class="flex items-center gap-4">
+            <label class="text-xs"><input type="radio" checked> SI</label>
+            <label class="text-xs"><input type="radio"> NO</label>
+            <textarea placeholder="Observaciones..." class="text-xs w-full"></textarea>
           </div>
         </div>
 
-        <div class="mb-6">
-          <span class="block font-normal text-gray-600 mb-2">2. ¿Existe el mobiliario de oficina requerido?<span
-              class="text-red-600"> *</span></span>
-          <div class="flex items-center gap-6 flex-wrap lg:flex-nowrap">
-            <div class="flex gap-4">
-              <label class="flex items-center space-x-2"><input type="radio" name="solicitud-rp2" value="si" required>
-                <span>SI</span></label>
-              <label class="flex items-center space-x-2"><input type="radio" name="solicitud-rp2" value="no">
-                <span>NO</span></label>
-            </div>
-            <div class="flex items-center gap-2 grow">
-              <label class="whitespace-nowrap">Mencione cuáles:</label>
-              <textarea name="solicitud-txt-rp2" rows="1" class="border rounded-md p-1 w-full"></textarea>
-            </div>
-          </div>
-        </div>
-
-        <div class="mb-4">
-          <span class="block font-normal text-gray-600 mb-2">3. ¿Existe el equipo de cómputo necesario?<span
-              class="text-red-600"> *</span></span>
-          <div class="flex items-center gap-6 flex-wrap lg:flex-nowrap">
-            <div class="flex gap-4">
-              <label class="flex items-center space-x-2"><input type="radio" name="solicitud-rp3" value="si" required>
-                <span>SI</span></label>
-              <label class="flex items-center space-x-2"><input type="radio" name="solicitud-rp3" value="no">
-                <span>NO</span></label>
-            </div>
-            <div class="flex items-center gap-2 grow">
-              <label class="whitespace-nowrap">Mencione cuáles:</label>
-              <textarea name="solicitud-txt-rp3" rows="1" class="border rounded-md p-1 w-full"></textarea>
-            </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 border-b pb-2">
+          <div class="text-xs text-gray-600">¿Existe el mobiliario de oficina requerido? *</div>
+          <div class="flex items-center gap-4">
+            <label class="text-xs"><input type="radio" checked> SI</label>
+            <label class="text-xs"><input type="radio"> NO</label>
+            <textarea placeholder="Observaciones..." class="text-xs w-full"></textarea>
           </div>
         </div>
       </article>
 
-      <article class="w-11/12 mt-4 bg-white p-4 mx-auto rounded-md">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <article class="w-11/12 mt-2 bg-white p-4 mx-auto rounded-md border">
+        <div class="grid grid-cols-3 gap-4 mb-4">
           <div>
-            <span class="block font-medium text-blue-600 mb-2">Adecuaciones de espacio/equipo:</span>
-            <textarea id="solicitud-txt-compras" name="solicitud-txt-compras" rows="2"
-              class="border rounded-md p-2 w-full"></textarea>
-          </div>
-          <div>
-            <span class="block font-medium text-blue-600 mb-2">Responsable de gestión:</span>
-            <textarea id="solicitud-txt-respgestion" name="solicitud-txt-respgestion" rows="2"
-              class="border rounded-md p-2 w-full"></textarea>
-          </div>
-        </div>
-        <div class="flex gap-8 mt-4">
-          <div>
-            <span class="block font-medium text-blue-600 mb-2">Fecha tentativa condiciones:</span>
-            <input type="date" name="solicitud-fecha-tentativa" class="border rounded-md p-2">
+            <span class="block text-xs font-bold text-gray-600">Sexo</span>
+            <span class="text-sm">Indistinto</span>
           </div>
           <div>
-            <span class="block font-medium text-blue-600 mb-2">Número de vacantes:</span>
-            <input type="number" name="solicitud-vacantes" value="1" class="border rounded-md p-2 w-24">
-          </div>
-        </div>
-      </article>
-
-      <article class="w-11/12 mt-4 bg-white p-4 mx-auto rounded-md">
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <span class="block font-bold text-gray-600">Sexo:</span>
-            <select name="solicitud-sexo" class="w-full border p-2 rounded-md">
-              <option value="indistinto">Indistinto</option>
-              <option value="hombre">Hombre</option>
-              <option value="mujer">Mujer</option>
-            </select>
+            <span class="block text-xs font-bold text-gray-600">Escolaridad</span>
+            <span class="text-sm">Superior</span>
           </div>
           <div>
-            <span class="block font-bold text-gray-600">Estado Civil:</span>
-            <select name="solicitud-estado-civil" class="w-full border p-2 rounded-md">
-              <option value="indistinto">Indistinto</option>
-              <option value="soltero">Soltero</option>
-              <option value="casado">Casado</option>
-            </select>
-          </div>
-          <div>
-            <span class="block font-bold text-gray-600">Escolaridad:</span>
-            <select name="solicitud-escolaridad" class="w-full border p-2 rounded-md">
-              <option value="superior">Superior</option>
-              <option value="media superior">Media superior</option>
-            </select>
-          </div>
-        </section>
-
-        <section class="flex flex-row justify-around mt-6 border-t pt-4">
-          <div class="text-center">
-            <span class="font-bold text-gray-600">Rango de edad:</span>
-            <div class="mt-2">
-              <input type="number" placeholder="Min" class="border p-1 w-16 text-center"> a
-              <input type="number" placeholder="Max" class="border p-1 w-16 text-center"> años
-            </div>
-          </div>
-          <div class="text-center">
-            <span class="font-bold text-gray-600">Experiencia:</span>
-            <div class="mt-2">
-              <input type="number" class="border p-1 w-16 text-center"> año(s)
-            </div>
-          </div>
-        </section>
-      </article>
-
-      <article class="w-11/12 mt-4 bg-white p-4 mx-auto rounded-md">
-        <span class="block font-bold text-blue-600 mb-2">Requerimientos:</span>
-        <div class="space-y-4">
-          <div>
-            <span class="block text-blue-600 text-xs mb-1">Conocimientos:</span>
-            <textarea name="solicitud-txt-conocimientos" rows="2" class="border rounded-md p-2 w-full"></textarea>
-          </div>
-          <div>
-            <span class="block text-blue-600 text-xs mb-1">Competencias o habilidades:</span>
-            <textarea name="solicitud-txt-habilidades" rows="2" class="border rounded-md p-2 w-full"></textarea>
+            <span class="block text-xs font-bold text-gray-600">Experiencia</span>
+            <span class="text-sm">2 años</span>
           </div>
         </div>
 
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-          <div>
-            <span class="block font-bold text-blue-600">Sueldo sugerido:</span>
-            <select class="w-full border p-2 rounded-md mt-2">
-              <option>Selecciona...</option>
-            </select>
-          </div>
-          <div>
-            <span class="block font-bold text-blue-600">Horario:</span>
-            <select class="w-full border p-2 rounded-md mt-2">
-              <option>Selecciona...</option>
-            </select>
-          </div>
-          <div>
-            <span class="block font-bold text-blue-600">¿Rola turnos?</span>
-            <select class="w-full border p-2 rounded-md mt-2">
-              <option>No</option>
-              <option>Si</option>
-            </select>
-          </div>
-        </section>
-      </article>
-
-      <article class="w-11/12 mt-4 bg-white p-4 mx-auto" id="auth-contain">
-        <p class="font-bold text-gray-600 text-lg text-center mb-4">Autorización nivel <span id="auth-level"></span></p>
-        <div class="flex flex-wrap justify-center gap-4">
-          <button id="btn-autorizar-solicitud"
-            class="bg-green-600 hover:bg-green-700 text-white font-semibold rounded-md px-6 py-2 text-lg">Autorizar</button>
-          <button id="btn-rechazar-solicitud"
-            class="bg-red-600 hover:bg-red-700 text-white font-semibold rounded-md px-6 py-2 text-lg">Rechazar</button>
+        <div class="mt-2">
+          <span class="block text-xs font-bold text-blue-600">Conocimientos y Habilidades:</span>
+          <p class="text-xs border-b">Detalle de conocimientos técnicos y habilidades blandas requeridas para el
+            puesto...</p>
         </div>
       </article>
+
+      <article class="w-11/12 mt-4 bg-white p-4 mx-auto text-center" id="auth-contain">
+        <button type="button" class="bg-green-600 text-white px-4 py-2 rounded">Autorizar</button>
+      </article>
+
     </form>
   </main>
 
-  <section class="load hidden fixed inset-0 bg-white/80 flex items-center justify-center">
-    <img src="./assets/puff.svg" alt="cargando">
-  </section>
-
-  <script type="module" src="./js/index.js?v=1"></script>
+  <section class="load hidden"><img src="./assets/puff.svg" alt="cargando"></section>
 </body>
 
 </html>
