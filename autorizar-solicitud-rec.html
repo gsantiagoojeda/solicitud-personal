@@ -17,10 +17,11 @@
     @media print {
       @page {
         size: letter;
-        margin: 1cm;
+        margin: 0.5cm;
+        /* Margen mínimo para ganar espacio */
       }
 
-      /* Ocultar elementos de navegación y botones */
+      /* Ocultar elementos innecesarios */
       header,
       #go-back,
       #auth-contain,
@@ -28,18 +29,17 @@
       #btn-autorizar-solicitud,
       #btn-rechazar-solicitud,
       #btn-reclutar-solicitud,
-      .material-icons {
+      .material-icons,
+      img[alt="goBack"] {
         display: none !important;
       }
 
-      /* Ajustar cuerpo y fondo */
       body {
         background-color: white !important;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
 
-      /* Compactar el diseño */
       main {
         width: 100% !important;
         max-width: 100% !important;
@@ -47,20 +47,25 @@
         padding: 0 !important;
       }
 
-      section,
+      /* Compactación de artículos */
       article {
         box-shadow: none !important;
-        border: 1px solid #d1d5db !important;
-        margin-top: 0.5rem !important;
-        padding: 0.5rem !important;
+        border: 1px solid #e5e7eb !important;
+        margin-top: 4px !important;
+        /* Espacio mínimo entre bloques */
+        padding: 6px !important;
         page-break-inside: avoid;
-        /* Evita que un cuadro se parta entre hojas */
       }
 
-      /* Ajuste de fuentes para ahorrar espacio */
+      section {
+        padding: 4px !important;
+        margin: 0 !important;
+      }
+
+      /* Ajuste de textos para que quepa todo */
       h3 {
-        font-size: 1.25rem !important;
-        color: #1e40af !important;
+        font-size: 16px !important;
+        margin-bottom: 0 !important;
       }
 
       span,
@@ -70,36 +75,43 @@
       input,
       textarea,
       div {
-        font-size: 10px !important;
-        line-height: 1.2 !important;
+        font-size: 9px !important;
+        /* Fuente pequeña pero legible */
+        line-height: 1.1 !important;
       }
 
       .font-bold {
         font-weight: 700 !important;
       }
 
-      /* Ajustar textareas para que no ocupen espacio innecesario */
+      /* Control de Textareas en impresión */
       textarea {
         height: auto !important;
-        min-height: 25px !important;
-        border: 0.5px solid #9ca3af !important;
+        min-height: 18px !important;
+        border: 0.5px solid #ccc !important;
+        overflow: hidden !important;
+        resize: none !important;
       }
 
-      /* Forzar que las columnas se mantengan en la impresión */
-      .lg\:flex,
-      .md\:grid,
-      .flex {
-        display: flex !important;
+      /* Forzar disposición horizontal para ahorrar espacio vertical */
+      .flex-col-print-row {
         flex-direction: row !important;
-        flex-wrap: wrap;
-        gap: 5px;
+        gap: 10px !important;
       }
 
-      .flex-col {
-        flex-direction: column !important;
+      .grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        /* Forzar columnas en impresión */
+        gap: 4px !important;
       }
 
-      /* Ocultar asteriscos rojos en la impresión si se desea un look más limpio */
+      .mb-4,
+      .mb-2 {
+        margin-bottom: 2px !important;
+      }
+
+      /* Ocultar asteriscos */
       .text-red-600 {
         display: none;
       }
@@ -111,10 +123,7 @@
   <header data-include="./header.html"></header>
 
   <main class="w-full lg:w-10/12 mx-auto bg-white">
-    <section class="w-full flex items-center px-6 py-4 lg:mt-8 bg-white shadow-md rounded-md">
-      <button class="hidden w-8 h-auto mr-2" id="go-back">
-        <img class="w-full h-auto" src="./assets/arrow-left-circle-fill.svg" alt="goBack">
-      </button>
+    <section class="w-full flex items-center px-6 py-4 lg:mt-8 bg-white shadow-md rounded-md border">
       <h3 class="text-2xl lg:text-3xl font-bold text-blue-700 grow text-center">
         Autorizar solicitud de personal
       </h3>
@@ -128,81 +137,49 @@
       <input type="hidden" id="solicitud-id" name="solicitud-id">
 
       <article class="w-11/12 mt-4 bg-white p-4 mx-auto rounded-md border border-gray-100">
-        <section class="flex flex-col lg:flex-row justify-around gap-2">
-          <div class="flex gap-2">
+        <section class="flex flex-row justify-around gap-2">
+          <div class="flex gap-1">
             <span class="font-medium text-gray-600">Puesto:</span>
-            <span class="font-bold text-blue-800" id="puesto"></span>
+            <span class="font-bold text-blue-800" id="puesto">Gerente TI</span>
           </div>
-          <div class="flex gap-2">
+          <div class="flex gap-1">
             <span class="font-medium text-gray-600">Solicitante:</span>
             <span class="font-bold text-blue-800" id="solicitante">Lucio Zempoalteca</span>
           </div>
-          <div class="flex gap-2">
+          <div class="flex gap-1">
             <span class="font-medium text-gray-600">Fecha:</span>
             <span class="font-bold text-blue-800">19/09/2025</span>
           </div>
         </section>
       </article>
 
-      <article class="hidden w-11/12 mt-4 bg-white p-4 mx-auto shadow-sm border border-gray-200 rounded-md"
-        id="container-auths">
-        <section class="flex justify-start gap-8" id="container-auth1">
-          <div class="flex gap-2">
-            <span class="font-medium text-gray-600">Autorizador N1:</span>
-            <span class="font-bold text-blue-800" id="auth1-name">David Inclan</span>
-          </div>
-          <div class="flex gap-2">
-            <span class="font-medium text-gray-600">Fecha:</span>
-            <span class="font-bold text-blue-800" id="auth1-date">19/09/2025</span>
-          </div>
-        </section>
-      </article>
-
       <article class="w-11/12 mt-4 bg-white p-4 mx-auto rounded-md border border-gray-100">
-        <span class="block font-bold text-gray-700 mb-4">Condiciones físicas y ambientales:</span>
+        <span class="block font-bold text-gray-700 mb-1 text-sm">Condiciones físicas y ambientales:</span>
 
-        <div class="mb-4">
-          <p class="text-gray-600 mb-2 text-sm font-medium">1. ¿Existe un espacio de trabajo definido?<span
-              class="text-red-600"> *</span></p>
-          <div class="flex items-center gap-6">
-            <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="solicitud-rp1"
-                value="si" required> <span>SI</span></label>
-            <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="solicitud-rp1"
-                value="no"> <span>NO</span></label>
-            <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="solicitud-rp1"
-                value="n/a"> <span>N/A</span></label>
-            <textarea id="solicitud-txt-rp1" name="solicitud-txt-rp1" placeholder="Mencione cuáles..."
-              class="border rounded-md p-1 grow text-xs" rows="1"></textarea>
+        <div class="space-y-1">
+          <div class="flex items-center justify-between gap-2 border-b pb-1">
+            <p class="text-gray-600 text-xs grow">1. ¿Espacio de trabajo definido?</p>
+            <div class="flex items-center gap-2">
+              <label><input type="radio" name="r1"> SI</label>
+              <label><input type="radio" name="r1"> NO</label>
+              <textarea class="border rounded-md p-1 text-[10px] w-40" rows="1" placeholder="Obs..."></textarea>
+            </div>
           </div>
-        </div>
-
-        <div class="mb-4">
-          <p class="text-gray-600 mb-2 text-sm font-medium">2. ¿Existe el mobiliario de oficina requerido?<span
-              class="text-red-600"> *</span></p>
-          <div class="flex items-center gap-6">
-            <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="solicitud-rp2"
-                value="si" required> <span>SI</span></label>
-            <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="solicitud-rp2"
-                value="no"> <span>NO</span></label>
-            <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="solicitud-rp2"
-                value="n/a"> <span>N/A</span></label>
-            <textarea id="solicitud-txt-rp2" name="solicitud-txt-rp2" placeholder="Mencione cuáles..."
-              class="border rounded-md p-1 grow text-xs" rows="1"></textarea>
+          <div class="flex items-center justify-between gap-2 border-b pb-1">
+            <p class="text-gray-600 text-xs grow">2. ¿Mobiliario de oficina requerido?</p>
+            <div class="flex items-center gap-2">
+              <label><input type="radio" name="r2"> SI</label>
+              <label><input type="radio" name="r2"> NO</label>
+              <textarea class="border rounded-md p-1 text-[10px] w-40" rows="1" placeholder="Obs..."></textarea>
+            </div>
           </div>
-        </div>
-
-        <div class="mb-4">
-          <p class="text-gray-600 mb-2 text-sm font-medium">3. ¿Existe el equipo de cómputo necesario?<span
-              class="text-red-600"> *</span></p>
-          <div class="flex items-center gap-6">
-            <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="solicitud-rp3"
-                value="si" required> <span>SI</span></label>
-            <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="solicitud-rp3"
-                value="no"> <span>NO</span></label>
-            <label class="flex items-center space-x-1 cursor-pointer"><input type="radio" name="solicitud-rp3"
-                value="n/a"> <span>N/A</span></label>
-            <textarea id="solicitud-txt-rp3" name="solicitud-txt-rp3" placeholder="Mencione cuáles..."
-              class="border rounded-md p-1 grow text-xs" rows="1"></textarea>
+          <div class="flex items-center justify-between gap-2">
+            <p class="text-gray-600 text-xs grow">3. ¿Equipo de cómputo necesario?</p>
+            <div class="flex items-center gap-2">
+              <label><input type="radio" name="r3"> SI</label>
+              <label><input type="radio" name="r3"> NO</label>
+              <textarea class="border rounded-md p-1 text-[10px] w-40" rows="1" placeholder="Obs..."></textarea>
+            </div>
           </div>
         </div>
       </article>
@@ -210,68 +187,51 @@
       <article class="w-11/12 mt-4 bg-white p-4 mx-auto rounded-md border border-gray-100">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block font-medium text-blue-700">Adecuaciones requeridas:</label>
-            <textarea id="solicitud-txt-compras" name="solicitud-txt-compras"
-              class="border rounded-md p-2 w-full text-sm" rows="1"></textarea>
+            <label class="block font-medium text-blue-700">Adecuaciones:</label>
+            <textarea class="border rounded-md p-1 w-full text-xs" rows="1"></textarea>
           </div>
           <div>
-            <label class="block font-medium text-blue-700">Responsable de gestión:</label>
-            <textarea id="solicitud-txt-respgestion" name="solicitud-txt-respgestion"
-              class="border rounded-md p-2 w-full text-sm" rows="1"></textarea>
+            <label class="block font-medium text-blue-700">Responsable:</label>
+            <textarea class="border rounded-md p-1 w-full text-xs" rows="1"></textarea>
           </div>
         </div>
       </article>
 
       <article class="w-11/12 mt-4 bg-white p-4 mx-auto rounded-md border border-gray-100">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
+        <div class="flex flex-row justify-between gap-4">
+          <div class="flex gap-2">
             <span class="font-bold text-gray-600">Sexo:</span>
-            <select id="solicitud-sexo" name="solicitud-sexo" class="w-full border p-1 rounded">
-              <option value="indistinto">Indistinto</option>
-            </select>
+            <span class="text-xs">Indistinto</span>
           </div>
-          <div>
+          <div class="flex gap-2">
             <span class="font-bold text-gray-600">Edad:</span>
-            <div class="flex items-center gap-1">
-              <input type="number" class="border w-12 text-center" placeholder="Min"> a <input type="number"
-                class="border w-12 text-center" placeholder="Max">
-            </div>
+            <span class="text-xs">18 a 45 años</span>
           </div>
-          <div>
+          <div class="flex gap-2">
             <span class="font-bold text-gray-600">Vacantes:</span>
-            <input type="number" id="solicitud-vacantes" class="border w-16 text-center" value="1">
+            <span class="text-xs font-bold">1</span>
           </div>
         </div>
       </article>
 
       <article class="w-11/12 mt-4 bg-white p-4 mx-auto rounded-md border border-gray-100">
-        <span class="block font-bold text-blue-600 mb-2">Requerimientos:</span>
-        <div class="space-y-2">
-          <p><span class="font-semibold text-xs">Conocimientos:</span> <textarea id="solicitud-txt-conocimientos"
-              class="w-full border p-1 text-xs" rows="1"></textarea></p>
-          <p><span class="font-semibold text-xs">Habilidades:</span> <textarea id="solicitud-txt-habilidades"
-              class="w-full border p-1 text-xs" rows="1"></textarea></p>
+        <span class="block font-bold text-blue-600 mb-1 text-xs">Requerimientos:</span>
+        <div class="grid grid-cols-2 gap-2">
+          <p><span class="font-semibold text-[10px]">Conocimientos:</span> <textarea
+              class="w-full border p-1 text-[10px]" rows="1"></textarea></p>
+          <p><span class="font-semibold text-[10px]">Habilidades:</span> <textarea class="w-full border p-1 text-[10px]"
+              rows="1"></textarea></p>
         </div>
       </article>
 
       <article class="w-11/12 mt-4 bg-white p-4 mx-auto text-center" id="auth-contain">
-        <p class="font-bold text-gray-600 mb-4">Autorización nivel <span id="auth-level"></span></p>
         <div class="flex justify-center gap-4">
-          <button id="btn-autorizar-solicitud" type="button"
-            class="bg-green-600 text-white px-6 py-2 rounded-md font-bold hover:bg-green-700">Autorizar</button>
-          <button id="btn-rechazar-solicitud" type="button"
-            class="bg-red-600 text-white px-6 py-2 rounded-md font-bold hover:bg-red-700">Rechazar</button>
+          <button type="button" class="bg-green-600 text-white px-6 py-2 rounded-md font-bold">Autorizar</button>
+          <button type="button" class="bg-red-600 text-white px-6 py-2 rounded-md font-bold">Rechazar</button>
         </div>
       </article>
-
     </form>
   </main>
-
-  <section class="load hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <img src="./assets/puff.svg" alt="cargando">
-  </section>
-
-  <script type="module" src="./js/index.js?v=1"></script>
 </body>
 
 </html>
