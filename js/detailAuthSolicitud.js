@@ -238,9 +238,9 @@ export default async function detailAuthSolicitud(data) {
     if (puestoAuth.includes("Reclutador")) {
       if (levelAuth3 === "") {
         d.getElementById("auth-level").textContent = " Reclutar";
-        $btnAuth.style.classList.add("hidden");
-        $btnRechazar.style.classList.add("hidden");
-        $btnReclutar.style.classList.remove("hidden");
+        $btnAuth.classList.add("hidden");
+        $btnRechazar.classList.add("hidden");
+        $btnReclutar.classList.remove("hidden");
         $btnReclutar.setAttribute("data-level", "3");
       } else {
         d.getElementById("auth-contain").style.display = "none";
