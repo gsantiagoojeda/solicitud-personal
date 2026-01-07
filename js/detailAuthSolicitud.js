@@ -197,7 +197,7 @@ export default async function detailAuthSolicitud(data) {
 
     let levelAuth1 = solicitud["solicitud_autorizacion1"];
     let levelAuth2 = solicitud["solicitud_autorizacion2"];
-    let levelAuth3 = solicitud["solicitud_autorizacion3"];
+    let levelAuth3 = solicitud["solicitud_autorizador3"];
 
     const $btnAuth = d.getElementById("btn-autorizar-solicitud");
     const $btnRechazar = d.getElementById("btn-rechazar-solicitud");
