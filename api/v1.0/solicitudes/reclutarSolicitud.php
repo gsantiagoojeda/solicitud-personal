@@ -19,7 +19,7 @@ $sql;
 if ($level == 3) {
 $sql = "
 UPDATE sp_solicitud SET
-    solicitud_autorizador3 = ?
+    solicitud_autorizador3 = ?,
     solicitud_date_autorizacion3 = ?
 WHERE solicitud_id = ?
 ";
