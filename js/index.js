@@ -23,6 +23,7 @@ import countMisSolicitudes from "./countMisSolicitudes.js";
 import countPendAutorizar from "./countPendAutorizar.js";
 import countAutorizadas from "./countAutorizadas.js";
 import goVerSolicitudAuth from "./goVerSolicitudAuth.js";
+import reclutarSolicitud from "./reclutarSolicitud.js";
 
 const d = document;
 let data;
@@ -39,6 +40,7 @@ d.addEventListener("click", (e) => {
   listSolicitudes(data, e);
   listSolicitudesAuth(data, e);
   editarSolicitud(e);
+  reclutarSolicitud(e);
 });
 
 d.addEventListener("submit", (e) => {
