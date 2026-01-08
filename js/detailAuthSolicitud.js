@@ -45,6 +45,9 @@ export default async function detailAuthSolicitud(data) {
       `${solicitud["solicitud_solicitante_id"]}`
     );
 
+    d.getElementById("creacion").textContent =
+      solicitud["solicitud_date_create"];
+
     d.getElementById("auth1-name").textContent =
       solicitud["solicitud_autorizador1"];
     d.getElementById("auth1-name").setAttribute(
