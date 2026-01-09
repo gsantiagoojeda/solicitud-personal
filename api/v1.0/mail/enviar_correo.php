@@ -26,9 +26,14 @@ function enviarCorreo($asunto, $destinatarios, $contenidoHTML) {
     //if (file_exists($logo_path)) $mail->addEmbeddedImage($logo_path, 'logo_empresa', 'alze.png');
 
     // Plantilla HTML
- $html = "
-<div style='padding: 10px;'>
-    $contenidoHTML
+$html = "
+
+    <div style='font-family: Arial, sans-serif; padding: 15px; border:1px solid #eee;'>
+        <div style='text-align:center; margin-bottom:20px;'>
+        </div>
+          $contenidoHTML
+          <hr>
+        <p style='font-size:12px; color:#777;'>Correo automático de GPOALZE Solicitud Personal</p>
 </div>";
 
     $mail->Subject = $asunto;
