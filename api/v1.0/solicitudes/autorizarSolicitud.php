@@ -164,14 +164,23 @@ if ($stmt->execute()) {
         "postData" => $_POST
     ]);
     if($level ==2){
-          $contenidoHTML = "
-    <div style='display: block; margin-bottom: 20px;'>
-        <img src='https://gpoalze.cloud/solicitud-personal/assets/HRUPO_ALZE.png' style='vertical-align: middle; margin-right: 10px;' width='50'>
-        <span style='font-size: 24px; font-weight: bold; color: #006432; vertical-align: middle;'>VACANTE AUTORIZADA</span>
+       $contenidoHTML = "
+    <table role='presentation' border='0' cellpadding='0' cellspacing='0' width='100%'>
+        <tr>
+            <td style='vertical-align: middle; width: 60px; padding-bottom: 20px;'>
+                <img src='https://gpoalze.cloud/solicitud-personal/assets/GRUPO_ALZE.png' width='50' style='display: block; border:0;'>
+            </td>
+            <td style='vertical-align: middle; padding-bottom: 20px;'>
+                <span style='font-size: 24px; font-weight: bold; color: #006432; font-family: Arial, sans-serif;'>VACANTE AUTORIZADA</span>
+            </td>
+        </tr>
+    </table>
+
+    <div style='font-family: Arial, sans-serif; color: #333; line-height: 1.5;'>
+        <p>Una nueva vacante para <b>$vacante</b> fue aprobada para su reclutamiento.</p>
+        <p>Solicitada por: <b>$solicitante</b></p>
+        <p>Puedes dar seguimiento a las solicitudes en el sistema.</p>
     </div>
-    <p>Una nueva vacante para <b>$vacante</b> fue aprobada para su reclutamiento.</p>
-    <p>Solicitada por: <b>$solicitante</b></p>
-    <p>Puedes dar seguimiento a las solicitudes en el sistema.</p>
 ";
     // $destinatario="reclutamiento@gpoalze.com";
    $destinatarios = ["gonzalo.santiago@etiroch.onmicrosoft.com", "lucio.zempoalteca@gpoalze.com"];
