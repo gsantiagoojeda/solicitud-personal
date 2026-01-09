@@ -165,11 +165,14 @@ if ($stmt->execute()) {
     ]);
     if($level ==2){
           $contenidoHTML = "
-        <h2>VACANTE AUTORIZADA</h2>
-        <p>Una nueva vacante para <b>$vacante</b> fue aprobada para su reclutamiento. .</p>
-        <p>Solicitada por: <b>$solicitante</b></p>
-        <p>Puedes dar seguimiento a las solicitudes en el sistema.</p>
-    ";
+    <div style='display: block; margin-bottom: 20px;'>
+        <img src='https://gpoalze.cloud/solicitud-personal/assets/HRUPO_ALZE.png' style='vertical-align: middle; margin-right: 10px;' width='50'>
+        <span style='font-size: 24px; font-weight: bold; color: #006432; vertical-align: middle;'>VACANTE AUTORIZADA</span>
+    </div>
+    <p>Una nueva vacante para <b>$vacante</b> fue aprobada para su reclutamiento.</p>
+    <p>Solicitada por: <b>$solicitante</b></p>
+    <p>Puedes dar seguimiento a las solicitudes en el sistema.</p>
+";
     // $destinatario="reclutamiento@gpoalze.com";
    $destinatarios = ["gonzalo.santiago@etiroch.onmicrosoft.com", "lucio.zempoalteca@gpoalze.com"];
 
