@@ -36,7 +36,8 @@ export default async function reclutarSolicitud(e) {
     if (!json.err) {
       document.querySelector(".load").style.display = "none";
       alert(`Solicitud${status}`);
-      location.href = `${DOMAIN}autorizar-solicitudes.html`;
+      location.replace(`${DOMAIN}autorizar-solicitudes.html`);
+      // location.href = `${DOMAIN}autorizar-solicitudes.html`;
     } else {
       throw { status: "200", statusText: json.statusText };
     }
