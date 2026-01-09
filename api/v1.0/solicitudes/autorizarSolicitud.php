@@ -164,24 +164,59 @@ if ($stmt->execute()) {
         "postData" => $_POST
     ]);
     if($level ==2){
-       $contenidoHTML = "
-    <table role='presentation' border='0' cellpadding='0' cellspacing='0' width='100%'>
-        <tr>
-            <td style='vertical-align: middle; width: 60px; padding-bottom: 20px;'>
-                <img src='https://gpoalze.cloud/solicitud-personal/assets/GRUPO_ALZE.png' width='50' style='display: block; border:0;'>
-            </td>
-            <td style='vertical-align: middle; padding-bottom: 20px;'>
-                <span style='font-size: 24px; font-weight: bold; color: #006432; font-family: Arial, sans-serif;'>VACANTE AUTORIZADA</span>
-            </td>
-        </tr>
-    </table>
+      $contenidoHTML = "
+<table role='presentation' border='0' cellpadding='0' cellspacing='0' width='100%' style='border: 1px solid #005a87; font-family: Arial, sans-serif;'>
+    <tr>
+        <td align='center' bgcolor='#005a87' style='padding: 10px;'>
+            <h1 style='color: #ffffff; font-size: 20px; margin: 0; text-transform: uppercase;'>Solicitud Aprobada</h1>
+        </td>
+    </tr>
+    
+    <tr>
+        <td style='padding: 20px 0;'>
+            <table role='presentation' border='0' cellpadding='0' cellspacing='0' align='center'>
+                <tr>
+                    <td style='padding-right: 10px;'>
+                        <img src='https://gpoalze.cloud/solicitud-personal/assets/GRUPO_ALZE.png' width='50' style='display: block; border: 0;'>
+                    </td>
+                    <td>
+                        <h2 style='margin: 0; font-size: 24px;'>
+                            <span style='background-color: #fff2a8; color: #000;'>VACANTE</span> <span style='color: #000;'>AUTORIZADA</span>
+                        </h2>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
 
-    <div style='font-family: Arial, sans-serif; color: #333; line-height: 1.5;'>
-        <p>Una nueva vacante para <b>$vacante</b> fue aprobada para su reclutamiento.</p>
-        <p>Solicitada por: <b>$solicitante</b></p>
-        <p>Puedes dar seguimiento a las solicitudes en el sistema.</p>
-    </div>
+    <tr>
+        <td align='center' style='padding: 0 20px 20px 20px; color: #333333; font-size: 15px;'>
+            <p style='margin: 10px 0;'>Una nueva vacante para <b>$vacante</b> fue aprobada para su reclutamiento.</p>
+            <p style='margin: 10px 0;'>Solicitada por: <b>$solicitante</b></p>
+            <p style='margin: 10px 0;'>Puedes dar seguimiento a las solicitudes en el sistema.</p>
+            
+            <br>
+            <table role='presentation' border='0' cellpadding='0' cellspacing='0' align='center'>
+                <tr>
+                    <td bgcolor='#005a87' style='padding: 8px 15px;'>
+                        <a href='#' style='color: #ffffff; text-decoration: none; font-weight: bold; font-size: 14px;'>VER SOLICITUD</a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <td bgcolor='#f9f9f9' style='padding: 15px; border-top: 1px solid #005a87;'>
+            <p style='margin: 0; font-size: 12px; color: #555555; text-align: center; line-height: 1.4;'>
+                Este es un correo automático del sistema de SOLICITUD PERSONAL<br>
+                No responda a este mensaje.
+            </p>
+        </td>
+    </tr>
+</table>
 ";
+
     // $destinatario="reclutamiento@gpoalze.com";
    $destinatarios = ["gonzalo.santiago@etiroch.onmicrosoft.com", "lucio.zempoalteca@gpoalze.com"];
 

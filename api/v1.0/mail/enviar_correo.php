@@ -26,20 +26,10 @@ function enviarCorreo($asunto, $destinatarios, $contenidoHTML) {
     //if (file_exists($logo_path)) $mail->addEmbeddedImage($logo_path, 'logo_empresa', 'alze.png');
 
     // Plantilla HTML
-   $html = "
-    <div style='font-family: Arial, sans-serif; padding: 20px; border: 1px solid #eeeeee; max-width: 600px;'>
-        $contenidoHTML
-        
-        <table role='presentation' border='0' cellpadding='0' cellspacing='0' width='100%'>
-            <tr>
-                <td style='border-top: 1px solid #dddddd; padding-top: 15px;'>
-                    <p style='margin: 0; font-size: 12px; color: #777777; font-family: Arial, sans-serif; text-align: center;'>
-                        Este es un correo automático de <b>GPOALZE Solicitud Personal</b>. Por favor, no responda a este mensaje.
-                    </p>
-                </td>
-            </tr>
-        </table>
-    </div>";
+ $html = "
+<div style='padding: 10px;'>
+    $contenidoHTML
+</div>";
 
     $mail->Subject = $asunto;
     $mail->Body    = $html;
