@@ -20,7 +20,7 @@ export default async function setPuestos(data) {
   puestos.forEach((el) => {
     const $option = d.createElement("option");
 
-    $option.textContent = `${el["nombre"]}`;
+    $option.textContent = `${el["descripcion"]}`;
     $option.value = el["id_archivo"];
 
     $fragment.appendChild($option);
