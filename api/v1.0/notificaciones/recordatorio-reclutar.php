@@ -22,22 +22,35 @@ if ($count === 0) {
 }
 
 // 2. Construir el contenido HTML dinámico
-$contenidoHTML = "
-    <div style='display: block; margin-bottom: 20px;'>
-        <img src='https://gpoalze.cloud/solicitud-personal/assets/GRUPO_ALZE.png' style='vertical-align: middle; margin-right: 10px;' width='50'>
-        <span style='font-size: 24px; font-weight: bold; color: #b22222; vertical-align: middle;'>PENDIENTES DE AUTORIZACIÓN</span>
+$contenidoHTML = '
+    <div style="width: 100%; margin-bottom: 20px;">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr>
+                <td width="50" align="left" style="width: 50px;">
+                    <img src="https://gpoalze.cloud/solicitud-personal/assets/GRUPO_ALZE.png" 
+                         alt="Logo" 
+                         width="50" 
+                         style="display: block; border: 0;">
+                </td>
+                
+                <td align="center" style="padding-right: 50px;">
+                    <span style="font-size: 24px; font-weight: bold; color: #b22222; font-family: Arial, sans-serif;">
+                        PENDIENTES DE AUTORIZACIÓN
+                    </span>
+                </td>
+            </tr>
+        </table>
     </div>
 
-    <p>Hola, tienes <b>$count</b> solicitudes esperando tu validación (Autorizador 3).</p>
+    <p>Hola, tienes <b>' . $count . '</b> solicitudes esperando reclutamiento.</p>
     
     <p>Los folios pendientes son:</p>
     <ul>
-        $lista_ids
+        ' . $lista_ids . '
     </ul>
 
     <p>Por favor, ingresa al sistema para darles seguimiento y completar el proceso.</p>
-";
-
+';
 // 3. Configuración del envío
 $destinatarios = ["gonzalo.santiago@etiroch.onmicrosoft.com", "lucio.zempoalteca@gpoalze.com"];
 $asunto = "RECORDATORIO: $count Solicitudes Pendientes de Autorizar";
