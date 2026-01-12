@@ -1,5 +1,6 @@
 <?php
 require "../conexion_solicitud.php";
+require_once __DIR__ . '/../mail/enviar_correo.php';
 
 // 1. Obtener los IDs pendientes
 $sql = "SELECT solicitud_id FROM sp_solicitud WHERE solicitud_autorizador3 IS NULL";
@@ -11,7 +12,7 @@ $count = 0;
 if ($result && $result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
         // Creamos un item de lista por cada ID
-        $lista_ids .= "<li>Solicitud #<b>" . $row['id'] . "</b></li>";
+        $lista_ids .= "<li>Solicitud #<b>" . $row['solicitud_id'] . "</b></li>";
         $count++;
     }
 }
