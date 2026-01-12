@@ -2,7 +2,7 @@
 require "../conexion_solicitud.php";
 
 // 1. Obtener los IDs pendientes
-$sql = "SELECT id FROM sp_solicitud WHERE autorizador3 = ''";
+$sql = "SELECT solicitud FROM sp_solicitud WHERE autorizador3 = ''";
 $result = $mysqli_solicitud->query($sql);
 
 $lista_ids = "";
