@@ -33,12 +33,6 @@ $contenidoHTML = '
                  style="display: block; width: 100px !important; border: 0;">
         </div>
 
-        <div style="display: inline-block; vertical-align: middle;">
-            <span style="font-size: 24px; font-weight: bold; color: #b22222;">
-                PENDIENTES DE AUTORIZACIÓN
-            </span>
-        </div>
-
     </div>
 
     <p>Hola, tienes <b>' . $count . '</b> solicitudes esperando reclutamiento.</p>
