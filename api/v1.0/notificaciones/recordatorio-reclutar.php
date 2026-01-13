@@ -24,23 +24,21 @@ if ($count === 0) {
 
 // 2. Construir el contenido HTML dinámico
 $contenidoHTML = '
-<div style="width: 100%; margin-bottom: 20px;">
-        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="width: 100%;">
-            <tr>
-                <td align="left" width="100" style="width: 100px !important;">
-                    <img src="https://gpoalze.cloud/solicitud-personal/assets/GRUPO_ALZE.png" 
-                         alt="Logo" 
-                         width="100" 
-                         style="display: block; width: 100px !important; min-width: 100px; max-width: 100px; border: 0;">
-                </td>
-                
-                <td align="center" style="padding-right: 50px;">
-                    <span style="font-size: 24px; font-weight: bold; color: #b22222; font-family: Arial, sans-serif;">
-                        PENDIENTES DE AUTORIZACIÓN
-                    </span>
-                </td>
-            </tr>
-        </table>
+<div style="width: 100%; margin-bottom: 20px; text-align: center; font-family: Arial, sans-serif;">
+        
+        <div style="display: inline-block; vertical-align: middle; margin-right: 20px;">
+            <img src="https://gpoalze.cloud/solicitud-personal/assets/GRUPO_ALZE.png" 
+                 alt="Logo" 
+                 width="100" 
+                 style="display: block; width: 100px !important; border: 0;">
+        </div>
+
+        <div style="display: inline-block; vertical-align: middle;">
+            <span style="font-size: 24px; font-weight: bold; color: #b22222;">
+                PENDIENTES DE AUTORIZACIÓN
+            </span>
+        </div>
+
     </div>
 
     <p>Hola, tienes <b>' . $count . '</b> solicitudes esperando reclutamiento.</p>
