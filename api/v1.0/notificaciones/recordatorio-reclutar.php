@@ -24,14 +24,14 @@ if ($count === 0) {
 
 // 2. Construir el contenido HTML dinámico
 $contenidoHTML = '
-    <div style="width: 100%; margin-bottom: 20px;">
-        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+<div style="width: 100%; margin-bottom: 20px;">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="width: 100%;">
             <tr>
-                <td  align="left" width="100px"style="width: 100px;">
+                <td align="left" width="100" style="width: 100px !important;">
                     <img src="https://gpoalze.cloud/solicitud-personal/assets/GRUPO_ALZE.png" 
                          alt="Logo" 
-                         width="100px"
-                         style="display: block; border: 0;">
+                         width="100" 
+                         style="display: block; width: 100px !important; min-width: 100px; max-width: 100px; border: 0;">
                 </td>
                 
                 <td align="center" style="padding-right: 50px;">
