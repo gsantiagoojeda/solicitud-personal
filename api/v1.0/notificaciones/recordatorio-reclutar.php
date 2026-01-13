@@ -3,7 +3,7 @@ require "../conexion_solicitud.php";
 require_once __DIR__ . '/../mail/enviar_correo.php';
 
 // 1. Obtener los IDs pendientes
-$sql = "SELECT solicitud_id FROM sp_solicitud WHERE solicitud_autorizador3 IS NULL";
+$sql = "SELECT solicitud_id FROM sp_solicitud WHERE solicitud_autorizador3 IS NULL AND solicitud_autorizador2_id IS NOT NULL";
 $result = $mysqli_solicitud->query($sql);
 
 $lista_ids = "";
@@ -27,10 +27,10 @@ $contenidoHTML = '
     <div style="width: 100%; margin-bottom: 20px;">
         <table cellpadding="0" cellspacing="0" border="0" width="100%">
             <tr>
-                <td width="50" align="left" style="width: 50px;">
+                <td width="150" align="left" style="width: 50px;">
                     <img src="https://gpoalze.cloud/solicitud-personal/assets/GRUPO_ALZE.png" 
                          alt="Logo" 
-                         width="50" 
+                         width="150" 
                          style="display: block; border: 0;">
                 </td>
                 
@@ -45,10 +45,7 @@ $contenidoHTML = '
 
     <p>Hola, tienes <b>' . $count . '</b> solicitudes esperando reclutamiento.</p>
     
-    <p>Los folios pendientes son:</p>
-    <ul>
-        ' . $lista_ids . '
-    </ul>
+  
 
     <p>Por favor, ingresa al sistema para darles seguimiento y completar el proceso.</p>
 ';
@@ -58,7 +55,7 @@ $asunto = "RECORDATORIO: $count Solicitudes Pendientes de Autorizar";
 $url_intranet = "https://gpoalze.cloud/solicitud-personal/menu.html";
 
 // 4. Cargar Template y Reemplazar
-$template_path = __DIR__ . '/../mail/solicitud_aprobada.html';
+$template_path = __DIR__ . '/../mail/solicitud_reclutar.html';
 $template = file_exists($template_path) 
     ? file_get_contents($template_path) 
     : "<html><body style='font-family: Arial, sans-serif;'>{{CONTENIDO}}<br><br><a href='{{URL_INTRANET}}' style='background-color: #006432; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Ver Solicitudes en Intranet</a></body></html>";
@@ -66,7 +63,7 @@ $template = file_exists($template_path)
 $correoHTML = str_replace(['{{CONTENIDO}}','{{URL_INTRANET}}'], [$contenidoHTML, $url_intranet], $template);
 
 // 5. Enviar
-enviarCorreo($asunto, $destinatarios, $correoHTML);
+enviarCorreo($asunto, $destinatarios, $correoHTML, "SOLICITUDES POR RECLUTAR");
 
 echo "Correo enviado con éxito avisando de $count pendientes.";
 
