@@ -27,10 +27,10 @@ $contenidoHTML = '
     <div style="width: 100%; margin-bottom: 20px;">
         <table cellpadding="0" cellspacing="0" border="0" width="100%">
             <tr>
-                <td width="150" align="left" style="width: 50px;">
+                <td  align="left" style="width: 100px;">
                     <img src="https://gpoalze.cloud/solicitud-personal/assets/GRUPO_ALZE.png" 
                          alt="Logo" 
-                         width="150" 
+                        style="width: 100px;"
                          style="display: block; border: 0;">
                 </td>
                 
