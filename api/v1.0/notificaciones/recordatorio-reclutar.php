@@ -30,8 +30,8 @@ $contenidoHTML = '
                 <td  align="left" width="100px"style="width: 100px;">
                     <img src="https://gpoalze.cloud/solicitud-personal/assets/GRUPO_ALZE.png" 
                          alt="Logo" 
-                         width="100px"
-                        style="width: 100px;"
+                         width="10px"
+                        style="width: 10px;"
                          style="display: block; border: 0;">
                 </td>
                 
