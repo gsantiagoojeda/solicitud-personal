@@ -3,7 +3,7 @@ require "../conexion_solicitud.php";
 require_once __DIR__ . '/../mail/enviar_correo.php';
 
 // 1. Obtener los IDs pendientes
-$sql = "SELECT solicitud_id FROM sp_solicitud WHERE solicitud_autorizador3 IS NULL AND solicitud_autorizador2_id IS NOT NULL";
+$sql = "SELECT solicitud_id FROM sp_solicitud WHERE solicitud_autorizador2_id IS NULL AND solicitud_autorizador1_id IS NOT NULL";
 $result = $mysqli_solicitud->query($sql);
 
 $lista_ids = "";
@@ -35,7 +35,7 @@ $contenidoHTML = '
 
     </div>
 
-    <p>Hola, tienes <b>' . $count . '</b> solicitudes esperando reclutamiento.</p>
+    <p>Hola, tienes <b>' . $count . '</b> solicitudes esperando autorización.</p>
     
   
 
@@ -43,7 +43,7 @@ $contenidoHTML = '
 ';
 // 3. Configuración del envío
 $destinatarios = ["gonzalo.santiago@etiroch.onmicrosoft.com", "lucio.zempoalteca@gpoalze.com"];
-$asunto = "RECORDATORIO: $count Solicitudes Pendientes por Reclutar";
+$asunto = "RECORDATORIO: $count Solicitudes Pendientes de Autorizar";
 $url_intranet = "https://gpoalze.cloud/solicitud-personal/menu.html";
 
 // 4. Cargar Template y Reemplazar
@@ -52,12 +52,12 @@ $template = file_exists($template_path)
     ? file_get_contents($template_path) 
     : "<html><body style='font-family: Arial, sans-serif;'>{{CONTENIDO}}<br><br><a href='{{URL_INTRANET}}' style='background-color: #006432; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Ver Solicitudes en Intranet</a></body></html>";
 
-    $title="SOLICITUDES POR RECLUTAR";
+     $title="SOLICITUDES POR APROBAR EN NIVEL 2";
 
-$correoHTML = str_replace(['{{CONTENIDO}}','{{URL_INTRANET}}', '{{TITLE}}' ], [$contenidoHTML, $url_intranet, $title], $template);
+$correoHTML = str_replace(['{{CONTENIDO}}','{{URL_INTRANET}}'], [$contenidoHTML, $url_intranet], $template);
 
 // 5. Enviar
-enviarCorreo($asunto, $destinatarios, $correoHTML);
+enviarCorreo($asunto, $destinatarios, $correoHTML, "SOLICITUDES POR RECLUTAR");
 
 echo "Correo enviado con éxito avisando de $count pendientes.";
 
