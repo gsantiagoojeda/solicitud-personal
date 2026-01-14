@@ -52,12 +52,12 @@ $template = file_exists($template_path)
     ? file_get_contents($template_path) 
     : "<html><body style='font-family: Arial, sans-serif;'>{{CONTENIDO}}<br><br><a href='{{URL_INTRANET}}' style='background-color: #006432; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Ver Solicitudes en Intranet</a></body></html>";
 
-     $title="SOLICITUDES POR APROBAR EN NIVEL 2";
+     $title="SOLICITUDES POR AUTORIZAR EN NIVEL 2";
 
 $correoHTML = str_replace(['{{CONTENIDO}}','{{URL_INTRANET}}' , '{{TITLE}}' ], [$contenidoHTML, $url_intranet, $title], $template);
 
 // 5. Enviar
-enviarCorreo($asunto, $destinatarios, $correoHTML, "SOLICITUDES POR RECLUTAR");
+enviarCorreo($asunto, $destinatarios, $correoHTML);
 
 echo "Correo enviado con éxito avisando de $count pendientes.";
 
