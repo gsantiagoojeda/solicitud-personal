@@ -19,6 +19,8 @@ while ($row = $resPendientes->fetch_assoc()) {
     $solicitudId = $row['solicitud_id'];
     $solicitanteId = $row['solicitud_solicitante_id'];
 
+    echo "ID de Solicitud: " . $solicitudId . " - ID de Solicitante: " . $solicitanteId . "<br>";
+    
     // Lógica de getSolicitudes.php: Encontrar al autorizador del solicitante
     // Buscamos quién tiene la 'id_autoridad' que coincide con el grupo del empleado
     $sqlBuscaJefe = "SELECT j.correo, j.nombre 
