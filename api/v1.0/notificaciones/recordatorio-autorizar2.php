@@ -54,7 +54,7 @@ $template = file_exists($template_path)
 
      $title="SOLICITUDES POR APROBAR EN NIVEL 2";
 
-$correoHTML = str_replace(['{{CONTENIDO}}','{{URL_INTRANET}}'], [$contenidoHTML, $url_intranet], $template);
+$correoHTML = str_replace(['{{CONTENIDO}}','{{URL_INTRANET}}' , '{{TITLE}}' ], [$contenidoHTML, $url_intranet, $title], $template);
 
 // 5. Enviar
 enviarCorreo($asunto, $destinatarios, $correoHTML, "SOLICITUDES POR RECLUTAR");
