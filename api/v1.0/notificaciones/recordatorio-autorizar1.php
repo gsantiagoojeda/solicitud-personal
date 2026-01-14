@@ -45,7 +45,8 @@ while ($row = $resPendientes->fetch_assoc()) {
     }
     $stmt->close();
 }
-
+print_r($pendientesPorAutorizador);
+exit;
 // 3. Enviar correos agrupados
 $template_path = __DIR__ . '/../mail/solicitud_reclutar.html';
 $url_intranet = "https://gpoalze.cloud/solicitud-personal/menu.html";
