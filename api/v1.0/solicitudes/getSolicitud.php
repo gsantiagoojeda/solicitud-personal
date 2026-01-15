@@ -56,14 +56,14 @@ $autorizador2Id = $solicitud['solicitud_autorizador2_id'] ?? null;
 // --- 2. Obtener nombre del Puesto ---
 $solicitud['solicitud_puesto_nombre'] = null;
 if ($puestoId) {
-    $stmtPuesto = $mysqli_intranet->prepare("SELECT nombre FROM puestos WHERE id_archivo = ?");
+    $stmtPuesto = $mysqli_intranet->prepare("SELECT descripcion FROM puestos WHERE id_archivo = ?");
     if ($stmtPuesto) {
         $stmtPuesto->bind_param("s", $puestoId);
         $stmtPuesto->execute();
         $resultPuesto = $stmtPuesto->get_result(); // Usando get_result()
         if ($resultPuesto->num_rows > 0) {
             $rowPuesto = $resultPuesto->fetch_assoc();
-            $solicitud['solicitud_puesto_nombre'] = $rowPuesto['nombre'];
+            $solicitud['solicitud_puesto_nombre'] = $rowPuesto['descripcion'];
         }
         $stmtPuesto->close();
     }

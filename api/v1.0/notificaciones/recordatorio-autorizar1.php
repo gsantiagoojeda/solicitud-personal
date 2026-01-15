@@ -20,7 +20,7 @@ while ($row = $resPendientes->fetch_assoc()) {
     $solicitanteId = $row['solicitud_solicitante_id'];
 
     echo "ID de Solicitud: " . $solicitudId . " - ID de Solicitante: " . $solicitanteId . "<br>";
-    
+
     // Lógica de getSolicitudes.php: Encontrar al autorizador del solicitante
     // Buscamos quién tiene la 'id_autoridad' que coincide con el grupo del empleado
     $sqlBuscaJefe = "SELECT j.correo, j.nombre 
@@ -28,6 +28,19 @@ while ($row = $resPendientes->fetch_assoc()) {
                      JOIN autoridad_departamental ad ON e.id_autoridad = ad.id
                      JOIN empleados j ON ad.clave_autorizador = j.id_autoridad
                      WHERE e.id = ? AND j.id_autoridad != '' LIMIT 1";
+
+$sqlAutoridad = "SELECT id_autoridad FROM empleados WHERE id = '$solicitanteId'";
+$resAutoridad = $mysqli_vacaciones->query($sqlAutoridad);
+
+if ($resAutoridad && $resAutoridad->num_rows > 0) {
+    $rowAuth = $resAutoridad->fetch_assoc();
+    $idAutoridadSolicitante = $rowAuth['id_autoridad'];
+
+$sqlJefe="select nombre, correo from emeplados where id_autoridad='$idAutoridadSolicitante' AND tipo_usuario='2' "
+
+} else {
+      die("No hay id de empleado");
+}            
     
     /* NOTA: Esta consulta asume que el autorizador es quien encabeza 
        el grupo de autoridad asignado al empleado.
