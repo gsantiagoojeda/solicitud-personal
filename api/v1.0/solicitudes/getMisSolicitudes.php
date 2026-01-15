@@ -72,7 +72,7 @@ if ($resultDeptos) {
 
 // Paso previo: cargar puestos
 $puestos = [];
-$resultPuestos = $mysqli_intranet->query("SELECT id_archivo, descipcion FROM puestos");
+$resultPuestos = $mysqli_intranet->query("SELECT id_archivo, descripcion FROM puestos");
 if ($resultPuestos) {
     while ($row = $resultPuestos->fetch_assoc()) {
         $puestos[$row['id_archivo']] = htmlspecialchars($row['descripcion'] ?? '', ENT_QUOTES, 'UTF-8');
