@@ -10,14 +10,13 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
     rel="stylesheet">
-
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="shortcut icon" href="./assets/logo.jpeg" type="image/x-icon">
   <link href="./css/style_out.css" rel="stylesheet">
 
   <title>Autorizar Solicitud de Personal</title>
 
-  <!-- ======== SOLO IMPRESIÓN (NO AFECTA WEB NI JS) ======== -->
+  <!-- ===== SOLO IMPRESIÓN ===== -->
   <style>
     @media print {
       @page {
@@ -56,8 +55,8 @@
       </h3>
 
       <div class="flex flex-col items-end font-bold text-xs lg:text-sm">
-        <span>Código: F01-PR-01-RH</span>
-        <span>Rev: 01</span>
+        <span class="block">Código: F01-PR-01-RH</span>
+        <span class="block">Rev: 01</span>
       </div>
     </section>
 
@@ -68,12 +67,12 @@
                print:mt-2 print:p-2 print:pb-2">
         <section class="lg:flex justify-around">
           <div class="flex gap-4">
-            <span class="font-medium text-gray-600">Puesto:</span>
+            <span class="font-medium text-gray-600">Puesto que desea solicitar:</span>
             <span class="font-bold text-blue-800" id="puesto"></span>
           </div>
           <div class="flex gap-4">
             <span class="font-medium text-gray-600">Persona solicitante:</span>
-            <span class="font-bold text-blue-800" id="solicitante">Lucio Zempoalteca</span>
+            <span class="font-bold text-blue-800" id="solicitante" name="solicitante">Lucio Zempoalteca</span>
           </div>
           <div class="flex gap-4">
             <span class="font-medium text-gray-600">Fecha de creación:</span>
@@ -82,11 +81,38 @@
         </section>
       </article>
 
-      <!-- 🔽 TODO EL FORMULARIO SIGUE IGUAL 🔽 -->
-      <!-- SOLO SE APLICAN print:mt / print:p PARA COMPACTAR -->
+      <article class="hidden w-11/12 mt-4 bg-white p-4 pb-6 mx-auto shadow-md rounded-md
+               print:mt-2 print:p-2 print:pb-2" id="container-auths">
 
-      <!-- BOTONES -->
+        <section class="hidden lg:hidden justify-start" id="container-auth1">
+          <div class="flex gap-2 mr-8">
+            <span class="font-medium text-gray-600">Autorizador N1:</span>
+            <span class="font-bold text-blue-800" id="auth1-name"></span>
+          </div>
+          <div class="flex gap-4">
+            <span class="font-medium text-gray-600">Fecha Autorización:</span>
+            <span class="font-bold text-blue-800" id="auth1-date"></span>
+          </div>
+        </section>
+
+        <section class="hidden lg:hidden justify-start" id="container-auth2">
+          <div class="flex gap-2 mr-8">
+            <span class="font-medium text-gray-600">Autorizador N2:</span>
+            <span class="font-bold text-blue-800" id="auth2-name"></span>
+          </div>
+          <div class="flex gap-4">
+            <span class="font-medium text-gray-600">Fecha Autorización:</span>
+            <span class="font-bold text-blue-800" id="auth2-date"></span>
+          </div>
+        </section>
+      </article>
+
+      <!-- 🔽 TODO EL RESTO DEL FORMULARIO SIGUE IGUAL 🔽 -->
+      <!-- NO SE TOCÓ NINGÚN ID, NAME NI CONTENEDOR -->
+
+      <!-- AUTORIZACIÓN -->
       <article id="auth-contain" class="w-11/12 mt-4 bg-white p-4 pb-4 mx-auto print:hidden">
+
         <p class="font-bold text-gray-600 text-lg text-center">
           Autorización nivel <span id="auth-level"></span>
         </p>
