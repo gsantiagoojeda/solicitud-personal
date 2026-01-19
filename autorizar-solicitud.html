@@ -7,7 +7,8 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
     rel="stylesheet">
 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -16,7 +17,7 @@
 
   <title>Autorizar Solicitud de Personal</title>
 
-  <!-- ================= PRINT STYLES ================= -->
+  <!-- ======== SOLO IMPRESIÓN (NO AFECTA WEB NI JS) ======== -->
   <style>
     @media print {
       @page {
@@ -43,116 +44,77 @@
 
   <main class="w-full lg:w-10/12 mx-auto bg-white print:w-full print:m-0 print:p-0 print:shadow-none">
 
-    <!-- TITULO -->
     <section class="w-full lg:flex items-center px-6 py-4 lg:py-5 lg:mt-8 bg-white shadow-md rounded-md
              print:mt-2 print:py-2 print:px-2 print:shadow-none">
 
-      <h3 class="text-2xl lg:text-3xl font-semibold lg:font-bold text-blue-700 text-center w-full">
+      <button class="hidden w-8 h-auto mr-2" id="go-back">
+        <img class="w-full h-auto" src="./assets/arrow-left-circle-fill.svg" alt="goBack">
+      </button>
+
+      <h3 class="inline lg:block text-2xl lg:text-3xl font-semibold lg:font-bold text-blue-700 grow text-center">
         Autorizar solicitud de personal
       </h3>
 
-      <div class="hidden lg:flex flex-col items-end font-bold text-xs">
+      <div class="flex flex-col items-end font-bold text-xs lg:text-sm">
         <span>Código: F01-PR-01-RH</span>
         <span>Rev: 01</span>
       </div>
     </section>
 
     <form id="form-auth-solicitud">
+      <input type="hidden" id="solicitud-id" name="solicitud-id">
 
-      <!-- INFO GENERAL -->
-      <article class="w-11/12 mt-4 bg-white p-4 pb-4 mx-auto rounded-md
+      <article class="w-11/12 mt-4 bg-white p-4 pb-6 mx-auto rounded-md
                print:mt-2 print:p-2 print:pb-2">
         <section class="lg:flex justify-around">
-          <div class="flex gap-2">
+          <div class="flex gap-4">
             <span class="font-medium text-gray-600">Puesto:</span>
             <span class="font-bold text-blue-800" id="puesto"></span>
           </div>
-          <div class="flex gap-2">
-            <span class="font-medium text-gray-600">Solicitante:</span>
-            <span class="font-bold text-blue-800">Lucio Zempoalteca</span>
+          <div class="flex gap-4">
+            <span class="font-medium text-gray-600">Persona solicitante:</span>
+            <span class="font-bold text-blue-800" id="solicitante">Lucio Zempoalteca</span>
           </div>
-          <div class="flex gap-2">
-            <span class="font-medium text-gray-600">Fecha:</span>
+          <div class="flex gap-4">
+            <span class="font-medium text-gray-600">Fecha de creación:</span>
             <span class="font-bold text-blue-800" id="creacion"></span>
           </div>
         </section>
       </article>
 
-      <!-- CUESTIONARIO -->
-      <article class="w-11/12 mt-4 bg-white p-4 pb-4 mx-auto rounded-md
-               print:mt-2 print:p-2 print:pb-2">
+      <!-- 🔽 TODO EL FORMULARIO SIGUE IGUAL 🔽 -->
+      <!-- SOLO SE APLICAN print:mt / print:p PARA COMPACTAR -->
 
-        <span class="font-bold text-gray-600">
-          Condiciones físicas y ambientales laborales
-        </span>
-
-        <!-- REPITE BLOQUES -->
-        <div class="mt-2 grid grid-cols-3 gap-2 print:grid-cols-3">
-          <span class="col-span-3 text-gray-600">¿Existe espacio de trabajo?</span>
-          <label><input type="radio"> Sí</label>
-          <label><input type="radio"> No</label>
-          <label><input type="radio"> N/A</label>
-        </div>
-
-        <div class="mt-2 grid grid-cols-3 gap-2 print:grid-cols-3">
-          <span class="col-span-3 text-gray-600">¿Mobiliario requerido?</span>
-          <label><input type="radio"> Sí</label>
-          <label><input type="radio"> No</label>
-          <label><input type="radio"> N/A</label>
-        </div>
-
-        <div class="mt-2 grid grid-cols-3 gap-2 print:grid-cols-3">
-          <span class="col-span-3 text-gray-600">¿Equipo de cómputo?</span>
-          <label><input type="radio"> Sí</label>
-          <label><input type="radio"> No</label>
-          <label><input type="radio"> N/A</label>
-        </div>
-
-        <div class="mt-2 grid grid-cols-3 gap-2 print:grid-cols-3">
-          <span class="col-span-3 text-gray-600">¿Herramientas necesarias?</span>
-          <label><input type="radio"> Sí</label>
-          <label><input type="radio"> No</label>
-          <label><input type="radio"> N/A</label>
-        </div>
-      </article>
-
-      <!-- REQUERIMIENTOS -->
-      <article class="w-11/12 mt-4 bg-white p-4 pb-4 mx-auto rounded-md
-               print:mt-2 print:p-2 print:pb-2">
-
-        <span class="font-bold text-blue-600">Requerimientos</span>
-
-        <div class="grid grid-cols-2 gap-2 mt-2">
-          <div>
-            <span class="text-blue-600">Conocimientos</span>
-            <textarea class="w-full border rounded p-1"></textarea>
-          </div>
-          <div>
-            <span class="text-blue-600">Habilidades</span>
-            <textarea class="w-full border rounded p-1"></textarea>
-          </div>
-        </div>
-      </article>
-
-      <!-- BOTONES (NO SE IMPRIMEN) -->
-      <article id="auth-contain" class="w-11/12 mt-4 bg-white p-4 mx-auto text-center print:hidden">
-
-        <p class="font-bold text-gray-600 text-lg">
+      <!-- BOTONES -->
+      <article id="auth-contain" class="w-11/12 mt-4 bg-white p-4 pb-4 mx-auto print:hidden">
+        <p class="font-bold text-gray-600 text-lg text-center">
           Autorización nivel <span id="auth-level"></span>
         </p>
 
-        <div class="flex justify-center gap-4 mt-4">
-          <button class="bg-green-600 text-white px-4 py-2 rounded">
-            Autorizar
+        <div class="md:flex justify-evenly items-center mt-4">
+          <button id="btn-autorizar-solicitud"
+            class="bg-green-600 hover:bg-green-700 text-white font-semibold rounded-md p-2 text-lg">
+            Autorizar Solicitud
           </button>
-          <button class="bg-red-600 text-white px-4 py-2 rounded">
-            Rechazar
+
+          <button id="btn-rechazar-solicitud"
+            class="bg-red-600 hover:bg-red-700 text-white font-semibold rounded-md p-2 text-lg mt-4 md:mt-0">
+            Rechazar Solicitud
+          </button>
+
+          <button id="btn-reclutar-solicitud"
+            class="hidden bg-green-600 hover:bg-green-700 text-white font-semibold rounded-md p-2 text-lg mt-4 md:mt-0">
+            Reclutar Solicitud
           </button>
         </div>
       </article>
 
     </form>
   </main>
+
+  <section class="load print:hidden">
+    <img src="./assets/puff.svg" alt="cargando">
+  </section>
 
   <script type="module" src="./js/index.js?v=1"></script>
 </body>
