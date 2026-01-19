@@ -28,7 +28,7 @@
         margin: 0.5cm;
       }
 
-      /* Ocultar elementos innecesarios */
+      /* Ocultar lo innecesario */
       header,
       .load,
       #auth-contain,
@@ -38,11 +38,10 @@
         display: none !important;
       }
 
-      /* 🔑 ESCALADO GLOBAL */
+      /* Ajuste general */
       body {
-        zoom: 0.78;
-        /* ← AJUSTE CLAVE */
-        font-size: 10px;
+        font-size: 10.5px;
+        line-height: 1.1;
         overflow: visible !important;
       }
 
@@ -52,16 +51,17 @@
         padding: 0 !important;
       }
 
-      /* Compactar TODOS los bloques */
-      section,
-      article {
-        margin-top: 0.2rem !important;
-        margin-bottom: 0.2rem !important;
-        padding-top: 0.3rem !important;
-        padding-bottom: 0.3rem !important;
+      /* 🔑 REDUCCIÓN REAL DE ALTURA */
+      article,
+      section {
+        margin-top: 0.15rem !important;
+        margin-bottom: 0.15rem !important;
+        padding-top: 0.25rem !important;
+        padding-bottom: 0.25rem !important;
         page-break-inside: avoid !important;
       }
 
+      /* Títulos */
       h3 {
         font-size: 16px !important;
         margin: 0 !important;
@@ -73,21 +73,22 @@
         line-height: 1.1 !important;
       }
 
-      /* Inputs ultra compactos */
+      /* Inputs y selects */
       input,
       select {
         padding: 2px 4px !important;
         font-size: 10px !important;
       }
 
+      /* Textareas compactas */
       textarea {
         padding: 2px 4px !important;
         font-size: 10px !important;
-        min-height: 28px !important;
-        height: 28px !important;
+        min-height: 26px !important;
+        height: 26px !important;
       }
 
-      /* Radios más pequeños */
+      /* Radios */
       input[type="radio"] {
         width: 14px !important;
         height: 14px !important;
@@ -98,13 +99,19 @@
         box-shadow: none !important;
       }
 
-      /* ❌ Evitar saltos automáticos */
+      /* 🚫 Evitar cortes */
       * {
         page-break-before: auto !important;
         page-break-after: auto !important;
       }
+
+      /* 🔍 Zoom mínimo solo si hace falta */
+      body {
+        zoom: 0.9;
+      }
     }
   </style>
+
 
 </head>
 
