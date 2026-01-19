@@ -1,7 +1,5 @@
 import getSueldos from "../helpers/getSueldos.js";
 
-import getSueldos from "../helpers/getSueldos.js";
-
 const d = document;
 
 export default async function setSueldos() {
@@ -13,33 +11,20 @@ export default async function setSueldos() {
     return;
 
   const $selectSueldo = d.getElementById("solicitud-sueldo");
-  if (!$selectSueldo) return; // 🔒 guard
 
   let sueldos = await getSueldos();
+  //console.log(sueldos);
 
   const $fragment = d.createDocumentFragment();
 
   sueldos.forEach((el) => {
     const $option = d.createElement("option");
+
     $option.textContent = `${el["sueldo_nombre"]}: ${el["sueldo_cantidad"]}`;
     $option.value = el["sueldo_id"];
+
     $fragment.appendChild($option);
   });
 
   $selectSueldo.appendChild($fragment);
-
-  // ===== PUENTE A IMPRESIÓN =====
-  const $printSueldo = d.getElementById("print-solicitud-sueldo");
-
-  const syncPrintSueldo = () => {
-    if (!$printSueldo) return;
-    const opt = $selectSueldo.options[$selectSueldo.selectedIndex];
-    $printSueldo.value = opt ? opt.textContent : "";
-  };
-
-  // sincroniza al cambiar
-  $selectSueldo.addEventListener("change", syncPrintSueldo);
-
-  // sincroniza si ya viene seleccionado
-  syncPrintSueldo();
 }

@@ -41,8 +41,9 @@
   <!-- HEADER NO SE IMPRIME -->
   <header data-include="./header.html" class="print:hidden"></header>
 
-  <main class="w-full lg:w-10/12 mx-auto bg-white print:w-full print:m-0 print:p-0 print:shadow-none">
+  <main class="w-full lg:w-10/12 mx-auto bg-white print:w-full print:m-0 print:p-0">
 
+    <!-- ================= ENCABEZADO ================= -->
     <section class="w-full lg:flex items-center px-6 py-4 lg:py-5 lg:mt-8 bg-white shadow-md rounded-md
              print:mt-2 print:py-2 print:px-2 print:shadow-none">
 
@@ -55,63 +56,84 @@
       </h3>
 
       <div class="flex flex-col items-end font-bold text-xs lg:text-sm">
-        <span class="block">Código: F01-PR-01-RH</span>
-        <span class="block">Rev: 01</span>
+        <span>Código: F01-PR-01-RH</span>
+        <span>Rev: 01</span>
       </div>
     </section>
 
     <form id="form-auth-solicitud">
       <input type="hidden" id="solicitud-id" name="solicitud-id">
 
+      <!-- ================= INFO GENERAL ================= -->
       <article class="w-11/12 mt-4 bg-white p-4 pb-6 mx-auto rounded-md
                print:mt-2 print:p-2 print:pb-2">
+
         <section class="lg:flex justify-around">
           <div class="flex gap-4">
-            <span class="font-medium text-gray-600">Puesto que desea solicitar:</span>
+            <span class="font-medium text-gray-600">Puesto:</span>
             <span class="font-bold text-blue-800" id="puesto"></span>
           </div>
           <div class="flex gap-4">
-            <span class="font-medium text-gray-600">Persona solicitante:</span>
-            <span class="font-bold text-blue-800" id="solicitante" name="solicitante">Lucio Zempoalteca</span>
+            <span class="font-medium text-gray-600">Solicitante:</span>
+            <span class="font-bold text-blue-800" id="solicitante"></span>
           </div>
           <div class="flex gap-4">
-            <span class="font-medium text-gray-600">Fecha de creación:</span>
+            <span class="font-medium text-gray-600">Fecha:</span>
             <span class="font-bold text-blue-800" id="creacion"></span>
           </div>
         </section>
       </article>
 
-      <article class="hidden w-11/12 mt-4 bg-white p-4 pb-6 mx-auto shadow-md rounded-md
-               print:mt-2 print:p-2 print:pb-2" id="container-auths">
+      <!-- ================= REQUERIMIENTOS ================= -->
+      <article class="w-11/12 mt-4 bg-white p-4 pb-6 mx-auto rounded-md
+               print:mt-2 print:p-2 print:pb-2">
 
-        <section class="hidden lg:hidden justify-start" id="container-auth1">
-          <div class="flex gap-2 mr-8">
-            <span class="font-medium text-gray-600">Autorizador N1:</span>
-            <span class="font-bold text-blue-800" id="auth1-name"></span>
-          </div>
-          <div class="flex gap-4">
-            <span class="font-medium text-gray-600">Fecha Autorización:</span>
-            <span class="font-bold text-blue-800" id="auth1-date"></span>
-          </div>
-        </section>
+        <span class="block font-bold text-blue-600 mt-2">Requerimientos</span>
 
-        <section class="hidden lg:hidden justify-start" id="container-auth2">
-          <div class="flex gap-2 mr-8">
-            <span class="font-medium text-gray-600">Autorizador N2:</span>
-            <span class="font-bold text-blue-800" id="auth2-name"></span>
-          </div>
-          <div class="flex gap-4">
-            <span class="font-medium text-gray-600">Fecha Autorización:</span>
-            <span class="font-bold text-blue-800" id="auth2-date"></span>
-          </div>
-        </section>
+        <!-- CONOCIMIENTOS -->
+        <textarea id="solicitud-txt-conocimientos" class="resize-none border rounded-md p-2 w-full lg:w-5/6 mt-2"
+          rows="2"></textarea>
+
+        <!-- ================= SUELDO ================= -->
+        <span class="block font-bold text-blue-600 mt-4">Sueldo sugerido:</span>
+
+        <!-- SELECT ORIGINAL (JS ESCRIBE AQUÍ) -->
+        <select name="solicitud-sueldo" id="solicitud-sueldo" class="block w-full px-4 py-2 my-2 text-gray-700 font-semibold bg-white border border-gray-300 rounded-md
+                 print:hidden" required>
+          <option value="" disabled selected>Selecciona una opción</option>
+        </select>
+
+        <!-- CAMPO SOLO IMPRESIÓN -->
+        <input type="text" id="print-solicitud-sueldo"
+          class="hidden print:block w-full border border-gray-300 rounded-md p-2" readonly>
+
+        <!-- ================= HORARIO ================= -->
+        <span class="block font-bold text-blue-600 mt-4">Horario:</span>
+
+        <!-- SELECT ORIGINAL -->
+        <select id="solicitud-horario" name="solicitud-horario" class="block w-full px-4 py-2 my-2 text-gray-700 font-semibold bg-white border border-gray-300 rounded-md
+                 print:hidden" required>
+          <option value="" disabled selected>Selecciona una opción</option>
+        </select>
+
+        <!-- CAMPO SOLO IMPRESIÓN -->
+        <input type="text" id="print-solicitud-horario"
+          class="hidden print:block w-full border border-gray-300 rounded-md p-2" readonly>
+
+        <!-- ================= ROL DE TURNOS ================= -->
+        <span class="block font-bold text-blue-600 mt-4">¿Rola turnos?</span>
+        <select id="solicitud-rolar" name="solicitud-rolar"
+          class="block w-full px-4 py-2 my-2 text-gray-700 font-semibold bg-white border border-gray-300 rounded-md"
+          required>
+          <option value="" disabled selected>Selecciona una opción</option>
+          <option value="si">Sí</option>
+          <option value="no">No</option>
+        </select>
+
       </article>
 
-      <!-- 🔽 TODO EL RESTO DEL FORMULARIO SIGUE IGUAL 🔽 -->
-      <!-- NO SE TOCÓ NINGÚN ID, NAME NI CONTENEDOR -->
-
-      <!-- AUTORIZACIÓN -->
-      <article id="auth-contain" class="w-11/12 mt-4 bg-white p-4 pb-4 mx-auto print:hidden">
+      <!-- ================= BOTONES ================= -->
+      <article id="auth-contain" class="w-11/12 mt-4 bg-white p-4 mx-auto print:hidden">
 
         <p class="font-bold text-gray-600 text-lg text-center">
           Autorización nivel <span id="auth-level"></span>
@@ -127,11 +149,6 @@
             class="bg-red-600 hover:bg-red-700 text-white font-semibold rounded-md p-2 text-lg mt-4 md:mt-0">
             Rechazar Solicitud
           </button>
-
-          <button id="btn-reclutar-solicitud"
-            class="hidden bg-green-600 hover:bg-green-700 text-white font-semibold rounded-md p-2 text-lg mt-4 md:mt-0">
-            Reclutar Solicitud
-          </button>
         </div>
       </article>
 
@@ -143,6 +160,7 @@
   </section>
 
   <script type="module" src="./js/index.js?v=1"></script>
+
 </body>
 
 </html>
