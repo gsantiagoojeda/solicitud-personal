@@ -25,10 +25,10 @@
 
       @page {
         size: letter;
-        margin: 0.5cm;
+        margin: 0.4cm;
       }
 
-      /* Ocultar lo innecesario */
+      /* Ocultar lo que no se imprime */
       header,
       .load,
       #auth-contain,
@@ -38,11 +38,22 @@
         display: none !important;
       }
 
-      /* Ajuste general */
+      /* ===============================
+       RESET REAL DE ESPACIADO TAILWIND
+       =============================== */
+
+      * {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+      }
+
       body {
-        font-size: 10.5px;
-        line-height: 1.1;
+        font-size: 10px;
+        line-height: 1.05;
         overflow: visible !important;
+        zoom: 0.9;
       }
 
       main {
@@ -51,47 +62,55 @@
         padding: 0 !important;
       }
 
-      /* 🔑 REDUCCIÓN REAL DE ALTURA */
+      /* Contenedores principales */
       article,
       section {
-        margin-top: 0.15rem !important;
-        margin-bottom: 0.15rem !important;
-        padding-top: 0.25rem !important;
-        padding-bottom: 0.25rem !important;
+        padding: 0.2rem 0.3rem !important;
         page-break-inside: avoid !important;
       }
 
-      /* Títulos */
+      /* Título */
       h3 {
-        font-size: 16px !important;
+        font-size: 15px !important;
         margin: 0 !important;
       }
 
+      /* Texto */
       span,
       label,
       p {
-        line-height: 1.1 !important;
+        line-height: 1.05 !important;
+        font-size: 10px !important;
       }
 
-      /* Inputs y selects */
+      /* Inputs y selects ultra compactos */
       input,
       select {
         padding: 2px 4px !important;
-        font-size: 10px !important;
+        font-size: 9.5px !important;
+        height: auto !important;
       }
 
-      /* Textareas compactas */
+      /* Textareas: AQUÍ estaba mucho del alto */
       textarea {
         padding: 2px 4px !important;
-        font-size: 10px !important;
-        min-height: 26px !important;
-        height: 26px !important;
+        font-size: 9.5px !important;
+        min-height: 22px !important;
+        height: 22px !important;
       }
 
       /* Radios */
       input[type="radio"] {
-        width: 14px !important;
-        height: 14px !important;
+        width: 12px !important;
+        height: 12px !important;
+      }
+
+      /* Quitar gaps y spaces */
+      .gap-4,
+      .gap-2,
+      .space-x-2,
+      .space-x-4 {
+        gap: 2px !important;
       }
 
       /* Quitar sombras */
@@ -99,19 +118,13 @@
         box-shadow: none !important;
       }
 
-      /* 🚫 Evitar cortes */
+      /* Evitar cortes */
       * {
         page-break-before: auto !important;
         page-break-after: auto !important;
       }
-
-      /* 🔍 Zoom mínimo solo si hace falta */
-      body {
-        zoom: 0.9;
-      }
     }
   </style>
-
 
 </head>
 
