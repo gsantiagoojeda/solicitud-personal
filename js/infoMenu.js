@@ -1,6 +1,7 @@
 const d = document;
 
 export default function infoMenu(data) {
+  console.log(data);
   const $nombre = d.getElementById("menu-nombre"),
     $puesto = d.getElementById("menu-puesto");
 
