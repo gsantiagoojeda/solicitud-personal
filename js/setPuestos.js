@@ -31,6 +31,10 @@ export default async function setPuestos(data) {
   d.getElementById("solicitud-solicitante").value = data.id;
   d.getElementById("solicitud-solicitante").setAttribute(
     "data-puesto",
-    data.puesto
+    data.puesto,
+  );
+  d.getElementById("solicitud-solicitante").setAttribute(
+    "data-empresa",
+    data.empresa,
   );
 }

@@ -35,7 +35,9 @@ export default async function createSolicitud(e) {
     rolar = $form["solicitud-rolar"].value,
     solicitante = $form["solicitud-solicitante"].value,
     solicitantePuesto =
-      $form["solicitud-solicitante"].getAttribute("data-puesto");
+      $form["solicitud-solicitante"].getAttribute("data-puesto"),
+    solicitanteEmpresa =
+      $form["solicitud-solicitante"].getAttribute("data-empresa");
 
   d.querySelector(".load").classList.remove("hidden");
   d.querySelector(".load").style.display = "flex";
@@ -68,6 +70,7 @@ export default async function createSolicitud(e) {
   formData.append("rolar", rolar);
   formData.append("solicitante", solicitante);
   formData.append("solicitante-puesto", solicitantePuesto);
+  formData.append("solicitante-empresa", solicitanteEmpresa);
 
   // for (const [key, value] of formData.entries()) {
   //   console.log(`${key}: ${value}`);
