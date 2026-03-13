@@ -31,6 +31,7 @@ $horario = $_POST['horario'] ?? null;
 $rolar = isset($_POST['rolar']) ? ($_POST['rolar'] === 'si') : null;
 $solicitante = $_POST['solicitante'] ?? null;
 $solicitantePuesto = $_POST['solicitante-puesto'] ?? null;
+$solicitanteEmpresa = $_POST['solicitante-empresa'] ?? null;
 
 $dateCreate = date("Y-m-d H:i:s");
 
@@ -71,11 +72,12 @@ INSERT INTO sp_solicitud(
     solicitud_horario_id,
     solicitud_rolar,
     solicitud_solicitante_id,
+    solicitud_empresa,
     solicitud_autorizador1_id,
     solicitud_autorizacion1,
     solicitud_date_autorizacion1,
     solicitud_date_create
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)
 ";
 
 $stmt = $mysqli_solicitud->prepare($sql);
@@ -90,7 +92,7 @@ if (!$stmt) {
 
 // Bind de parámetros
 $stmt->bind_param(
-    "ssssssssssssssssssssssssssssss",
+    "sssssssssssssssssssssssssssssss",
     $puesto,
     $rp1,
     $trp1,
@@ -117,6 +119,7 @@ $stmt->bind_param(
     $horario,
     $rolar,
     $solicitante,
+    $solicitanteEmpresa,
     $autorizador1,
     $autorizacion1,
     $fechaAuth,
