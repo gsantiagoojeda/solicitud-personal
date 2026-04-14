@@ -15,6 +15,7 @@ export default async function countPendAutorizar(data) {
 
     const formData = new FormData();
     formData.append("user-id", userId);
+    formData.append("puesto", userPuesto);
 
     let options = {
       method: "POST",

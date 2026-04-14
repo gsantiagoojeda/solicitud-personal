@@ -4,10 +4,11 @@ require "../conexion_vacaciones.php";
 require "../conexion_solicitud.php";
 
 $idUser = $_POST['user-id']; // usuario actual
+$puesto = $_POST['puesto']; // usuario actual
 $totalSolicitudes = 0; 
 
 // Paso 1: Obtener puesto y autoridad del usuario
-$sqlUser = "SELECT puesto, id_autoridad FROM empleados WHERE id = ?";
+$sqlUser = "SELECT  id_autoridad FROM empleados WHERE id = ?";
 $stmt = $mysqli_vacaciones->prepare($sqlUser);
 if (!$stmt) {
     echo json_encode(["err" => true, "status" => "Error al preparar la consulta SQL"]);
@@ -16,7 +17,7 @@ if (!$stmt) {
 
 $stmt->bind_param("s", $idUser);
 $stmt->execute();
-$stmt->bind_result($puesto, $autoridad);
+$stmt->bind_result( $autoridad);
 if (!$stmt->fetch()) {
     echo json_encode(["err" => true, "status" => "Usuario no encontrado"]);
     $stmt->close();
