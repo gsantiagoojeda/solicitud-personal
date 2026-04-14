@@ -108,11 +108,15 @@ foreach ($listaGruposAutorizados as $grupo) {
 // Paso 4: Obtener puestos de cada departamento autorizado
 $listaPuestos = [];
 foreach ($listaDeptosAutorizados as $idDepto) {
-    $sqlPuesto = "SELECT id_archivo, nombre, descripcion, departamento_id FROM descripcion_puestos WHERE departamento_id = ?";
-    $stmtPuesto = $mysqli_intranet->prepare($sqlPuesto);
+    $sqlCombined = "SELECT d.id_archivo, d.id_puesto, d.descripcion, p.nombre_puesto , d.departamento_id
+                FROM descripcion_puestos d
+                INNER JOIN vacaciones.puestos p ON d.id_puesto = p.id_puesto
+                WHERE d.departamento_id = ?";
+
+$stmt = $mysqli_intranet->prepare($sqlCombined);
     $stmtPuesto->bind_param("i", $idDepto);
     $stmtPuesto->execute();
-    $stmtPuesto->bind_result($id_archivo, $nombre, $descripcion, $departamento_id);
+    $stmtPuesto->bind_result($id_archivo, $descripcion, $nombre, $departamento_id);
 
     while ($stmtPuesto->fetch()) {
         $listaPuestos[] = [
