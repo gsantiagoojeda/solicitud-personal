@@ -67,8 +67,11 @@ if ($puesto === 'Gerente de Recursos Humanos') {
     // Lógica para RH: Busca solicitudes de Gerentes y Directores que estén completamente Autorizadas
     
     // 2.1 Obtener IDs de Gerentes y Directores (SOLO IDs)
-    $sqlUsers = "SELECT id FROM empleados 
-                 WHERE (puesto LIKE '%Gerente%' OR puesto LIKE '%Director%') AND status_empleado ='Activo' ";
+    $sqlUsers = "SELECT e.id 
+             FROM empleados e
+             INNER JOIN puestos p ON e.id_puesto = p.id_puesto
+             WHERE (p.nombre_puesto LIKE '%Gerente%' OR p.nombre_puesto LIKE '%Director%') 
+             AND e.status_empleado = 'Activo' ";
     $result = $mysqli_vacaciones->query($sqlUsers);
     
     $listaUserAutorizadosIds = [];
