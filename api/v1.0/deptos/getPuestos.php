@@ -108,7 +108,7 @@ foreach ($listaGruposAutorizados as $grupo) {
 // Paso 4: Obtener puestos de cada departamento autorizado
 $listaPuestos = [];
 foreach ($listaDeptosAutorizados as $idDepto) {
-    $sqlPuesto = "SELECT id_archivo, nombre, descripcion, departamento_id FROM puestos WHERE departamento_id = ?";
+    $sqlPuesto = "SELECT id_archivo, nombre, descripcion, departamento_id FROM descripcion_puestos WHERE departamento_id = ?";
     $stmtPuesto = $mysqli_intranet->prepare($sqlPuesto);
     $stmtPuesto->bind_param("i", $idDepto);
     $stmtPuesto->execute();
