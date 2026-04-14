@@ -7,11 +7,12 @@ export default async function setPuestos(data) {
 
   const $selectPuestos = d.getElementById("solicitud-puesto");
 
-  let depto = data.departamento;
+  // let depto = data.departamento;
   let puesto = data.puesto;
   let idUser = data.id;
 
-  let json = await getPuestos(depto, puesto, idUser);
+  // let json = await getPuestos(depto, puesto, idUser);
+  let json = await getPuestos(puesto, idUser);
 
   let puestos = json.Puestos;
 

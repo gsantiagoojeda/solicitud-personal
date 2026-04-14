@@ -3,10 +3,10 @@ import app from "./app.js";
 const d = document;
 
 const { DEPTOS } = app;
-export default async function getPuestos(depto, puesto, idUser) {
+export default async function getPuestos(depto = null, puesto, idUser) {
   try {
     const formData = new FormData();
-    formData.append("depto", depto);
+    // formData.append("depto", depto);
     formData.append("puesto", puesto);
     formData.append("id-user", idUser);
 

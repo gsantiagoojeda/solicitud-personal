@@ -21,12 +21,12 @@ header('Content-Type: application/json');
 // $depto = "5";
 // $puesto = "Director de Administración, Finanzas y Contabilida";
 // $idUser = "296";
-$depto = $_POST['depto'];
+// $depto = $_POST['depto'];
 $puesto = $_POST['puesto'];
 $idUser = $_POST['id-user'];
 
 // Paso 1: Obtener puesto y autoridad del usuario
-$sqlUser = "SELECT puesto, id_autoridad FROM empleados WHERE id = ?";
+$sqlUser = "SELECT id_autoridad FROM empleados WHERE id = ?";
 $stmt = $mysqli_vacaciones->prepare($sqlUser);
 
 if (!$stmt) {
@@ -41,7 +41,8 @@ $stmt->bind_param("s", $idUser);
 $stmt->execute();
 
 // bind_result en lugar de get_result
-$stmt->bind_result($puesto, $autoridad);
+// $stmt->bind_result($puesto, $autoridad);
+$stmt->bind_result($autoridad);
 if (!$stmt->fetch()) {
     echo json_encode([
         "err" => true,
