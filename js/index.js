@@ -78,6 +78,7 @@ async function validarJWT() {
   }
 
   let puesto = data.puesto.toLowerCase();
+  console.log(puesto);
   if (
     !puesto.includes("gerente") &&
     !puesto.includes("director") &&
