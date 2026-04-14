@@ -10,8 +10,6 @@ export default async function getPuestos(depto = null, puesto, idUser) {
     formData.append("puesto", puesto);
     formData.append("id-user", idUser);
 
-    console.log("usuario id:", idUser);
-
     let options = {
       method: "POST",
       body: formData,
