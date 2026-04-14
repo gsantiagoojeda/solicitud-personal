@@ -31,8 +31,11 @@ $stmt->close();
 
 if ($puesto === 'Gerente de Recursos Humanos') {
     // Caso RH: Ver solicitudes de Gerentes/Directores que ya tengan Autorización 1 pero NO la 2
-    $sqlUsers = "SELECT id FROM empleados 
-                 WHERE (puesto LIKE '%Gerente%' OR puesto LIKE '%Director%') AND status_empleado ='Activo'";
+    $sqlUsers = "SELECT e.id 
+             FROM empleados e
+             INNER JOIN puestos p ON e.id_puesto = p.id_puesto
+             WHERE (p.nombre_puesto LIKE '%Gerente%' OR p.nombre_puesto LIKE '%Director%') 
+             AND e.status_empleado = 'Activo'";
     $result = $mysqli_vacaciones->query($sqlUsers);
     
     $listaIds = [];

@@ -15,6 +15,7 @@ export default async function countAutorizadas(data) {
 
     const formData = new FormData();
     formData.append("user-id", userId);
+    formData.append("puesto", userPuesto);
 
     let options = {
       method: "POST",
@@ -23,7 +24,7 @@ export default async function countAutorizadas(data) {
 
     let res = await fetch(
         `${SOLICITUDES}countSolicitudesAutorizadas.php`,
-        options
+        options,
       ),
       json = await res.json();
     console.log(json);

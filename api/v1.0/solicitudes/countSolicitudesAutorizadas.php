@@ -9,6 +9,7 @@ require "../conexion_solicitud.php";
 
 
 $idUser = $_POST['user-id']; // usuario actual
+$puesto = $_POST['puesto']; // usuario actual
 
 $filterYearStart = $_POST['filterYearStart'] ?? null; 
 $filterYearEnd = $_POST['filterYearEnd'] ?? null;
@@ -18,7 +19,7 @@ $totalSolicitudes = 0;
 
 
 // Paso 1: Obtener puesto y autoridad del usuario (Necesario para la lógica de autoridad)
-$sqlUser = "SELECT puesto, id_autoridad FROM empleados WHERE id = ?";
+$sqlUser = "SELECT  id_autoridad FROM empleados WHERE id = ?";
 $stmt = $mysqli_vacaciones->prepare($sqlUser);
 if (!$stmt) {
     echo json_encode([
@@ -30,7 +31,7 @@ if (!$stmt) {
 
 $stmt->bind_param("s", $idUser);
 $stmt->execute();
-$stmt->bind_result($puesto, $autoridad);
+$stmt->bind_result( $autoridad);
 if (!$stmt->fetch()) {
     echo json_encode([
         "err" => true,
