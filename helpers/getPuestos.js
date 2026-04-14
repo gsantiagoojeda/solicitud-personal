@@ -18,7 +18,7 @@ export default async function getPuestos(depto = null, puesto, idUser) {
       json = await res.json();
 
     if (!res.ok) throw { status: res.status, statusText: res.statusText };
-
+    console.log(json);
     return json;
   } catch (err) {
     console.log(err);
