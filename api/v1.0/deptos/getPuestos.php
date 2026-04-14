@@ -107,26 +107,47 @@ foreach ($listaGruposAutorizados as $grupo) {
 // echo "<br>";
 // Paso 4: Obtener puestos de cada departamento autorizado
 $listaPuestos = [];
+
 foreach ($listaDeptosAutorizados as $idDepto) {
-    $sqlCombined = "SELECT d.id_archivo, d.id_puesto, d.descripcion, p.nombre_puesto , d.departamento_id
-                FROM descripcion_puestos d
-                INNER JOIN vacaciones.puestos p ON d.id_puesto = p.id_puesto
-                WHERE d.departamento_id = ?";
+    // 1. Consultamos la descripción en la base de datos de Intranet
+    $sqlDesc = "SELECT id_archivo, id_puesto, descripcion, departamento_id 
+                FROM descripcion_puestos 
+                WHERE departamento_id = ?";
+    
+    $stmtDesc = $mysqli_intranet->prepare($sqlDesc);
+    $stmtDesc->bind_param("i", $idDepto);
+    $stmtDesc->execute();
+    
+    // Almacenamos el resultado para poder hacer otra consulta dentro del while si fuera necesario
+    $stmtDesc->store_result();
+    $stmtDesc->bind_result($id_archivo, $id_puesto, $descripcion, $departamento_id);
 
-$stmt = $mysqli_intranet->prepare($sqlCombined);
-    $stmtPuesto->bind_param("i", $idDepto);
-    $stmtPuesto->execute();
-    $stmtPuesto->bind_result($id_archivo, $descripcion, $nombre, $departamento_id);
+    while ($stmtDesc->fetch()) {
+        
+        // 2. Buscamos el nombre del puesto en la base de datos de Vacaciones
+        $nombre_puesto = "No encontrado"; // Valor por defecto
+        
+        $sqlNom = "SELECT nombre_puesto FROM puestos WHERE id_puesto = ?";
+        if ($stmtNom = $mysqli_vacaciones->prepare($sqlNom)) {
+            $stmtNom->bind_param("i", $id_puesto);
+            $stmtNom->execute();
+            $stmtNom->bind_result($res_nombre);
+            if ($stmtNom->fetch()) {
+                $nombre_puesto = $res_nombre;
+            }
+            $stmtNom->close();
+        }
 
-    while ($stmtPuesto->fetch()) {
+        // 3. Guardamos todo en el array final
         $listaPuestos[] = [
-            "id_archivo" => $id_archivo,
-            "nombre" => $nombre,
-            "descripcion" => $descripcion,
+            "id_archivo"      => $id_archivo,
+            "id_puesto"       => $id_puesto,
+            "nombre"          => $nombre_puesto,
+            "descripcion"     => $descripcion,
             "departamento_id" => $departamento_id
         ];
     }
-    $stmtPuesto->close();
+    $stmtDesc->close();
 }
 
 // Respuesta exitosa
