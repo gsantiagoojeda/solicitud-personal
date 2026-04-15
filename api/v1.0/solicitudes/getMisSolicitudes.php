@@ -44,7 +44,7 @@ if ($resultUser && $rowUser = $resultUser->fetch_assoc()) {
     $user = [
         'id' => $rowUser['id'],
         'nombre_completo' => $nombreCompleto,
-        'puesto' => $rowUser['puesto'] ?? null,
+        'puesto' => $rowUser['nombre_puesto'] ?? null,
         'correo' => $rowUser['correo'] ?? '',
         'empresa' => $rowUser['empresa'] ?? '',
         'id_departamento' => $rowUser['id_departamento'] ?? null,
@@ -74,7 +74,7 @@ if ($resultDeptos) {
 
 // Paso previo: cargar puestos
 $puestos = [];
-$resultPuestos = $mysqli_intranet->query("SELECT id_archivo, descripcion FROM puestos");
+$resultPuestos = $mysqli_intranet->query("SELECT id_archivo, descripcion FROM descripcion_puestos");
 if ($resultPuestos) {
     while ($row = $resultPuestos->fetch_assoc()) {
         $puestos[$row['id_archivo']] = htmlspecialchars($row['descripcion'] ?? '', ENT_QUOTES, 'UTF-8');
