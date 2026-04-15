@@ -34,8 +34,8 @@ export default async function listSolicitudes(data = null, e = null) {
       body: formData,
     };
 
-    let res = await fetch(`${SOLICITUDES}getSolicitudes.php`, options);
-    json = await res.json();
+    let res = await fetch(`${SOLICITUDES}getSolicitudes.php`, options),
+      json = await res.json();
     console.log(json);
     if (!res.ok || json.err)
       throw { status: res.status, statusText: res.statusText };

@@ -257,9 +257,19 @@ $stmtAuth->close();
 $listaUserAutorizados = [];
 foreach ($listaGruposAutorizados as $grupo) {
     $grupoClave = $mysqli_vacaciones->real_escape_string($grupo['id']);
-    $sqlUsers = "SELECT id, nombre, apellido_paterno, apellido_materno, puesto, correo, empresa, id_departamento 
-                 FROM empleados 
-                 WHERE id_autoridad = '$grupoClave' AND status_empleado ='Activo' ";
+    $sqlUsers = "SELECT 
+            e.id, 
+            e.nombre, 
+            e.apellido_paterno, 
+            e.apellido_materno, 
+            p.nombre_puesto, 
+            e.correo, 
+            e.empresa, 
+            e.id_departamento 
+        FROM empleados e
+        LEFT JOIN puestos p ON e.id_puesto = p.id_puesto
+        WHERE e.id_autoridad = '$grupoClave' 
+        AND e.status_empleado = 'Activo'";
     $result = $mysqli_vacaciones->query($sqlUsers);
     if ($result) {
         while ($row = $result->fetch_assoc()) {
@@ -272,7 +282,7 @@ foreach ($listaGruposAutorizados as $grupo) {
             $listaUserAutorizados[] = [
                 "id" => htmlspecialchars($row['id'] ?? '', ENT_QUOTES, 'UTF-8'),
                 "nombre_completo" => htmlspecialchars($nombreCompleto, ENT_QUOTES, 'UTF-8'),
-                "puesto" => htmlspecialchars($row['puesto'] ?? '', ENT_QUOTES, 'UTF-8'),
+                "puesto" => htmlspecialchars($row['nombre_puesto'] ?? '', ENT_QUOTES, 'UTF-8'),
                 "correo" => htmlspecialchars($row['correo'] ?? '', ENT_QUOTES, 'UTF-8'),
                 "empresa" => htmlspecialchars($row['empresa'] ?? '', ENT_QUOTES, 'UTF-8'),
                 "id_departamento" => htmlspecialchars($row['id_departamento'] ?? '', ENT_QUOTES, 'UTF-8')
