@@ -1,4 +1,4 @@
-const DOMAIN = "https://gpoalze.site/solicitud-personal/",
+const DOMAIN = "https://gpoalze.cloud/solicitud-personal/",
   API = `${DOMAIN}api/v1.0/`,
   LOGIN = `${API}login/`,
   TOKEN = `${API}token/`,
