@@ -14,7 +14,10 @@ $filterYearStart = $_POST['filterYearStart'] ?? null;
 $filterYearEnd = $_POST['filterYearEnd'] ?? null;
 
 // Paso 1: Obtener puesto y autoridad del usuario
-$sqlUser = "SELECT puesto, id_autoridad FROM empleados WHERE id = ?";
+$sqlUser = "SELECT p.nombre_puesto, e.id_autoridad 
+        FROM empleados e
+        LEFT JOIN puestos p ON e.id_puesto = p.id_puesto 
+        WHERE e.id = ?";
 $stmt = $mysqli_vacaciones->prepare($sqlUser);
 if (!$stmt) {
     echo json_encode([
