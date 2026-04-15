@@ -221,7 +221,19 @@ if ($puesto === 'Gerente de Recursos Humanos' or str_contains($puesto, 'Reclutad
     $listaUserAutorizados = [];
     foreach ($listaGruposAutorizados as $grupo) {
         $grupoClave = $mysqli_vacaciones->real_escape_string($grupo['id']);
-        $sqlUsers = "SELECT id, nombre, apellido_paterno, apellido_materno, puesto, correo, empresa, id_departamento FROM empleados WHERE id_autoridad = '$grupoClave' AND status_empleado ='Activo' ";
+        $sqlUsers = "SELECT 
+    e.id, 
+    e.nombre, 
+    e.apellido_paterno, 
+    e.apellido_materno, 
+    p.nombre_puesto AS puesto, 
+    e.correo, 
+    e.empresa, 
+    e.id_departamento 
+FROM empleados e
+LEFT JOIN puestos p ON e.id_puesto = p.id
+WHERE e.id_autoridad = '$grupoClave' 
+AND e.status_empleado = 'Activo'";
         $result = $mysqli_vacaciones->query($sqlUsers);
         if ($result) {
             while ($row = $result->fetch_assoc()) {
