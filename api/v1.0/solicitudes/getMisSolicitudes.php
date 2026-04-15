@@ -27,9 +27,11 @@ $filterYearEnd = $_POST['filterYearEnd'] ?? null;
 // --- PASO 1: Obtener datos del empleado actual ($idUser) y definir la variable $user ---
 $user = []; // Inicializamos $user como un array vacío
 
-$sqlUser = "SELECT id, nombre, apellido_paterno, apellido_materno, puesto, correo, empresa, id_departamento 
-             FROM empleados 
-             WHERE id= '$idUser' ";
+$sqlUser = "SELECT e.id, e.nombre, e.apellido_paterno, e.apellido_materno, 
+                   p.nombre_puesto, e.correo, e.empresa, e.id_departamento 
+            FROM empleados e
+            LEFT JOIN puestos p ON e.id_puesto = p.id_puesto
+            WHERE e.id = '$idUser'";
 $resultUser = $mysqli_vacaciones->query($sqlUser); 
 
 if ($resultUser && $rowUser = $resultUser->fetch_assoc()) {
