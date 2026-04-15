@@ -33,21 +33,21 @@ export default async function detailMySolicitud(data) {
       solicitud["solicitud_puesto_nombre"];
     d.getElementById("puesto").setAttribute(
       "data-id",
-      `${solicitud["solicitud_puesto_id"]}`
+      `${solicitud["solicitud_puesto_id"]}`,
     );
 
     d.getElementById("solicitante").textContent =
       solicitud["solicitud_solicitante"];
     d.getElementById("solicitante").setAttribute(
       "data-id",
-      `${solicitud["solicitud_solicitante_id"]}`
+      `${solicitud["solicitud_solicitante_id"]}`,
     );
 
     d.getElementById("auth1-name").textContent =
       solicitud["solicitud_autorizador1"];
     d.getElementById("auth1-name").setAttribute(
       "data-id",
-      `${solicitud["solicitud_autorizador1_id"]}`
+      `${solicitud["solicitud_autorizador1_id"]}`,
     );
     d.getElementById("auth1-date").textContent =
       solicitud["solicitud_date_autorizacion1"];
@@ -68,7 +68,7 @@ export default async function detailMySolicitud(data) {
       solicitud["solicitud_autorizador2"];
     d.getElementById("auth2-name").setAttribute(
       "data-id",
-      `${solicitud["solicitud_autorizador2_id"]}`
+      `${solicitud["solicitud_autorizador2_id"]}`,
     );
     d.getElementById("auth2-date").textContent =
       solicitud["solicitud_date_autorizacion2"];
@@ -78,7 +78,7 @@ export default async function detailMySolicitud(data) {
       d.getElementById("container-auth2").classList.remove("lg:hidden");
       d.getElementById("container-auth2").classList.add("lg:flex");
 
-     const $inputs = document.querySelectorAll("input, select, textarea");
+      const $inputs = document.querySelectorAll("input, select, textarea");
 
       $inputs.forEach((input) => {
         input.disabled = true; // Esto agrega el atributo 'disabled'
@@ -87,19 +87,16 @@ export default async function detailMySolicitud(data) {
 
     switch (solicitud["solicitud_espacio_trabajo"]) {
       case "si":
-        d.querySelector(
-          'input[name="solicitud-rp1"][value="si"]'
-        ).checked = true;
+        d.querySelector('input[name="solicitud-rp1"][value="si"]').checked =
+          true;
         break;
       case "no":
-        d.querySelector(
-          'input[name="solicitud-rp1"][value="no"]'
-        ).checked = true;
+        d.querySelector('input[name="solicitud-rp1"][value="no"]').checked =
+          true;
         break;
       case "n/a":
-        d.querySelector(
-          'input[name="solicitud-rp1"][value="n/a"]'
-        ).checked = true;
+        d.querySelector('input[name="solicitud-rp1"][value="n/a"]').checked =
+          true;
         break;
     }
 
@@ -108,19 +105,16 @@ export default async function detailMySolicitud(data) {
 
     switch (solicitud["solicitud_mobiliario"]) {
       case "si":
-        d.querySelector(
-          'input[name="solicitud-rp2"][value="si"]'
-        ).checked = true;
+        d.querySelector('input[name="solicitud-rp2"][value="si"]').checked =
+          true;
         break;
       case "no":
-        d.querySelector(
-          'input[name="solicitud-rp2"][value="no"]'
-        ).checked = true;
+        d.querySelector('input[name="solicitud-rp2"][value="no"]').checked =
+          true;
         break;
       case "n/a":
-        d.querySelector(
-          'input[name="solicitud-rp2"][value="n/a"]'
-        ).checked = true;
+        d.querySelector('input[name="solicitud-rp2"][value="n/a"]').checked =
+          true;
         break;
     }
 
@@ -128,19 +122,16 @@ export default async function detailMySolicitud(data) {
 
     switch (solicitud["solicitud_equipo_computo"]) {
       case "si":
-        d.querySelector(
-          'input[name="solicitud-rp3"][value="si"]'
-        ).checked = true;
+        d.querySelector('input[name="solicitud-rp3"][value="si"]').checked =
+          true;
         break;
       case "no":
-        d.querySelector(
-          'input[name="solicitud-rp3"][value="no"]'
-        ).checked = true;
+        d.querySelector('input[name="solicitud-rp3"][value="no"]').checked =
+          true;
         break;
       case "n/a":
-        d.querySelector(
-          'input[name="solicitud-rp3"][value="n/a"]'
-        ).checked = true;
+        d.querySelector('input[name="solicitud-rp3"][value="n/a"]').checked =
+          true;
         break;
     }
 
@@ -149,19 +140,16 @@ export default async function detailMySolicitud(data) {
 
     switch (solicitud["solicitud_herramientas"]) {
       case "si":
-        d.querySelector(
-          'input[name="solicitud-rp4"][value="si"]'
-        ).checked = true;
+        d.querySelector('input[name="solicitud-rp4"][value="si"]').checked =
+          true;
         break;
       case "no":
-        d.querySelector(
-          'input[name="solicitud-rp4"][value="no"]'
-        ).checked = true;
+        d.querySelector('input[name="solicitud-rp4"][value="no"]').checked =
+          true;
         break;
       case "n/a":
-        d.querySelector(
-          'input[name="solicitud-rp4"][value="n/a"]'
-        ).checked = true;
+        d.querySelector('input[name="solicitud-rp4"][value="n/a"]').checked =
+          true;
         break;
     }
 
@@ -198,7 +186,7 @@ export default async function detailMySolicitud(data) {
 
     $form["solicitud-txt-tools"].value = solicitud["solicitud_tools"];
 
-    $form["solicitud-sueldo"].value = solicitud["solicitud_sueldo_id"];
+    $form["solicitud-sueldo"].value = solicitud["solicitud_sueldo"];
 
     $form["solicitud-horario"].value = solicitud["solicitud_horario_id"];
 

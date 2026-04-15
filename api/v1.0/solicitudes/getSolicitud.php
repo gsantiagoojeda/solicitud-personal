@@ -70,22 +70,23 @@ if ($puestoId) {
 }
 
 // --- 3. Obtener Sueldo ---
-$solicitud['solicitud_sueldo'] = null;
-if ($sueldoId) {
-    $stmtSueldo = $mysqli_solicitud->prepare("SELECT sueldo_nombre, sueldo_cantidad FROM sp_sueldos WHERE sueldo_id = ?");
-    if ($stmtSueldo) {
-        $stmtSueldo->bind_param("s", $sueldoId);
-        $stmtSueldo->execute();
-        $resultSueldo = $stmtSueldo->get_result();
-        if ($resultSueldo->num_rows > 0) {
-            $rowSueldo = $resultSueldo->fetch_assoc();
-            $sueldoNombre = $rowSueldo['sueldo_nombre'] ?? '';
-            $sueldoCantidad = $rowSueldo['sueldo_cantidad'] ?? '';
-            $solicitud['solicitud_sueldo'] = trim($sueldoNombre) . ":" . trim($sueldoCantidad);
-        }
-        $stmtSueldo->close();
-    }
-}
+$solicitud['solicitud_sueldo'] = $sueldoId;
+// $solicitud['solicitud_sueldo'] = null;
+// if ($sueldoId) {
+//     $stmtSueldo = $mysqli_solicitud->prepare("SELECT sueldo_nombre, sueldo_cantidad FROM sp_sueldos WHERE sueldo_id = ?");
+//     if ($stmtSueldo) {
+//         $stmtSueldo->bind_param("s", $sueldoId);
+//         $stmtSueldo->execute();
+//         $resultSueldo = $stmtSueldo->get_result();
+//         if ($resultSueldo->num_rows > 0) {
+//             $rowSueldo = $resultSueldo->fetch_assoc();
+//             $sueldoNombre = $rowSueldo['sueldo_nombre'] ?? '';
+//             $sueldoCantidad = $rowSueldo['sueldo_cantidad'] ?? '';
+//             $solicitud['solicitud_sueldo'] = trim($sueldoNombre) . ":" . trim($sueldoCantidad);
+//         }
+//         $stmtSueldo->close();
+//     }
+// }
 
 // --- 4. Obtener Horario ---
 $solicitud['solicitud_horario'] = null;
