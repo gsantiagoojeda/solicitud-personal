@@ -17,7 +17,10 @@ $filterYearStart = $_POST['filterYearStart'] ?? null;
 $filterYearEnd = $_POST['filterYearEnd'] ?? null;
 
 // Paso 1: Obtener puesto y autoridad del usuario
-$sqlUser = "SELECT puesto, id_autoridad FROM empleados WHERE id = ?";
+$sqlUser = "SELECT p.nombre_puesto, e.id_autoridad 
+        FROM empleados e
+        LEFT JOIN puestos p ON e.id_puesto = p.id_puesto 
+        WHERE e.id = ?";
 $stmt = $mysqli_vacaciones->prepare($sqlUser);
 if (!$stmt) {
     echo json_encode([
@@ -52,7 +55,7 @@ if ($resultDeptos) {
 
 // Paso previo: cargar puestos
 $puestos = [];
-$resultPuestos = $mysqli_intranet->query("SELECT id_archivo, descripcion FROM puestos");
+$resultPuestos = $mysqli_intranet->query("SELECT id_archivo, descripcion FROM descripcion_puestos");
 if ($resultPuestos) {
     while ($row = $resultPuestos->fetch_assoc()) {
         $puestos[$row['id_archivo']] = htmlspecialchars($row['descripcion'] ?? '', ENT_QUOTES, 'UTF-8');
@@ -61,7 +64,14 @@ if ($resultPuestos) {
 
 // Paso previo: cargar empleados con puesto y nombre completo para autorizador1
 $empleados = [];
-$sql = "SELECT id, puesto, nombre, apellido_paterno, apellido_materno FROM empleados";
+$sql = "SELECT 
+    e.id, 
+    p.nombre_puesto, 
+    e.nombre, 
+    e.apellido_paterno, 
+    e.apellido_materno 
+FROM empleados e
+LEFT JOIN puestos p ON e.id_puesto = p.id_puesto";
 $resultEmps = $mysqli_vacaciones->query($sql);
 if ($resultEmps) {
     while ($row = $resultEmps->fetch_assoc()) {
@@ -71,7 +81,7 @@ if ($resultEmps) {
             ($row['apellido_materno'] ?? '')
         );
         $empleados[$row['id']] = [
-            'puesto' => $row['puesto'] ?? null,
+            'puesto' => $row['nombre_puesto'] ?? null,
             'nombre_completo' => $nombreCompleto
         ];
     }
