@@ -83,7 +83,9 @@ if ($resultPuestos) {
 
 // Paso previo: cargar empleados con puesto y nombre completo para autorizador1 y 2
 $empleados = [];
-$sql = "SELECT id, puesto, nombre, apellido_paterno, apellido_materno FROM empleados";
+$sql = "SELECT e.id, p.nombre_puesto, e.nombre, e.apellido_paterno, e.apellido_materno 
+        FROM empleados e
+        LEFT JOIN puestos p ON e.id_puesto = p.id_puesto";
 $resultEmps = $mysqli_vacaciones->query($sql);
 if ($resultEmps) {
     while ($row = $resultEmps->fetch_assoc()) {
@@ -93,7 +95,7 @@ if ($resultEmps) {
             ($row['apellido_materno'] ?? '')
         );
         $empleados[$row['id']] = [
-            'puesto' => $row['puesto'] ?? null,
+            'puesto' => $row['nombre_puesto'] ?? null,
             'nombre_completo' => $nombreCompleto
         ];
     }
