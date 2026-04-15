@@ -140,9 +140,19 @@ if (!empty($filterYearStart) && !empty($filterYearEnd)) {
 $listaSolicitudes = [];
 
 if ($puesto === 'Gerente de Recursos Humanos') {
-   $sqlUsers = "SELECT id, nombre, apellido_paterno, apellido_materno, puesto, correo, empresa, id_departamento 
-                 FROM empleados 
-                 WHERE (puesto LIKE '%Gerente%' OR puesto LIKE '%Director%') AND status_empleado ='Activo' ";
+   $sqlUsers = "SELECT 
+                e.id, 
+                e.nombre, 
+                e.apellido_paterno, 
+                e.apellido_materno, 
+                p.nombre_puesto, 
+                e.correo, 
+                e.empresa, 
+                e.id_departamento 
+             FROM empleados e
+             LEFT JOIN puestos p ON e.id_puesto = p.id_puesto
+             WHERE (p.nombre_puesto LIKE '%Gerente%' OR p.nombre_puesto LIKE '%Director%') 
+             AND e.status_empleado = 'Activo'";
     $result = $mysqli_vacaciones->query($sqlUsers);
     if ($result) {
         $listaUserAutorizados = [];
