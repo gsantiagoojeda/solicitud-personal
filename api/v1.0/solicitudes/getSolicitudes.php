@@ -97,8 +97,13 @@ $filtrosStatus = [];
 if ($filterPend === "true") {
     if ($puesto === 'Gerente de Recursos Humanos') {
         // RH: Solicitud 1 Autorizada Y Solicitud 2 es NULL (PENDIENTE para RH)
-        $filtrosStatus[] = "(solicitud_autorizacion1 = 'Autorizada' AND solicitud_autorizacion2 IS NULL)";
-    } else {
+        $filtrosStatus[] = "(solicitud_autorizacion_dirgral = 'Autorizada' AND solicitud_autorizacion2 IS NULL)";
+    } elseif ($puesto === 'Director General') {
+      // DirGral: Solicitud 1 Autorizada Y Solicitud DirGral es NULL (PENDIENTE para DirGral)
+       $filtrosStatus[] = "(solicitud_autorizacion1 = 'Autorizada' AND solicitud_autorizacion_dirgral IS NULL)";
+    } 
+    
+    else {
         // Director/Jefe: Solicitud 1 es NULL (PENDIENTE para Director/Jefe)
         $filtrosStatus[] = "(solicitud_autorizacion1 IS NULL)";
     }
@@ -108,8 +113,12 @@ if ($filterPend === "true") {
 if ($filterRech === "true") {
     if ($puesto === 'Gerente de Recursos Humanos') {
         // RH: Solicitud 1 Autorizada Y Solicitud 2 es 'Rechazada' (RECHAZADA por RH)
-        $filtrosStatus[] = "(solicitud_autorizacion1 = 'Autorizada' AND solicitud_autorizacion2 = 'Rechazada')";
-    } else {
+        $filtrosStatus[] = "(solicitud_autorizacion_dirgral = 'Autorizada' AND solicitud_autorizacion2 = 'Rechazada')";
+    }elseif ($puesto === 'Director General') {
+     // RH: Solicitud 1 Autorizada Y Solicitud DirGral es 'Rechazada' (RECHAZADA por DirGral)
+        $filtrosStatus[] = "(solicitud_autorizacion1 = 'Autorizada' AND solicitud_autorizacion_dirgral = 'Rechazada')";
+    }
+     else {
         // Director/Jefe: Solicitud 1 es 'Rechazada' (RECHAZADA por Director/Jefe)
         $filtrosStatus[] = "(solicitud_autorizacion1 = 'Rechazada')";
     }

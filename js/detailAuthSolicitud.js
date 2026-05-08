@@ -188,6 +188,7 @@ export default async function detailAuthSolicitud(data) {
 
     let levelAuth1 = solicitud["solicitud_autorizacion1"];
     let levelAuth2 = solicitud["solicitud_autorizacion2"];
+    let levelAuth25 = solicitud["solicitud_autorizacion_dirgral"];
     let levelAuth3 = solicitud["solicitud_autorizador3"];
 
     const $btnAuth = d.getElementById("btn-autorizar-solicitud");
@@ -195,7 +196,7 @@ export default async function detailAuthSolicitud(data) {
     const $btnReclutar = d.getElementById("btn-reclutar-solicitud");
     console.log("kevel:", levelAuth1);
 
-    if (puestoAuth.includes("Director")) {
+    if (puestoAuth.includes("Director") && variable !== "Director General") {
       if (levelAuth1 === "") {
         d.getElementById("auth-level").textContent = " 1";
         $btnAuth.setAttribute("data-level", "1");
@@ -210,6 +211,21 @@ export default async function detailAuthSolicitud(data) {
       }
     }
 
+    if (puestoAuth === "Director General") {
+      if (levelAuth25 === "") {
+        d.getElementById("auth-level").textContent = " 25";
+        $btnAuth.setAttribute("data-level", "25");
+        d;
+        $btnRechazar.setAttribute("data-level", "25");
+      } else {
+        d.getElementById("auth-contain").style.display = "none";
+        const $inputs = document.querySelectorAll("input, select, textarea");
+
+        $inputs.forEach((input) => {
+          input.disabled = true; // Esto agrega el atributo 'disabled'
+        });
+      }
+    }
     if (puestoAuth === "Gerente de Recursos Humanos") {
       if (levelAuth2 === "") {
         d.getElementById("auth-level").textContent = " 2";

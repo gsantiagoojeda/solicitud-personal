@@ -77,6 +77,38 @@ UPDATE sp_solicitud SET
     solicitud_date_autorizacion1 = ?
 WHERE solicitud_id = ?
 ";
+} else if ($level == 25) {
+ $sql = "
+UPDATE sp_solicitud SET
+    solicitud_espacio_trabajo = ?,
+    solicitud_espacio_trabajo_com = ?,
+    solicitud_mobiliario = ?,
+    solicitud_mobiliario_com = ?,
+    solicitud_equipo_computo = ?,
+    solicitud_equipo_computo_com = ?,
+    solicitud_herramientas = ?,
+    solicitud_herramientas_com = ?,
+    solicitud_compras_necesarias = ?,
+    solicitud_fecha_tentativa = ?,
+    solicitud_responsable = ?,
+    solicitud_num_vacantes = ?,
+    solicitud_sexo = ?,
+    solicitud_estado_civil = ?,
+    solicitud_escolaridad = ?,
+    solicitud_edad_min = ?,
+    solicitud_edad_max = ?,
+    solicitud_experiencia = ?,
+    solicitud_conocimientos = ?,
+    solicitud_habilidades = ?,
+    solicitud_tools = ?,
+    solicitud_sueldo_id = ?,
+    solicitud_horario_id = ?,
+    solicitud_rolar = ?,
+    solicitud_autorizador_dirgral = ?,
+    solicitud_autorizacion_dirgral = ?,
+    solicitud_date_autorizacion_dirgral = ?
+WHERE solicitud_id = ?
+";
 } else if ($level == 2) {
  $sql = "
 UPDATE sp_solicitud SET
