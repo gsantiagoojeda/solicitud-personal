@@ -90,6 +90,33 @@ export default async function listSolicitudes(data = null, e = null) {
             ? "-"
             : el.solicitud_date_autorizacion1;
 
+        // autorizacion dirGral
+        const statusElement = $clone.querySelector("[data-status25]");
+        if (el.solicitud_autorizacion25 === "") {
+          statusElement.textContent = "Pendiente";
+          statusElement.classList.add("bg-green-600");
+        } else if (el.solicitud_autorizacion25 === "Rechazada") {
+          statusElement.textContent = el.solicitud_autorizacion1;
+          statusElement.classList.add("bg-red-600");
+        } else {
+          statusElement.textContent = "Autorizada";
+          statusElement.classList.add("bg-green-600");
+        }
+        $clone.querySelector("[data-auth25]").textContent =
+          el.autorizador25_nombre_completo === ""
+            ? "-"
+            : el.autorizador25_nombre_completo;
+        $clone.querySelector("[data-authpuesto25]").textContent =
+          el.autorizador25_puesto === ""
+            ? "-"
+            : el.autorizador25_puesto.length > 40
+              ? el.autorizador25_puesto.substring(0, 40) + "..." // Trunca y añade "..."
+              : el.autorizador25_puesto;
+        $clone.querySelector("[data-authdate25]").textContent =
+          el.solicitud_date_autorizacion25 === ""
+            ? "-"
+            : el.solicitud_date_autorizacion25;
+        // fin dirGral
         $fragment.appendChild($clone);
       });
       $tbody.innerHTML = "";
